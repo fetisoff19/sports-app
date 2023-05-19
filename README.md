@@ -1,13 +1,11 @@
-# Webpack 5 config for React
-
-A detailed guide for setting up this config you can find in my article on Habr: https://habr.com/ru/post/597389/
-
+# SportsApp
+// добавить описание
 # Getting Started
 
-First of all, you must copy it to your project:
+First, you must copy it to your project:
 
-[//]: # (### `git clone https://github.com/aAleksandrOrlov/webpack-5-react-config ./<your_directory>`)
-//
+### `git clone https://github.com/fetisoff19/sports-app ./<your_directory>`
+
 Then install the dependencies:
 
 ### `npm install`
