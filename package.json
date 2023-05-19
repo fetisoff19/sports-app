@@ -1,10 +1,14 @@
 {
-  "main": "index.js",
-  "scripts": {
-    "start": "cross-env SERVE=true webpack serve",
-    "build": "webpack",
-    "build-prod": "webpack --mode=production",
-    "clean": "rd /s /q dist"
+  "name": "sports-app",
+  "version": "1.0.0",
+  "description": "A React.js education project",
+  "private": "true",
+  "author": {
+    "name": "Oleg Fetisov",
+    "email": "fetisoff19@gmail.com",
+    "telegram": "@fetisoff19",
+    "url": "https://github.com/fetisoff19/",
+    "main": "index.js"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
