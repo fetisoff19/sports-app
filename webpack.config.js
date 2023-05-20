@@ -80,6 +80,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ["", ".js", ".jsx", '.png', ".es6"],  //
+    extensions: ["", ".js", ".jsx", '.png', '.svg', '.gif', ".es6", ".scss"],  //
   },
 };

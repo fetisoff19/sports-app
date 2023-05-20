@@ -42,7 +42,7 @@ export async function htmlFileUrlToNodeList(url) {
 }
 
 export function loadCss(cssUrl) {
-  // 'cssURL' is the stylesheet's URL, i.e. /css/styles.css
+  // 'cssURL' is the stylesheet's URL, i.e. /css/styles.modules.scss
   return new Promise( function(resolve, reject) {
     let link = document.createElement('link');
     link.rel  = 'stylesheet';

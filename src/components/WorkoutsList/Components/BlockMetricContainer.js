@@ -6,14 +6,16 @@ import {
   getHourMinSec
 } from "../../../API/functionsDate&Values";
 import {dict, userLang} from "../../../config/config";
-
+import styles from '../styles.modules.scss'
 const config = {
   totalDistance: {
     formatter: value => convertDistance(value).toString().replace('.', ','),
     unit: 'km',
+    label: 'totalDistance',
   },
   totalTimerTime: {
     formatter: getHourMinSec,
+    label: 'time',
   },
   enhancedAvgSpeed: {
     formatter: convertSpeed,
@@ -21,18 +23,23 @@ const config = {
     unit: 'kmph',
     uniqueUnit: 'pace',
     uniqueSport: 'running',
+    label: 'avgSpeed',
+    uniqueLabel: 'avgPace',
   },
   totalAscent: {
     formatter: Math.round,
     unit: 'm',
+    label: 'totalAscent',
     },
   avgHeartRate: {
     formatter: Math.round,
     unit: 'bpm',
+    label: 'avgHeartRate',
   },
   avgPower: {
     formatter: Math.round,
     unit: 'power',
+    label: 'avgPower',
   },
 }
 
@@ -43,8 +50,8 @@ const cyclingOrder = ['totalDistance', 'totalTimerTime',  'enhancedAvgSpeed', 't
 const BlockMetricContainer = ({data}) => {
   const block = baseOrder.map((item, index) => {
     return (
-      <div key={index} style={{width: 150, textAlign: 'right'}}>
-        <div>
+      <div key={index} className={styles.mBlock} >
+        <span className={styles.unit}>
           {config[item].uniqueSport === data.sport ?
             data[item]
               ? config[item].uniqueFormatter(data[item]) + ' '
@@ -55,16 +62,16 @@ const BlockMetricContainer = ({data}) => {
             ? config[item].formatter(data[item]) + ' '
             + (config[item].unit ? dict.units[config[item].unit][userLang] : '')
             : '--'}
-        </div>
-        <div>
-          {dict.fields[item][userLang]}
-        </div>
+        </span>
+        <span className={styles.label}>
+          {config[item].uniqueSport === data.sport ? dict.fields[config[item].uniqueLabel][userLang] : dict.fields[config[item].label][userLang]}
+        </span>
       </div>
     );
   })
 
   return (
-    <div style={{display: "flex", paddingRight: 20}}>
+    <div className={styles.blockMetricContainer}>
       {block}
     </div>
   );

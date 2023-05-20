@@ -2,12 +2,14 @@ import React, {useContext, useState} from 'react';
 import {Link, useLocation} from "react-router-dom";
 import {db} from "../../API/db";
 import AppContext from "../../context/AppContext";
+import Edit from "./svgComponents/Edit";
+import Ok from "./svgComponents/Ok";
+import Close from "./svgComponents/Close";
 
-const ChangeName = ({data, isLink, style}) => {
+const ChangeName = ({data, isLink, styles}) => {
   const {setRandom} = useContext(AppContext);
   const [disabled, setDisabled] = useState(true);
   const [value, setValue] = useState(data.name);
-  const handleChangeName = e => setValue(e.target.value);
   const router = useLocation();
 
   async function saveName() {
@@ -19,44 +21,70 @@ const ChangeName = ({data, isLink, style}) => {
     })
   }
 
+  const handleChange = e => setValue(e.target.value);
+  const handleFocus = e => e.target.select();
+
+  const input = (<input
+    className={disabled ? (styles?.input + ' ' +  styles?.read) : (styles?.input + ' ' +  styles?.edit)}
+    disabled={disabled}
+    type="text"
+    value={value}
+    size={value.toString().length}
+    autoFocus={true}
+    onChange={handleChange}
+    onFocus={handleFocus}
+  />)
+
   return isLink ? (
-      <div style={style}>
+      <div className={styles?.changeName}>
         {disabled
           ?
           <Link to={router.pathname + `/${data.id}`}>
-            <input disabled={disabled} type="text" value={value} onChange={handleChangeName}/>
+            {input}
           </Link>
-          : <input disabled={disabled} type="text" value={value} onChange={handleChangeName}/>
+          : input
         }
-        <button
+        <div
+          className={styles?.button}
           onClick={() => {
             setDisabled(prev => !prev);
-            !disabled ? saveName() : null
-          }}>{disabled ? 'change' : 'save'}</button>
+            !disabled ? saveName() : null;
+          }}
+        >{disabled
+          ? <Edit className={styles.svg} height={'18px'} width={'18px'}/>
+          : <Ok className={styles.svg} fill={'#01be01'} height={'20px'} width={'20px'}/>}
+        </div>
 
-        <button
+        <div
+          className={!disabled ? styles?.button : ''}
           hidden={disabled}
           onClick={() => {
             setDisabled(true);
             setValue(data.name);
-          }}>X</button>
+          }}><Close className={styles.close} fill={'#ff0101'} height={'20px'} width={'20px'}/></div>
       </div>
   )
     :
     (
-      <div>
-        <input disabled={disabled} type="text" value={value} onChange={handleChangeName}/>
-        <button
+      <div className={styles?.changeName}>
+        {input}
+        <div
+          className={styles?.button}
           onClick={() => {
             setDisabled(prev => !prev);
-            !disabled ? saveName() : null
-          }}>{disabled ? 'change' : 'save'}</button>
-        <button
+            !disabled ? saveName() : null;
+          }}
+        >{disabled
+          ? <Edit className={styles?.svg} height={'18px'} width={'18px'}/>
+          : <Ok className={styles?.svg} height={'20px'} width={'20px'}/>}
+        </div>
+        <div
+          className={!disabled ? styles?.button : ''}
           hidden={disabled}
           onClick={() => {
             setDisabled(true);
             setValue(data.name);
-          }}>X</button>
+          }}><Close className={styles?.close} height={'20px'} width={'20px'}/></div>
       </div>
     )
 };

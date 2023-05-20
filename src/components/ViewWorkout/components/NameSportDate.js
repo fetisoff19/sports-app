@@ -1,6 +1,6 @@
 import React from 'react';
 import SportAndDate from "../../UI/SportAndDate";
-import ChangeName from "../../UI/ChangeName";
+import ChangeName from "../../UI/ChangeName.js";
 
 const NameSportDate = ({data}) => {
 

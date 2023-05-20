@@ -2,6 +2,9 @@ import React, {useContext, useMemo, useState} from 'react';
 import AppContext from "../../context/AppContext.js";
 import ListItem from "./Components/ListItem.js";
 import FilterBar from "./Components/FilterBar";
+import styles from './styles.modules.scss'
+
+
 
 const fields = ['id', 'sport', 'timestamp', 'name',  'totalDistance', 'totalTimerTime', 'enhancedAvgSpeed', 'totalAscent', 'avgHeartRate', ' '];
 
@@ -58,11 +61,6 @@ export function WorkoutsList() {
         sort(item);
         chooseItem(index)
       } : null}
-      style=
-        {{textAlign:"right",
-          width: 150,
-          fontWeight: 'bold',
-          cursor: 'pointer'}}
     >
       {item === 'name' || item === ' '
         ? item : ((status[index].active ? '\u25B4' : '\u25BE') + item)}
@@ -74,15 +72,12 @@ export function WorkoutsList() {
   {
     return (
 
-      <>
+      <div className={styles.container}>
+        <h1>Занятия</h1>
         <FilterBar data={data} filterSport={filterSport}/>
-        <ul style={{display: 'flex',
-              listStyleType: "none",
-              padding: 0,
-              width: '100%'}}
-        >{titles}</ul>
-        <ul style={{padding: 0}}>{list}</ul>
-      </>
+        <ul className={styles.titles}>{titles}</ul>
+        <ul>{list}</ul>
+      </div>
 
     )
   }
