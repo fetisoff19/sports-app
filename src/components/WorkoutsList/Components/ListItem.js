@@ -12,19 +12,11 @@ import Walking from "../../UI/svgComponents/Walking";
 import Fitness from "../../UI/svgComponents/Fitness";
 import Other from "../../UI/svgComponents/Other";
 import Hiking from "../../UI/svgComponents/Hiking";
+import SportIcon from "./SportIcon";
+
 
 const ListItem = ({data}) => {
   const {setRandom} = useContext(AppContext)
-
-  const sportIcon =
-    data.sport === 'cycling'
-      ? <Cycling  fill={'green'} />
-      : data.sport === 'running'
-          ?  <Running fill={'green'} />
-        : data.sport === 'walking' ? <Walking fill={'green'}/>
-        : data.sport === 'hiking' ? <Hiking fill={'green'}/>
-        : data.sport === 'fitness' ? <Fitness fill={'green'}/>
-            : <Other fill={'green'}/>
 
   return (
     <li className={styles.listItem}>
@@ -32,7 +24,7 @@ const ListItem = ({data}) => {
         <span className={styles.unit}>{data.id}</span>
         <span className={styles.label}>id</span>
       </div>
-      {sportIcon}
+      <SportIcon sport={data.sport} fill={'green'}/>
       <div className={styles.sBlock}  key={data.id + 'timestamp'} >
         <span className={styles.unit}>
           {data.timestamp.getDate() + ' ' + dict.month[data.timestamp.getMonth()][userLang]}
@@ -46,7 +38,7 @@ const ListItem = ({data}) => {
         <div className={styles.label}>{dict.sports[data.sport][userLang]}</div>
       </div>
       <BlockMetricContainer data={data}/>
-      <div  key={Math.random()} >
+      <div key={Math.random()} >
       <div className={styles.xsBlock}
         onClick={(e) => {
             deleteWorkout(+data.id, setRandom)

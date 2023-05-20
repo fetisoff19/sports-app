@@ -3,10 +3,11 @@ import AppContext from "../../context/AppContext.js";
 import ListItem from "./Components/ListItem.js";
 import FilterBar from "./Components/FilterBar";
 import styles from './styles.modules.scss'
-
-
+import Titles from "./Components/Titles";
+import {dict, userLang} from "../../config/config";
 
 const fields = ['id', 'sport', 'timestamp', 'name',  'totalDistance', 'totalTimerTime', 'enhancedAvgSpeed', 'totalAscent', 'avgHeartRate', ' '];
+// const stylesFields = [styles.xsBlock, styles.xsBlock, styles.sBlock, styles.lBlock, styles.mBlock, styles.mBlock, styles.mBlock, styles.mBlock, styles.mBlock, styles.xsBlock]
 
 export function WorkoutsList() {
   const {workouts} = useContext(AppContext)
@@ -54,31 +55,35 @@ export function WorkoutsList() {
       : setSortedData(data.filter(item => item.sport === sport));
   }
 
-  let titles = fields.map((item,index) =>
-    <li
-      key={index}
-      onClick={item !== 'id' || item !== 'name' ? () => {
-        sort(item);
-        chooseItem(index)
-      } : null}
-    >
-      {item === 'name' || item === ' '
-        ? item : ((status[index].active ? '\u25B4' : '\u25BE') + item)}
-    </li>)
+  function handleTitleClick(item,index){
+    sort(item);
+    chooseItem(index)
+  }
+
+  // let titles = fields.map((item,index) =>
+  //   <li
+  //     key={index}
+  //     onClick={item !== 'id' || item !== 'name'
+  //       ? () => handleTitleClick(item,index)
+  //      : null}
+  //   >
+  //     {item === 'name' || item === ' '
+  //       ? item : item + ((status[index].active ? ' \u25B4' : ' \u25BE') )}
+  //   </li>)
 
   let list = sortedData
     .map((item, index) =>
       <ListItem key={index} data={item}/>)
-  {
+
     return (
 
       <div className={styles.container}>
-        <h1>Занятия</h1>
+        <h1>{dict.title.activities[userLang]}</h1>
         <FilterBar data={data} filterSport={filterSport}/>
-        <ul className={styles.titles}>{titles}</ul>
+        {/*<ul className={styles.titles}>{titles}</ul>*/}
+        <Titles status={status} f={handleTitleClick}/>
         <ul>{list}</ul>
       </div>
 
     )
-  }
 }

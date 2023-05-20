@@ -3,24 +3,28 @@
   margin: 0 auto;
 }
 h1{
-  font-weight: 100;
-  margin: 30px 0 ;
+  font-weight: 300;
+  padding: 30px 0;
+  margin: 0;
 }
 
 ul {
   padding: 0;
+  margin: 0;
 }
+
 .titles {
   display: flex;
-  list-style: none;
-  width: 100%;
-  li {
-    text-align: right;
-    width: 150px;
-    font-weight: 700;
+  justify-content: space-between;
+  align-items: center;
+  text-align: right;
+  font-size: 14px;
+  padding: 10px 0;
+  .active{
     cursor: pointer;
   }
 }
+
 .listItem {
   display: flex;
   justify-content: space-between;
@@ -28,32 +32,34 @@ ul {
   text-align: right;
   height: 45px;
   background: rgb(240, 240, 240);
-  clear: both;
+  //clear: both;
   border-radius: 5px;
   margin-bottom: 10px;
+  font-size: 14px;
+  // > div{
+  //  margin-right: 10px;
+  //}
 
-   > div{
-    margin-right: 10px;
-  }
 
-  .xsBlock{
-    min-width: 20px;
-    padding-left: 10px;
+}
+.xsBlock{
+  width: 30px;
+  padding: 0 10px;
 
-  }
-  .sBlock{
-    min-width: 100px;
-    padding-right: 10px;
-  }
-  .mBlock{
-    min-width: 140px;
-  }
-  .lBlock{
-    min-width: 250px;
-    text-align: left;
+}
+.sBlock{
+  min-width: 100px;
+  padding-right: 10px;
+}
+.mBlock{
+  min-width: 140px;
+  text-align: left;
+}
+.lBlock{
+  min-width: 250px;
+  text-align: left;
   .label{
     margin-left: 2px;
-  }
   }
 }
 

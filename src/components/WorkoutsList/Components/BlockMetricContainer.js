@@ -7,6 +7,7 @@ import {
 } from "../../../API/functionsDate&Values";
 import {dict, userLang} from "../../../config/config";
 import styles from '../styles.modules.scss'
+
 const config = {
   totalDistance: {
     formatter: value => convertDistance(value).toString().replace('.', ','),

@@ -162,7 +162,7 @@ export const dict = {
     km: {ru: 'км', en: 'km'},
     mps: {ru: 'Метры в секунду', en: 'Meters per second'},
     kmph: {ru: 'км/ч', en: 'km/h'},
-    bpm: {ru: 'уд/мин', en: 'beats per minute'},
+    bpm: {ru: 'уд/мин', en: 'bpm'},
     w: {ru: 'Вт', en: 'W'},
     cadenceCycling: {ru: 'об/мин', en: 'rpm'},
     cadenceRun: {ru: 'шагов/мин', en: 'spm'},
@@ -193,6 +193,7 @@ export const dict = {
   title: {
     settings: {ru: 'Настройки', en: 'Settings'},
     activities: {ru: 'Тренировки', en: 'Activities'},
+    all: {ru: 'Все', en: 'All'},
     appLanguage: {ru: 'Язык приложения', en: 'App Language'},
     title: {ru: 'Название', en: 'Title'},
     viewTraining: {ru: 'Просмотр тренировки'},
