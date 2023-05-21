@@ -3,6 +3,7 @@ import AppContext from "../context/AppContext.js";
 import DashboardContent from "../components/DashboardContent/DashboardContent.js";
 import AppLoader from "../components/Loaders/AppLoader.jsx";
 
+
 const Dashboard = () => {
   const {loading, error, workouts} = useContext(AppContext);
 

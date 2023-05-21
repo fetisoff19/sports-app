@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-
-import SportIcon from "./SportIcon";
+import SportIcon from "../../UI/SportIcon.js";
 import {dict, userLang} from "../../../config/config";
 
 const FilterBar = ({data, filterSport}) => {
@@ -42,7 +41,7 @@ const FilterBar = ({data, filterSport}) => {
                  chooseItem(index);
                }}
                key={index}
-          >{item === 'all' ? dict.title.all[userLang] : <SportIcon height={'20px'} width={'20px'} sport={item} fill={status[index].active ? '#F5F5F5FF' : 'green'}/>}</div>)}
+          >{item === 'all' ? dict.title.all[userLang] : <SportIcon className={'icon'} height={'20px'} width={'20px'} sport={item} fill={status[index].active ? '#F5F5F5FF' : 'green'}/>}</div>)}
       </div>
 
     </div>

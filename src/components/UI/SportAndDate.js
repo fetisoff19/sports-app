@@ -1,9 +1,9 @@
 import React from 'react';
 import {dict, userLang} from "../../config/config";
 
-const SportAndDate = ({data}) => {
+const SportAndDate = ({data, className}) => {
   return (
-    <div>
+    <div className={className}>
         {(dict.sports[data.sport][userLang] || '') + ', '
           + (data.startTime.toLocaleString() || '')}
     </div>

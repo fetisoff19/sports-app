@@ -14,9 +14,11 @@ const About = () => {
   }
   else if (workouts) {
     return (
-      <h1>
-        About App
-      </h1>
+      <div >
+        <h1>
+          About App
+        </h1>
+      </div>
     );
   }
 };

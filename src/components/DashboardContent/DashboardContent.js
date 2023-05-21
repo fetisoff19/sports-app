@@ -3,13 +3,13 @@ import AppContext from "../../context/AppContext.js";
 import StartStats from "./components/StartStats";
 import Workout from "./components/Workout";
 import useScroll from "../../hooks/useScroll";
-import './style.css'
+import styles from './styles.module.css'
 import AppLoader from "../Loaders/AppLoader";
 
 
 const DashboardContent = () => {
   const {workouts} = useContext(AppContext);
-  const [wrkuts, setWrkuts] = useState([])
+  const [trainings, setTrainings] = useState([])
   const [page, setPage] = useState(0);
   const limit = 3;
   const parentRef = useRef();
@@ -20,25 +20,25 @@ const DashboardContent = () => {
   // имитация запроса на сервер
   function fetchWorkouts(page, limit) {
     setTimeout(() => {
-      if(workouts.length === wrkuts.length) return childRef.current.hidden = true;
-      setWrkuts(prev => [...prev, ...workouts.slice(page * limit, (page + 1) * limit)]);
+      if(workouts.length === trainings.length) return childRef.current.hidden = true;
+      setTrainings(prev => [...prev, ...workouts.slice(page * limit, (page + 1) * limit)]);
       setPage(prev => prev + 1);
     }, 200)
   }
 
   return (
-    <div ref={parentRef} style={{height: '90vh', overflow: 'auto'}}>
+    <div ref={parentRef} className={styles.page}>
         <div/>
-        <div style={{display:"flex"}} >
+        <div className={styles.container} >
           <div>
-            <div style={{position: "sticky", top: 0}} >
+            <div className={styles.stats} >
               <StartStats />
             </div>
           </div>
-          <div>
-            {wrkuts.map((item, index) => <Workout key={index} data={item}/>)}
-            <div style={{height: 1}} ref={childRef}></div>
-            {workouts.length !== wrkuts.length ? <AppLoader/> : null}
+          <div className={styles.workouts}>
+            {trainings.map((item, index) => <Workout key={index} data={item}/>)}
+            <div ref={childRef}></div>
+            {workouts.length !== trainings.length ? <AppLoader/> : null}
           </div>
         </div>
     </div>

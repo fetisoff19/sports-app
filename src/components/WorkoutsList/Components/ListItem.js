@@ -12,7 +12,7 @@ import Walking from "../../UI/svgComponents/Walking";
 import Fitness from "../../UI/svgComponents/Fitness";
 import Other from "../../UI/svgComponents/Other";
 import Hiking from "../../UI/svgComponents/Hiking";
-import SportIcon from "./SportIcon";
+import SportIcon from "../../UI/SportIcon.js";
 
 
 const ListItem = ({data}) => {
@@ -24,7 +24,7 @@ const ListItem = ({data}) => {
         <span className={styles.unit}>{data.id}</span>
         <span className={styles.label}>id</span>
       </div>
-      <SportIcon sport={data.sport} fill={'green'}/>
+      <SportIcon className={'icon'} sport={data.sport} fill={'green'}/>
       <div className={styles.sBlock}  key={data.id + 'timestamp'} >
         <span className={styles.unit}>
           {data.timestamp.getDate() + ' ' + dict.month[data.timestamp.getMonth()][userLang]}

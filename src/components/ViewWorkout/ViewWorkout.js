@@ -4,7 +4,7 @@ import {db} from "../../API/db.js";
 import Maps from "../Maps/Maps";
 import RefreshValuesFromCharts from "./components/RefreshValuesFromCharts";
 import {getIndex, handleKeyboardDown, resetZoom, setCharts} from "./functions/functions";
-import Highcharts from 'highcharts'
+import Highcharts from 'highcharts';
 import Charts from "../HighCharts/HighCharts";
 import AppContext from "../../context/AppContext.js";
 import ShiftWorkoutButton from "./components/NextWorkout.js";
@@ -15,6 +15,7 @@ import WorkoutStats from "./components/WorkoutsStats/WorkoutStats";
 import {dict, userLang} from "../../config/config";
 import {Link, useParams} from "react-router-dom";
 import AppLoader from "../Loaders/AppLoader.jsx";
+import TextArea from "../UI/TextArea";
 
 let order = ['speed', 'pace', 'power', 'heartRate', 'cadence', 'altitude'];
 
@@ -117,6 +118,7 @@ const ViewWorkout = () => {
           {maps ? maps : null}
           {<NameSportDate data={data.workout} key={id + 'name'}/>}
           {<WorkoutStats data={data.sessionMesgs[0]} key={id + 'stats'}/>}
+          <TextArea id={id} text={data?.workout?.note} />
           {chartsNames && charts?.length ?
             <RefreshValuesFromCharts
               key={id + 'refresh'}
@@ -140,7 +142,6 @@ const ViewWorkout = () => {
             </button>
             <div>Smoothing: {settings.smoothing || null}</div>
           </div>
-
           {charts?.length ?
             <div
               key={id + 'chartsRef'}
