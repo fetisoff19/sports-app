@@ -173,7 +173,8 @@ export const dict = {
   sports: {
     cycling: {ru: 'Велоспорт', en: 'Cycling'},
     running: {ru: 'Бег', en: 'Running'},
-    walking: {ru: 'Прогулка', en: 'Walking',}
+    walking: {ru: 'Прогулка', en: 'Walking',},
+    swimming: {ru: 'Плавание', en: 'Swimming',}
   },
   ui: {
     default: {ru: 'По-умолчанию', en: 'Default',},
