@@ -4,7 +4,7 @@ import SportAndDate from "../../UI/SportAndDate";
 import {convertDistance, getHourMinSec} from "../../../API/functionsDate&Values";
 import {dict, userLang} from "../../../config/config";
 import Maps from "../../Maps/Maps";
-import styles from '../styles.module.css'
+import styles from '../styles.module.scss'
 import SportIcon from "../../UI/SportIcon";
 import TextArea from "../../UI/TextArea";
 
@@ -49,10 +49,10 @@ const Workout = ({data}) => {
       <div className={styles.workoutInfo}>
         <SportAndDate className={styles.date} data={data}/>
         <WorkoutName className={styles.name} data={data}/>
+        <div className={styles.indicators}>{block}</div>
         <div className={styles.aboutWorkout}>
           <TextArea text={data.note} id={data.id} styles={styles}/>
         </div>
-        <div className={styles.indicators}>{block}</div>
         {/*Статистика: персональные рекорды...*/}
       </div>
       {data.polylinePoints
@@ -60,7 +60,7 @@ const Workout = ({data}) => {
           polylinePoints={data.polylinePoints}
           startZoom={13}
           maxZoom={19}
-          style={{height: 250, width: 200}}
+          style={{height: 200, width: 200}}
           polylineStyle={{color: 'green'}}
           scrollWheelZoom={false}
         />

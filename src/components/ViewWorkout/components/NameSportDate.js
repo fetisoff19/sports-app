@@ -2,12 +2,12 @@ import React from 'react';
 import SportAndDate from "../../UI/SportAndDate";
 import ChangeName from "../../UI/ChangeName.js";
 
-const NameSportDate = ({data}) => {
+const NameSportDate = ({data, styles}) => {
 
   return (
     <div>
-      <ChangeName data={data} isLink={false}/>
-      <SportAndDate data={data}/>
+      <SportAndDate className={styles.date} data={data}/>
+      <ChangeName styles={styles} data={data} isLink={false}/>
     </div>
   );
 };

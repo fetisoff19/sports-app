@@ -63,7 +63,10 @@ export async function deleteWorkout(id, setRandom) {
 
 //ф-я отображения размера локального хранилища
 export async function setIndexedDbUsageInfo() {
- return await navigator.storage.estimate().then(result =>
-   (result.usageDetails.indexedDB / (10 ** 6)).toFixed(2)
-  )
+ return await navigator.storage.estimate()
+   .then(result => [Math.round(result.usageDetails.indexedDB / (10 ** 6)),
+     Math.round((result.usageDetails.indexedDB / (10 ** 6))/ ((result.quota) / (10 ** 6)) * 100)])
+   // .then(result =>
+   // (result.usageDetails.indexedDB / (10 ** 6)).toFixed(2)
+  // )
 }

@@ -100,6 +100,7 @@ const Maps = (props) => {
       {props.markerStart ? <DraggableMarker position={startCoordinates} className={'start'}/> : null}
       {props.markerEnd ? <DraggableMarker position={endCoordinates} className={'end'}/> : null}
       {i ? <DraggableMarker position={marketCoordinates} className={'marker'}/> : null}
+      {props.button ? props.button : null}
       {/*<Marker*/}
       {/*  style={{color: 'red'}}*/}
       {/*  position={startCoordinates}*/}

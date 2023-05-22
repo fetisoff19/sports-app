@@ -17,7 +17,7 @@ export let privateRoutes = [
 ];
 
 export let publicRoutes = [
-
+  {path: '/', element: Login},
   {path: '/login', element: Login},
   {path: '/about', element: About},
   {path: "*", element: Login},

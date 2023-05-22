@@ -4,6 +4,7 @@ import {privateRoutes, publicRoutes} from "../../router";
 import AppContext from "../../context/AppContext.js";
 import AppLoader from "../Loaders/AppLoader.jsx";
 import Main from "../Main/Main.jsx";
+import About from "../../pages/About";
 
 const AppRouter = () => {
   const {auth, loading} = useContext(AppContext);

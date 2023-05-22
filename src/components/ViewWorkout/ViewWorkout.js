@@ -16,6 +16,7 @@ import {dict, userLang} from "../../config/config";
 import {Link, useParams} from "react-router-dom";
 import AppLoader from "../Loaders/AppLoader.jsx";
 import TextArea from "../UI/TextArea";
+import styles from './styles.module.scss'
 
 let order = ['speed', 'pace', 'power', 'heartRate', 'cadence', 'altitude'];
 
@@ -24,6 +25,7 @@ const ViewWorkout = () => {
   const [status, setStatus] = useState(false);
   const [zooming, setZooming] = useState(false);
   const [index, setIndex] = useState(null);
+  const [stickyMaps, setStickyMaps] = useState(false)
   const chartsRef = useRef();
   const mapsRef = useRef();
   const btnResetZoomRef = useRef();
@@ -39,23 +41,37 @@ const ViewWorkout = () => {
 
   let preparedData = useMemo(() => getDataForCharts(data, settings.smoothing || 8), [data]);
 
+
+
+  let mapsButton = <div
+    className={styles.buttonStickyMaps + (stickyMaps ? (" " + styles.active) : '')}
+    onClick={() => setStickyMaps(prev => !prev) }>
+    {stickyMaps ? "Отвязать карту" : "Зафиксировать карту"}
+  </div>
   let maps = useMemo(() =>
-    preparedData ? <div ref={mapsRef.current} className='map' key={id + 'maps'}>
-    <Maps
-      style={{height: 300, width: 300}}
-      maxZoom={19}
-      startZoom={8}
-      scrollWheelZoom={true}
-      polylinePoints={preparedData.polylinePoints}
-      polylineStyle={{color: 'green'}}
-      popupStartText={'DashboardContent'}
-      popupEndText={'End'}
-      smoothing={settings.smoothing}
-      markerStart={true}
-      markerEnd={true}
-      index={index}
-    />
-  </div> : null, [data, index]);
+    preparedData ?
+      <div
+        ref={mapsRef.current}
+        className={(stickyMaps ? 'viewWorkoutMaps' : null) + ' ' + styles.maps}
+        key={id + 'maps'}>
+          <Maps
+            style={{height: 300, width: 400}}
+            maxZoom={19}
+            startZoom={8}
+            scrollWheelZoom={true}
+            polylinePoints={preparedData.polylinePoints}
+            polylineStyle={{color: 'green'}}
+            popupStartText={'DashboardContent'}
+            popupEndText={'End'}
+            smoothing={settings.smoothing}
+            markerStart={true}
+            markerEnd={true}
+            index={index}
+            button={mapsButton}
+          />
+  </div> : null, [data, index, stickyMaps]);
+
+
 
   let charts = useMemo(() => preparedData ? setCharts(preparedData, order, setZooming) : null, [data]);
   let chartsNames = useMemo(() => charts ? charts.map(item => item.key) : null, [data]);
@@ -64,7 +80,7 @@ const ViewWorkout = () => {
       key={id + 'charts'}
       data={preparedData.charts.powerCurve}
       name={'powerCurve'}
-      style={{height: 200,  width: 1200}}
+      style={{height: 200,  width: 1000}}
       tooltip={true}
       xAxis={{...chartsConfig.powerCurve.options.xAxis,
         ...{max: preparedData.charts.powerCurve.data.at(-1)[0]}}}
@@ -112,48 +128,64 @@ const ViewWorkout = () => {
   else if(data)
   {
     return (
-        <div>
-          {<ShiftWorkoutButton name={'previousWorkout'} dir={0} id={id} key={id + '0'}/>}
-          {<ShiftWorkoutButton name={'nextWorkout'} dir={1} id={id} key={id + '1'}/>}
-          {maps ? maps : null}
-          {<NameSportDate data={data.workout} key={id + 'name'}/>}
-          {<WorkoutStats data={data.sessionMesgs[0]} key={id + 'stats'}/>}
-          <TextArea id={id} text={data?.workout?.note} />
-          {chartsNames && charts?.length ?
-            <RefreshValuesFromCharts
-              key={id + 'refresh'}
-              index={index}
-              data={preparedData.charts}
-              time={preparedData.step}
-              charts={chartsNames}
-            />
-            : null}
-          <div>
-            <button
-              key={id + 'resetZoom'}
-              ref={btnResetZoomRef.current}
-              hidden={!zooming || !data}
-              onClick={() => {
-                resetZoom();
-                setZooming(false);
-              }}
-            >
-              {dict.title.resetZoom[userLang]}
-            </button>
-            <div>Smoothing: {settings.smoothing || null}</div>
+        <div className={styles.page}>
+          <ShiftWorkoutButton
+            styles={styles}
+            dir={0} id={id} key={id + '0'}/>
+          <div className={styles.container}>
+            <div className={styles.charts}>
+              <div className={styles.refreshValuesResetZoom}>
+                {chartsNames && charts?.length ?
+                  <RefreshValuesFromCharts
+                    key={id + 'refresh'}
+                    index={index}
+                    data={preparedData.charts}
+                    time={preparedData.step}
+                    charts={chartsNames}
+                    className={styles.refreshValues}
+                  />
+                  : null}
+                <div
+                  className={styles.resetZoom}
+                  key={id + 'resetZoom'}
+                  ref={btnResetZoomRef.current}
+                  hidden={!zooming || !data}
+                  onClick={() => {
+                    resetZoom();
+                    setZooming(false);
+                  }}
+                >
+                  {dict.title.resetZoom[userLang]}
+                </div>
+              </div>
+
+              {charts?.length ?
+                <div
+                  key={id + 'chartsRef'}
+                  ref={chartsRef}
+                  style={{width: 800}}
+                  onMouseEnter={() => setStatus(true)}
+                  onMouseLeave={() => setStatus(false)}
+                  // className='charts'
+                >
+                  {charts}
+                </div> : null}
+              {powerCurve}
+            </div>
+            <div className={styles.mapsNameStats}>
+              {maps ? maps : null}
+              <div className={styles.dateSportName}>
+                <NameSportDate styles={styles} data={data.workout} key={id + 'name'}/>
+              </div>
+                <WorkoutStats styles={styles} data={data.sessionMesgs[0]} key={id + 'stats'}/>
+
+                <TextArea id={id} text={data?.workout?.note} styles={styles}/>
+                <div>Smoothing: {settings.smoothing || null}</div>
+            </div>
           </div>
-          {charts?.length ?
-            <div
-              key={id + 'chartsRef'}
-              ref={chartsRef}
-              style={{width: 800}}
-              onMouseEnter={() => setStatus(true)}
-              onMouseLeave={() => setStatus(false)}
-              className='charts'
-            >
-              {charts}
-            </div> : null}
-          {powerCurve}
+          <ShiftWorkoutButton
+            styles={styles}
+            dir={1} id={id} key={id + '1'}/>
         </div>
     )
   }

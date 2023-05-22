@@ -51,17 +51,18 @@ const ChangeName = ({data, isLink, styles}) => {
             !disabled ? saveName() : null;
           }}
         >{disabled
-          ? <Edit className={styles.svg} height={'18px'} width={'18px'}/>
-          : <Ok className={styles.svg} fill={'#01be01'} height={'20px'} width={'20px'}/>}
+          ? <Edit className={styles.svg} fill={'grey'} height={'18px'} width={'18px'}/>
+          : <Ok className={styles.svg} fill={'grey'} height={'20px'} width={'20px'}/>}
         </div>
-
         <div
           className={!disabled ? styles?.button : ''}
           hidden={disabled}
           onClick={() => {
             setDisabled(true);
             setValue(data.name);
-          }}><Close className={styles.close} fill={'#ff0101'} height={'20px'} width={'20px'}/></div>
+          }}>
+          <Close className={styles.close} fill={'grey'} height={'20px'} width={'20px'}/>
+        </div>
       </div>
   )
     :
@@ -84,7 +85,9 @@ const ChangeName = ({data, isLink, styles}) => {
           onClick={() => {
             setDisabled(true);
             setValue(data.name);
-          }}><Close className={styles?.close} height={'20px'} width={'20px'}/></div>
+          }}>
+          <Close className={styles?.close} height={'20px'} width={'20px'}/>
+        </div>
       </div>
     )
 };

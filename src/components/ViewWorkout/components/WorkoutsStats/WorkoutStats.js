@@ -2,7 +2,7 @@ import React from 'react';
 import {dict, userLang} from "../../../../config/config";
 import {indexes} from "./config";
 
-const WorkoutStats = ({data}) => {
+const WorkoutStats = ({data, styles}) => {
 
 let order =
   data.sport === 'running' ?
@@ -15,13 +15,13 @@ let order =
   for (let key of order) {
     let fields = indexes[key].fields.map(item =>
       data[item] ?
-      (<div key={item}>
-        <div>
+      (<div className={styles.statsBlock} key={item}>
+        <div className={styles.statsUnit}>
           {(indexes[key].formatter ? indexes[key].formatter(data[item]) : data[item])
           + ' ' +
           (indexes[key].unit ? dict.units[indexes[key].unit][userLang] : '')}
         </div>
-        <div>{dict.fields[item][userLang]}</div>
+        <div className={styles.statsLabel}>{dict.fields[item][userLang]}</div>
       </div>) : null
     )
 
@@ -36,7 +36,7 @@ let order =
   }
 
   return (
-    <div className={'WorkoutStats'} style={{display: "flex"}}>
+    <div className={styles.stats}>
       {stats}
     </div>
   );

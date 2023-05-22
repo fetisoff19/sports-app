@@ -42,13 +42,13 @@ const TextArea = ({text, id, styles}) => {
       ? null
         : <div className={styles?.buttons}>
             <div className={styles?.ok} onClick={saveNote}>
-              <Ok  fill={'#01be01'} height={'20px'} width={'20px'}/>
+              <Ok  fill={'grey'} height={'20px'} width={'20px'}/>
             </div>
             <div className={styles?.close} onClick={() => {
               setValue(text);
               ref.current.value = text;
             }}>
-              <Close fill={'#ff0101'} height={'20px'} width={'20px'}/>
+              <Close fill={'grey'} height={'20px'} width={'20px'}/>
             </div>
         </div>}
     </div>

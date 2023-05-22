@@ -3,7 +3,7 @@ import AppContext from "../../context/AppContext.js";
 import StartStats from "./components/StartStats";
 import Workout from "./components/Workout";
 import useScroll from "../../hooks/useScroll";
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
 import AppLoader from "../Loaders/AppLoader";
 
 

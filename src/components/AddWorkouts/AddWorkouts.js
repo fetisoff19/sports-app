@@ -12,7 +12,8 @@ export default function AddWorkouts() {
 
   useEffect(() => {
     setCount(count + 1);
-    return data?.added?.length ? () => setRandom(Math.random()) : () => {};
+    return data?.added?.length
+      ? () => setRandom(Math.random()) : () => {};
   }, [data])
 
 

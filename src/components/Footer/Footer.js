@@ -4,9 +4,8 @@ import AppContext from "../../context/AppContext.js";
 import FooterLoader from "../Loaders/FooterLoader.jsx";
 
 const Footer = () => {
-  const [state, setState] = useState(null)
+  const [state, setState] = useState([])
   const {loading, random} = useContext(AppContext)
-    // console.log('Footer')
 
   useEffect(() => {
       async function getData() {
@@ -20,7 +19,7 @@ const Footer = () => {
   return (
     <footer>
       <div>
-        { loading && state ? <FooterLoader/> : 'Размер базы: ' + state + 'Mb'}
+        { loading && state ? <FooterLoader/> : 'Размер базы: ' + state[0] + ' Мб. Занимает ' + (state[1] ? state[1] : 'менее 1' ) + ' % от выделенной браузером памяти.'}
         </div>
     </footer>
   );
