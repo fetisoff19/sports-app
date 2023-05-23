@@ -2,22 +2,24 @@ import Highcharts from "highcharts";
 import Charts from "../../HighCharts/HighCharts";
 import React from "react";
 
-export function setCharts(data, order, setZooming) {
+export function setCharts(data, order, setZooming,setLoaded) {
   if (data) {
     let result = []
     order.forEach(item => {
       if (data.charts[item].avg && data.charts[item].avg > 0 && data.charts[item].data.length)
         result.push(
           <Charts
-          sport={data.sport}
-          key={item}
-          step={data.step}
-          name={item} data={data.charts[item]}
-          selection={() => {
-            zooming();
-            setZooming(true);
-          }}
-          style={{height: 210, width: 800}}/>
+            sport={data.sport}
+            key={item}
+            step={data.step}
+            name={item} data={data.charts[item]}
+            // сводим к минимуму вероятность ошибки для работы customCrosshair и refreshValues
+            setLoaded={() => setLoaded ? setTimeout(() => setLoaded(true), 500) : null}
+            selection={() => {
+              zooming();
+              setZooming(true);
+            }}
+            style={{height: 210, width: 800}}/>
         )
     })
     return result
@@ -25,7 +27,7 @@ export function setCharts(data, order, setZooming) {
 }
 
 export function getIndex(e, setIndex, ref, status) {
-  if (!status) return
+  // if (!status) return
   let charts = Highcharts.charts;
   if (ref && charts?.length) {
     let width = +document.querySelector('.highcharts-plot-border').getAttribute('width')

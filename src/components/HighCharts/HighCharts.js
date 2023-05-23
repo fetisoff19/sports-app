@@ -11,11 +11,11 @@ Exporting(Highcharts);
 const Charts = props => {
   useEffect(() => {
     return () => {
-      while (Highcharts.charts.length > 0)
-        Highcharts.charts.pop()
+      while (Highcharts.charts.length > 0) {
+        Highcharts.charts.pop();
+      }
     }
   },[])
-  // console.log(userLang)
   const options = {
     series: [{
       data: props.data.data,
@@ -23,20 +23,6 @@ const Charts = props => {
       color: chartsConfig[props.name].lineColor,
       lineWidth: 1,
       marker: { radius: 1 },
-      // point: {
-      //   events: {
-          // mouseOver: function() {
-          //   synchronizeMouseOver(this);
-          // },
-          // mouseOut: function () {
-          //   active = false;
-          // }
-      //   }
-      // },
-    },
-        {
-      // visible: false,
-      // data: props.data.step,
     }],
     accessibility: {
       enabled: false
@@ -75,8 +61,9 @@ const Charts = props => {
       panning: true,
       panKey: 'shift',
       events: {
-      selection: props.selection || null,
-      }
+        selection: props.selection || null,
+        load: props.setLoaded || null,
+      },
     },
     title: {
       enabled: false,
@@ -185,10 +172,12 @@ const Charts = props => {
     },
   }
   return (
-    <div>
+    <div key={new Date}>
       <HighchartsReact
+        key={new Date + 1}
         highcharts={Highcharts}
         options={options}
+        allowChartUpdate={false}
       />
     </div>
   );

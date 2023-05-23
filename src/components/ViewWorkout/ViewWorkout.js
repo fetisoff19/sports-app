@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import useDB from "../../hooks/useDB";
 import {db} from "../../API/db.js";
 import Maps from "../Maps/Maps";
@@ -17,6 +17,7 @@ import {Link, useParams} from "react-router-dom";
 import AppLoader from "../Loaders/AppLoader.jsx";
 import TextArea from "../UI/TextArea";
 import styles from './styles.module.scss'
+import Info from "../UI/svgComponents/Info";
 
 let order = ['speed', 'pace', 'power', 'heartRate', 'cadence', 'altitude'];
 
@@ -25,13 +26,14 @@ const ViewWorkout = () => {
   const [status, setStatus] = useState(false);
   const [zooming, setZooming] = useState(false);
   const [index, setIndex] = useState(null);
-  const [stickyMaps, setStickyMaps] = useState(false)
+  const [stickyMaps, setStickyMaps] = useState(false);
   const chartsRef = useRef();
   const mapsRef = useRef();
   const btnResetZoomRef = useRef();
   const params = useParams();
   const id = +params.id;
-  const [data, loading, error] = useDB(getWorkout, id)
+  const [data, loading, error] = useDB(getWorkout, id);
+  const [chartsIsLoaded, setChartsIsLoaded] = useState(false)
 
   async function getWorkout(){
       let result = await db.get('workoutsData', id);
@@ -39,15 +41,15 @@ const ViewWorkout = () => {
       return result || wt ? {...result, workout: wt} : null;
   }
 
+
   let preparedData = useMemo(() => getDataForCharts(data, settings.smoothing || 8), [data]);
-
-
 
   let mapsButton = <div
     className={styles.buttonStickyMaps + (stickyMaps ? (" " + styles.active) : '')}
     onClick={() => setStickyMaps(prev => !prev) }>
     {stickyMaps ? "Отвязать карту" : "Зафиксировать карту"}
   </div>
+
   let maps = useMemo(() =>
     preparedData ?
       <div
@@ -72,8 +74,7 @@ const ViewWorkout = () => {
   </div> : null, [data, index, stickyMaps]);
 
 
-
-  let charts = useMemo(() => preparedData ? setCharts(preparedData, order, setZooming) : null, [data]);
+  let charts = useMemo(() => preparedData ? setCharts(preparedData, order, setZooming, setChartsIsLoaded) : null, [data]);
   let chartsNames = useMemo(() => charts ? charts.map(item => item.key) : null, [data]);
   let powerCurve = useMemo(() => (preparedData && preparedData.charts.powerCurve ?
     <Charts
@@ -87,34 +88,88 @@ const ViewWorkout = () => {
     />
     : null),[preparedData]);
 
+  let chartsContainer = charts?.length ?
+    <div className={styles.charts}>
+      <div className={styles.refreshValuesResetZoom}>
+        {chartsNames && charts?.length ?
+          <RefreshValuesFromCharts
+            key={id + 'refresh'}
+            index={index}
+            data={preparedData.charts}
+            time={preparedData.step}
+            charts={chartsNames}
+            className={styles.refreshValues}
+          />
+          : null}
+        <div
+          className={styles.resetZoom}
+          key={id + 'resetZoom'}
+          ref={btnResetZoomRef.current}
+          hidden={!zooming || !data}
+          onClick={() => {
+            resetZoom();
+            setZooming(false);
+          }}
+        >
+          {dict.title.resetZoom[userLang]}
+        </div>
+        <div className={styles.info}>
+          <span className={styles.tooltip}>{'smoothing: ' + settings.smoothing}</span>
+          <Info className={styles}
+                fill={'gray'} height={'20px'} width={'20px'}
+                text={'Smoothing: ' + settings.smoothing}
+          />
+        </div>
+      </div>
+      <div
+        key={id + 'chartsRef'}
+        ref={chartsRef}
+        style={{width: 800}}
+        onMouseEnter={() => setStatus(true)}
+        onMouseLeave={() => setStatus(false)}
+      >
+        {charts}
+      </div>
+      {powerCurve}
+    </div>
+    : null;
+
+
   const onKeyDown = useCallback((e) => handleKeyboardDown(e, setZooming), [])
+  const mouseMove = useCallback((e) => getIndex(e, setIndex, chartsRef.current), [chartsRef.current])
+
   useEffect(() => {
-    if(!data || loading) return () => {};
+    if(!chartsIsLoaded) return () => {};
     document.addEventListener('keydown', onKeyDown);
-    chartsRef.current?.addEventListener('mousemove', e => getIndex(e, setIndex, chartsRef.current, status))
+    chartsRef.current?.addEventListener('mousemove', mouseMove)
 
     return () => {
       document.removeEventListener('keydown',onKeyDown);
-      chartsRef.current?.removeEventListener('mousemove', e => getIndex(e, setIndex, chartsRef.current, status));
-      while (Highcharts.charts.length > 0)
+      chartsRef.current?.removeEventListener('mousemove', mouseMove);
+      while (Highcharts.charts.length > 0) {
+        console.log(Highcharts.charts.length)
         Highcharts.charts.pop();
+      }
     }
-  }, [chartsRef.current]);
+  }, [chartsIsLoaded]);
 
   useEffect(() => {
     // временное решение пока не пойму как полностью размонтировать элемент
     if(loading){
+      chartsIsLoaded ? setChartsIsLoaded(false) : null
       zooming ? setZooming(false) : null;
       status ? setStatus(false) : null;
       index ? setIndex(null) : null;
     }
   }, [loading])
 
+
   ////////////////////////////////
   if (loading) {
     return <AppLoader/>;
   }
-  else if (error) {
+  else
+    if (error) {
     console.error(error)
     return (
       <div>
@@ -130,61 +185,22 @@ const ViewWorkout = () => {
     return (
         <div className={styles.page}>
           <ShiftWorkoutButton
-            styles={styles}
-            dir={0} id={id} key={id + '0'}/>
+            styles={styles} loaded={chartsIsLoaded}
+            dir={0} id={id} key={id + '0'} />
           <div className={styles.container}>
-            <div className={styles.charts}>
-              <div className={styles.refreshValuesResetZoom}>
-                {chartsNames && charts?.length ?
-                  <RefreshValuesFromCharts
-                    key={id + 'refresh'}
-                    index={index}
-                    data={preparedData.charts}
-                    time={preparedData.step}
-                    charts={chartsNames}
-                    className={styles.refreshValues}
-                  />
-                  : null}
-                <div
-                  className={styles.resetZoom}
-                  key={id + 'resetZoom'}
-                  ref={btnResetZoomRef.current}
-                  hidden={!zooming || !data}
-                  onClick={() => {
-                    resetZoom();
-                    setZooming(false);
-                  }}
-                >
-                  {dict.title.resetZoom[userLang]}
-                </div>
-              </div>
-
-              {charts?.length ?
-                <div
-                  key={id + 'chartsRef'}
-                  ref={chartsRef}
-                  style={{width: 800}}
-                  onMouseEnter={() => setStatus(true)}
-                  onMouseLeave={() => setStatus(false)}
-                  // className='charts'
-                >
-                  {charts}
-                </div> : null}
-              {powerCurve}
-            </div>
+            {chartsContainer}
             <div className={styles.mapsNameStats}>
-              {maps ? maps : null}
+              {maps}
               <div className={styles.dateSportName}>
                 <NameSportDate styles={styles} data={data.workout} key={id + 'name'}/>
               </div>
                 <WorkoutStats styles={styles} data={data.sessionMesgs[0]} key={id + 'stats'}/>
-
                 <TextArea id={id} text={data?.workout?.note} styles={styles}/>
                 <div>Smoothing: {settings.smoothing || null}</div>
             </div>
           </div>
           <ShiftWorkoutButton
-            styles={styles}
+            styles={styles} loaded={chartsIsLoaded}
             dir={1} id={id} key={id + '1'}/>
         </div>
     )

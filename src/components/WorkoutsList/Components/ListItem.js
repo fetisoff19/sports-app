@@ -6,12 +6,6 @@ import BlockMetricContainer from "./BlockMetricContainer";
 import ChangeName from "../../UI/ChangeName";
 import styles from '../styles.modules'
 import Delete from "../../UI/svgComponents/Delete";
-import Cycling from "../../UI/svgComponents/Cycling";
-import Running from "../../UI/svgComponents/Running";
-import Walking from "../../UI/svgComponents/Walking";
-import Fitness from "../../UI/svgComponents/Fitness";
-import Other from "../../UI/svgComponents/Other";
-import Hiking from "../../UI/svgComponents/Hiking";
 import SportIcon from "../../UI/SportIcon.js";
 
 
