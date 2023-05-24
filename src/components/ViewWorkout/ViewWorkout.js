@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import useDB from "../../hooks/useDB";
 import {db} from "../../API/db.js";
 import Maps from "../Maps/Maps";
@@ -101,24 +101,26 @@ const ViewWorkout = () => {
             className={styles.refreshValues}
           />
           : null}
-        <div
-          className={styles.resetZoom}
-          key={id + 'resetZoom'}
-          ref={btnResetZoomRef.current}
-          hidden={!zooming || !data}
-          onClick={() => {
-            resetZoom();
-            setZooming(false);
-          }}
-        >
-          {dict.title.resetZoom[userLang]}
-        </div>
-        <div className={styles.info}>
-          <span className={styles.tooltip}>{'smoothing: ' + settings.smoothing}</span>
-          <Info className={styles}
-                fill={'gray'} height={'20px'} width={'20px'}
-                text={'Smoothing: ' + settings.smoothing}
-          />
+        <div className={styles.resetZoomInfo}>
+          <div
+            className={styles.resetZoom}
+            key={id + 'resetZoom'}
+            ref={btnResetZoomRef.current}
+            hidden={!zooming || !data}
+            onClick={() => {
+              resetZoom();
+              setZooming(false);
+            }}
+          >
+            {dict.title.resetZoom[userLang]}
+          </div>
+          <div className={styles.info}>
+            <span className={styles.tooltip}>{'smoothing: ' + settings.smoothing}</span>
+            <Info className={styles}
+                  fill={'gray'} height={'20px'} width={'20px'}
+                  text={'Smoothing: ' + settings.smoothing}
+            />
+          </div>
         </div>
       </div>
       <div
@@ -147,7 +149,6 @@ const ViewWorkout = () => {
       document.removeEventListener('keydown',onKeyDown);
       chartsRef.current?.removeEventListener('mousemove', mouseMove);
       while (Highcharts.charts.length > 0) {
-        console.log(Highcharts.charts.length)
         Highcharts.charts.pop();
       }
     }
@@ -162,7 +163,6 @@ const ViewWorkout = () => {
       index ? setIndex(null) : null;
     }
   }, [loading])
-
 
   ////////////////////////////////
   if (loading) {
@@ -196,12 +196,11 @@ const ViewWorkout = () => {
               </div>
                 <WorkoutStats styles={styles} data={data.sessionMesgs[0]} key={id + 'stats'}/>
                 <TextArea id={id} text={data?.workout?.note} styles={styles}/>
-                <div>Smoothing: {settings.smoothing || null}</div>
             </div>
           </div>
           <ShiftWorkoutButton
             styles={styles} loaded={chartsIsLoaded}
-            dir={1} id={id} key={id + '1'}/>
+            dir={1} id={id} key={id + '1'} />
         </div>
     )
   }

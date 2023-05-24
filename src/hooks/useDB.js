@@ -12,7 +12,7 @@ export default function (request, deps) {
         .then(response => setData(response))
         .catch(error => setError(error))
         .finally(() => setLoading(false))
-    },0)
+    },200)
 
   }, [deps])
 

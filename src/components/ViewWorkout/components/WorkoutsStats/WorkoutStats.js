@@ -12,23 +12,24 @@ let order =
   ['heartRate', 'speed', 'altitude', 'temperature', 'time', 'other'];
 
   let stats = [];
-  for (let key of order) {
-    let fields = indexes[key].fields.map(item =>
+  for (let unit of order) {
+    let fields = indexes[unit].fields.map(item =>
       data[item] ?
       (<div className={styles.statsBlock} key={item}>
         <div className={styles.statsUnit}>
-          {(indexes[key].formatter ? indexes[key].formatter(data[item]) : data[item])
+          {(indexes[unit].formatter ? indexes[unit].formatter(data[item]) : data[item])
           + ' ' +
-          (indexes[key].unit ? dict.units[indexes[key].unit][userLang] : '')}
+          (indexes[unit].unit ? dict.units[indexes[unit].unit][userLang] : '')}
         </div>
         <div className={styles.statsLabel}>{dict.fields[item][userLang]}</div>
-      </div>) : null
+      </div>)
+        : null
     )
 
     let block =
       fields.reduce((a, b) => b ? 1 : 0)
-        ? (<div key={key} className={'block'}>
-        <div>{dict.fields[key][userLang]}</div>
+        ? (<div key={unit} >
+        <div className={styles.statsMainLabel}>{dict.fields[unit][userLang]}</div>
         {fields}
         </div>)
         : null;

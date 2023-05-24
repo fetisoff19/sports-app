@@ -67,7 +67,7 @@ export async function addFitFile(e) {
     let index = await db.transaction('workoutsData').store.index('sha256');
     for await (const cursor of index.iterate()) {
       if (cursor.key === sha256) {
-        console.log('Такая тренировка уже существует ' + cursor.key);
+        // console.log('Такая тренировка уже существует ' + cursor.key);
         repeat = true;
         result.repeat.push(cursor.value.id_workouts);
       }

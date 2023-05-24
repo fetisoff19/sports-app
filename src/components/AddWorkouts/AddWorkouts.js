@@ -16,18 +16,19 @@ export default function AddWorkouts() {
       ? () => setRandom(Math.random()) : () => {};
   }, [data])
 
-
   let added = data?.added?.length || null;
   let repeat = data?.repeat?.join(', ') || null;
   return (
     <div>
       <h1>Добавить занятия</h1>
       <input ref={ref} type='file' accept='.fit' id='create-workout-fit-inp' name="file" multiple/>
-      {loading ? <AddWorkoutsLoader/> : error ? <div>Ошибка...</div> :
-        <>
-        {added ? <h3>{'Добавлено занятий: ' + added}</h3> : null}
-        {repeat ? <h3>{'Такие тренировки существуют: ' + repeat}</h3> : null}
-        </>}
+      {loading ? <AddWorkoutsLoader/>
+        : error ? <div>Ошибка...</div>
+          :
+          <>
+          {added ? <h3>{'Добавлено занятий: ' + added}</h3> : null}
+          {repeat ? <h3>{'Такие тренировки существуют: ' + repeat}</h3> : null}
+          </>}
     </div>
   );
 };

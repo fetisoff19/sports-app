@@ -4,7 +4,7 @@
 
 First, you must copy it to your project:
 
-### `git clone https://github.com/fetisoff19/sports-app ./<your_directory>`
+### `git clone https://github.com/fetisoff19/sports-app /<your_directory>`
 
 Then install the dependencies:
 

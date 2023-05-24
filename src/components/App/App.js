@@ -22,7 +22,7 @@ export function App() {
 
   // сделать через localStorage
   changeLanguage(settings.language)
-  console.log(workouts, loading, error, random, settings)
+  // console.log(workouts, loading, error, random, settings)
 
   async function getData() {
     return await db.getAll('workouts')
@@ -30,9 +30,9 @@ export function App() {
 
   return (
     <AppContext.Provider value={{random, workouts, setRandom, loading, error, settings, setSettings, auth, setAuth}}>
-      <BrowserRouter>
-        <AppRouter/>
-      </BrowserRouter>
+        <BrowserRouter>
+          <AppRouter/>
+        </BrowserRouter>
     </AppContext.Provider>
   );
 }
