@@ -28,7 +28,7 @@
 .container{
   width: 100%;
   display: grid;
-  grid-template-columns: 840px 440px;
+  grid-template-columns: 740px 550px;
   gap: 20px;
 
   .charts{
@@ -126,6 +126,12 @@
   border-radius: 5px;
   box-shadow: inset 0 0 0 1px #e5e5e5;
 
+  h1{
+    padding: 20px 0 10px 0;
+    font-weight: 300;
+    font-size: 22px;
+  }
+
   .maps{
     padding-top: 20px;
     .buttonStickyMaps{
@@ -154,11 +160,11 @@
   }
 
   .dateSportName{
-    border-bottom: 1px solid grey;
+    //border-bottom: 1px solid grey;
     margin: 10px 0;
     .date{
       font-weight: 100;
-      letter-spacing: 2px;
+      //letter-spacing: 2px;
     }
     //.name {
     //  margin: 0 0 0 2px;
@@ -176,6 +182,7 @@
         background: transparent;
         font-weight: 600;
         font-size: 22px;
+        color: black;
         font-family: 'Open Sans',  sans-serif;
         margin-right: 5px;
       };
@@ -208,14 +215,38 @@
     }
   }
 
+  .mainStats{
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 10px;
+    justify-items: start;
+    align-items: start;
+    //border-top: 2px solid darkgrey;
+    div {
+      display: grid;
+      //border-bottom: 1px solid gray;
+      .mainStatsUnit{
+        color: rgb(54, 54, 54);
+        font-size: 22px;
+        font-weight: 400;
+      }
+      .mainStatsLabel{
+        font-weight: 100;
+        font-size: 14px;
+
+        margin: 5px 0;
+    }
+    }
+  }
   .stats{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 10px;
+
     .statsMainLabel{
       font-weight: 400;
       font-size: 14px;
-      border-bottom: 1px solid gray;
+      border-bottom: 1px solid green;
       margin: 5px 0;
     }
     .statsBlock{
@@ -233,7 +264,7 @@
 
   }
   .note{
-    padding: 20px 0;
+    //padding: 20px 0;
     display: flex;
     gap: 10px;
 

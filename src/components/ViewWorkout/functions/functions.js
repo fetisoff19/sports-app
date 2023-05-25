@@ -19,7 +19,7 @@ export function setCharts(data, order, setZooming,setLoaded) {
               zooming();
               setZooming(true);
             }}
-            style={{height: 210, width: 800}}/>
+            style={{height: 210, width: 700}}/>
         )
     })
     return result

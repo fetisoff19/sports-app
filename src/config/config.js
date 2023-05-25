@@ -1,3 +1,5 @@
+import {convertDistance, convertPace, convertSpeed, getHourMinSec} from "../API/functionsDate&Values";
+
 export let userLang = 'en';
 export const changeLanguage = b => b ? userLang = b : null;
 let fields = {
@@ -230,118 +232,38 @@ export const dict = {
   },
 };
 
-export let fieldsTimeArray = [
-  'totalTimerTime',
-  'totalElapsedTime',
-  'timestamp',
-  'startTime',
-];
-
-export let fieldsCadenceCyclArray = [
-  'maxCadence',
-  'avgCadence',
-];
-
-export let fieldsCadenceRunArray = [
-  'maxRunningCadence',
-  'avgRunningCadence',
-];
-
-export let fieldsSpeedArray = [
-  'maxSpeed',
-  'avgSpeed',
-];
-
-export let fieldsPaceArray = [
-  'enhancedMaxSpeed',
-  'enhancedAvgSpeed',
-];
-
-export let fieldsHRArray = [
-  'maxHeartRate',
-  'avgHeartRate',
-  'minHeartRate',
-];
-
-export let fieldsTemperatureArray = [
-  'maxTemperature',
-  'avgTemperature',
-];
-
-export let fieldsAltitudeArray = [
-  'totalAscent',
-  'totalDescent',
-  'maxAltitude',
-  'minAltitude',
-];
-
-export let fieldsPowerArray = [
-  'maxPower',
-  'normalizedPower',
-  'avgPower',
-];
-
-export let fieldsOtherArray = [
-  'totalStrides',
-  'trainingStressScore',
-  'totalCalories',
-  // 'leftRightBalance',
-];
-
-let fieldsArray = [
-  'startTime',
-  'timestamp',
-  'totalElapsedTime',
-  'totalTimerTime',
-
-  'totalStrides',
-  'totalDistance',
-
-  'totalCalories',
-  'trainingStressScore',
-
-  'avgSpeed',
-  'maxSpeed',
-
-  'avgPower',
-  'maxPower',
-  'normalizedPower',
-
-  'leftRightBalance',
-
-  'totalAscent',
-  'totalDescent',
-  'maxAltitude',
-  'minAltitude',
-
-  'avgRunningCadence',
-  'maxRunningCadence',
-  'avgCadence',
-  'maxCadence',
-
-  'avgTemperature',
-  'maxTemperature',
-
-  'minHeartRate',
-  'avgHeartRate',
-  'maxHeartRate',
-
-  // 'sport',
-  // 'firstLapIndex',
-  // 'numLaps',
-  // 'trigger',
-  // 'subSport',
-  // 'avgLeftTorqueEffectiveness',
-  // 'avgRightTorqueEffectiveness',
-  // 'avgLeftPedalSmoothness',
-  // 'avgRightPedalSmoothness',
-  // 'enhancedAvgSpeed',
-  // 'enhancedMaxSpeed',
-  // 'enhancedMaxAltitude',
-  // 'enhancedMinAltitude',
-  // 'startPositionLat',
-  // 'startPositionLong',
-  // 'totalWork',
-  // 'timeInHrZone',
-  // 'timeInPowerZone',
-]
+export const configMainStats = {
+  totalDistance: {
+    formatter: value => convertDistance(value).toString().replace('.', ','),
+    unit: 'km',
+    label: 'totalDistance',
+  },
+  totalTimerTime: {
+    formatter: getHourMinSec,
+    label: 'totalElapsedTime',
+  },
+  enhancedAvgSpeed: {
+    formatter: convertSpeed,
+    uniqueFormatter: convertPace,
+    unit: 'kmph',
+    uniqueUnit: 'pace',
+    uniqueSport: 'running',
+    label: 'avgSpeed',
+    uniqueLabel: 'avgPace',
+  },
+  totalAscent: {
+    formatter: Math.round,
+    unit: 'm',
+    label: 'totalAscent',
+  },
+  avgHeartRate: {
+    formatter: Math.round,
+    unit: 'bpm',
+    label: 'avgHeartRate',
+  },
+  avgPower: {
+    formatter: Math.round,
+    unit: 'w',
+    label: 'avgPower',
+  },
+}

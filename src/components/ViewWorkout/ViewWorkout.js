@@ -18,6 +18,7 @@ import AppLoader from "../Loaders/AppLoader.jsx";
 import TextArea from "../UI/TextArea";
 import styles from './styles.module.scss'
 import Info from "../UI/svgComponents/Info";
+import MainWorkoutStats from "./components/WorkoutsStats/MainWorkoutStats";
 
 let order = ['speed', 'pace', 'power', 'heartRate', 'cadence', 'altitude'];
 
@@ -57,7 +58,7 @@ const ViewWorkout = () => {
         className={(stickyMaps ? 'viewWorkoutMaps' : null) + ' ' + styles.maps}
         key={id + 'maps'}>
           <Maps
-            style={{height: 300, width: 400}}
+            style={{height: 300, width: 500}}
             maxZoom={19}
             startZoom={8}
             scrollWheelZoom={true}
@@ -190,12 +191,16 @@ const ViewWorkout = () => {
           <div className={styles.container}>
             {chartsContainer}
             <div className={styles.mapsNameStats}>
-              {maps}
+
               <div className={styles.dateSportName}>
                 <NameSportDate styles={styles} data={data.workout} key={id + 'name'}/>
               </div>
-                <WorkoutStats styles={styles} data={data.sessionMesgs[0]} key={id + 'stats'}/>
-                <TextArea id={id} text={data?.workout?.note} styles={styles}/>
+              <MainWorkoutStats data={data.workout} styles={styles}/>
+              {maps}
+              <h1>Cтатистика</h1>
+              <WorkoutStats styles={styles} data={data.sessionMesgs[0]} key={id + 'stats'}/>
+              <h1>Заметки</h1>
+              <TextArea id={id} text={data?.workout?.note} styles={styles}/>
             </div>
           </div>
           <ShiftWorkoutButton

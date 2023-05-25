@@ -26,7 +26,7 @@ const Workout = ({data}) => {
     },
   };
 
-  let block = ['totalDistance', 'totalAscent', 'totalElapsedTime']
+  let block = ['totalDistance', 'totalElapsedTime', 'totalAscent',]
     .map(item => {
       return (
         data[item] ?
