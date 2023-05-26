@@ -73,7 +73,6 @@ export function getIndex(e, setIndex, ref, status) {
 export function handleKeyboardDown(e, setZooming){
   let chart = Highcharts.charts[0] || null;
   let powerCurve = Highcharts.charts.at(-1) || null;
-
   switch (e.code) {
     case 'ArrowLeft':
       e.preventDefault();

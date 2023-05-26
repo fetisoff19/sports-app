@@ -1,6 +1,5 @@
 import React from 'react';
-import {dict, userLang} from "../../../../config/config";
-import {indexes} from "./config";
+import {dict, userLang, statsFields} from "../../../../config/config";
 
 const WorkoutStats = ({data, styles}) => {
 
@@ -13,13 +12,13 @@ let order =
 
   let stats = [];
   for (let unit of order) {
-    let fields = indexes[unit].fields.map(item =>
+    let fields = statsFields[unit].fields.map(item =>
       data[item] ?
       (<div className={styles.statsBlock} key={item}>
         <div className={styles.statsUnit}>
-          {(indexes[unit].formatter ? indexes[unit].formatter(data[item]) : data[item])
+          {(statsFields[unit].formatter ? statsFields[unit].formatter(data[item]) : data[item])
           + ' ' +
-          (indexes[unit].unit ? dict.units[indexes[unit].unit][userLang] : '')}
+          (statsFields[unit].unit ? dict.units[statsFields[unit].unit][userLang] : '')}
         </div>
         <div className={styles.statsLabel}>{dict.fields[item][userLang]}</div>
       </div>)

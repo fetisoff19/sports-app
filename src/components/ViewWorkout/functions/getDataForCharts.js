@@ -4,16 +4,18 @@ import {garminLatLongToNormal} from "../../../API/utils";
 export function getDataForCharts(workoutData, smoothing) {
   if (!workoutData) return;
   let recordMesgs = workoutData.recordMesgs;
-  if (isNaN(recordMesgs[recordMesgs.length - 1].heartRate)
-    && isNaN(recordMesgs[recordMesgs.length - 1].heartRate)
-    && isNaN(recordMesgs[recordMesgs.length - 1].distance)
-    && isNaN(recordMesgs[recordMesgs.length - 1].power)
-    && isNaN(recordMesgs[recordMesgs.length - 1].enhancedAltitude)) return;
+  if (isNaN(recordMesgs.at(-1).heartRate)
+    && isNaN(recordMesgs.at(-1).heartRate)
+    && isNaN(recordMesgs.at(-1).distance)
+    && isNaN(recordMesgs.at(-1).power)
+    && isNaN(recordMesgs.at(-1).enhancedAltitude)) return;
 
   let result = {};
   let polylinePoints = [];
   let powerCurveArray = [];
 
+  let timeBetweenRecords = Math.round((workoutData.sessionMesgs[0].totalTimerTime / recordMesgs.length))
+  if(Math.round(timeBetweenRecords / smoothing) > 0.5) smoothing = timeBetweenRecords;
   let step = 0;
   let avgTimeSmoothing = 0;
   let stepTimeArray = [];

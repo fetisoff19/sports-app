@@ -5,7 +5,7 @@ import Close from "./svgComponents/Close";
 import {db} from "../../API/db";
 import AppContext from "../../context/AppContext";
 
-const TextArea = ({text, id, styles}) => {
+const TextArea = ({text, id, styles, setState}) => {
   const {setRandom} = useContext(AppContext)
   const [value, setValue] = useState(text);
   const ref = useRef(null)
@@ -37,6 +37,8 @@ const TextArea = ({text, id, styles}) => {
         minLength="10" maxLength="300"
         defaultValue={value || dict.ui.placeholderNote[userLang]}
         onChange={handleChange}
+        onFocus={() => setState && setState(true)}
+        onBlur={() => setState && setState(false)}
       />
       {value === text
       ? null

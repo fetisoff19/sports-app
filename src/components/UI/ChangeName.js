@@ -6,7 +6,7 @@ import Edit from "./svgComponents/Edit";
 import Ok from "./svgComponents/Ok";
 import Close from "./svgComponents/Close";
 
-const ChangeName = ({data, isLink, styles}) => {
+const ChangeName = ({data, isLink, styles, setState}) => {
   const {setRandom} = useContext(AppContext);
   const [disabled, setDisabled] = useState(true);
   const [value, setValue] = useState(data.name);
@@ -29,10 +29,14 @@ const ChangeName = ({data, isLink, styles}) => {
     disabled={disabled}
     type="text"
     value={value}
-    size={value.toString().length}
+    size={value.toString().length || 1}
     autoFocus={true}
     onChange={handleChange}
-    onFocus={handleFocus}
+    onFocus={(e) => {
+      handleFocus(e);
+      setState && setState(true);
+    }}
+    onBlur={() => setState && setState(false)}
   />)
 
   return isLink ? (

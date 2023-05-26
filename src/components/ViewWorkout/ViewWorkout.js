@@ -19,6 +19,8 @@ import TextArea from "../UI/TextArea";
 import styles from './styles.module.scss'
 import Info from "../UI/svgComponents/Info";
 import MainWorkoutStats from "./components/WorkoutsStats/MainWorkoutStats";
+import Pushpin1 from "../UI/svgComponents/Pushpin1.js";
+import Pushpin2 from "../UI/svgComponents/Pushpin2";
 
 let order = ['speed', 'pace', 'power', 'heartRate', 'cadence', 'altitude'];
 
@@ -34,7 +36,8 @@ const ViewWorkout = () => {
   const params = useParams();
   const id = +params.id;
   const [data, loading, error] = useDB(getWorkout, id);
-  const [chartsIsLoaded, setChartsIsLoaded] = useState(false)
+  const [chartsIsLoaded, setChartsIsLoaded] = useState(false);
+  const [writing, setWriting] = useState(false);
 
   async function getWorkout(){
       let result = await db.get('workoutsData', id);
@@ -42,17 +45,16 @@ const ViewWorkout = () => {
       return result || wt ? {...result, workout: wt} : null;
   }
 
-
   let preparedData = useMemo(() => getDataForCharts(data, settings.smoothing || 8), [data]);
 
   let mapsButton = <div
-    className={styles.buttonStickyMaps + (stickyMaps ? (" " + styles.active) : '')}
+    className={styles.buttonStickyMaps}
     onClick={() => setStickyMaps(prev => !prev) }>
-    {stickyMaps ? "Отвязать карту" : "Зафиксировать карту"}
+    {stickyMaps ? <Pushpin2 fill={'green'}/> : <Pushpin1 fill={'black'}/>}
   </div>
 
   let maps = useMemo(() =>
-    preparedData ?
+    preparedData?.polylinePoints ?
       <div
         ref={mapsRef.current}
         className={(stickyMaps ? 'viewWorkoutMaps' : null) + ' ' + styles.maps}
@@ -74,7 +76,6 @@ const ViewWorkout = () => {
           />
   </div> : null, [data, index, stickyMaps]);
 
-
   let charts = useMemo(() => preparedData ? setCharts(preparedData, order, setZooming, setChartsIsLoaded) : null, [data]);
   let chartsNames = useMemo(() => charts ? charts.map(item => item.key) : null, [data]);
   let powerCurve = useMemo(() => (preparedData && preparedData.charts.powerCurve ?
@@ -82,7 +83,7 @@ const ViewWorkout = () => {
       key={id + 'charts'}
       data={preparedData.charts.powerCurve}
       name={'powerCurve'}
-      style={{height: 200,  width: 1000}}
+      style={{height: 210,  width: 700}}
       tooltip={true}
       xAxis={{...chartsConfig.powerCurve.options.xAxis,
         ...{max: preparedData.charts.powerCurve.data.at(-1)[0]}}}
@@ -116,10 +117,11 @@ const ViewWorkout = () => {
             {dict.title.resetZoom[userLang]}
           </div>
           <div className={styles.info}>
-            <span className={styles.tooltip}>{'smoothing: ' + settings.smoothing}</span>
+            <span className={styles.tooltip}>
+              {dict.title.info1[userLang] + settings.smoothing + dict.title.info2[userLang]}
+            </span>
             <Info className={styles}
                   fill={'gray'} height={'20px'} width={'20px'}
-                  text={'Smoothing: ' + settings.smoothing}
             />
           </div>
         </div>
@@ -137,20 +139,27 @@ const ViewWorkout = () => {
     </div>
     : null;
 
-
-  const onKeyDown = useCallback((e) => handleKeyboardDown(e, setZooming), [])
+  const onKeyDown = useCallback((e) => !writing ? handleKeyboardDown(e, setZooming) : null, [writing])
   const mouseMove = useCallback((e) => getIndex(e, setIndex, chartsRef.current), [chartsRef.current])
 
   useEffect(() => {
-    if(!chartsIsLoaded) return () => {};
     document.addEventListener('keydown', onKeyDown);
-    chartsRef.current?.addEventListener('mousemove', mouseMove)
-
     return () => {
       document.removeEventListener('keydown',onKeyDown);
-      chartsRef.current?.removeEventListener('mousemove', mouseMove);
-      while (Highcharts.charts.length > 0) {
-        Highcharts.charts.pop();
+    }
+  },  [writing]);
+
+
+  useEffect(() => {
+    if(!chartsIsLoaded) return;
+    chartsRef.current?.addEventListener('mousemove', mouseMove);
+
+    return () => {
+      if(chartsIsLoaded) {
+        chartsRef.current?.removeEventListener('mousemove', mouseMove);
+        while (Highcharts.charts.length > 0) {
+          Highcharts.charts.pop();
+        }
       }
     }
   }, [chartsIsLoaded]);
@@ -162,6 +171,7 @@ const ViewWorkout = () => {
       zooming ? setZooming(false) : null;
       status ? setStatus(false) : null;
       index ? setIndex(null) : null;
+      writing ? setWriting(false) : null;
     }
   }, [loading])
 
@@ -186,25 +196,24 @@ const ViewWorkout = () => {
     return (
         <div className={styles.page}>
           <ShiftWorkoutButton
-            styles={styles} loaded={chartsIsLoaded}
+            styles={styles} loaded={chartsContainer ? chartsIsLoaded : true}
             dir={0} id={id} key={id + '0'} />
           <div className={styles.container}>
             {chartsContainer}
             <div className={styles.mapsNameStats}>
-
               <div className={styles.dateSportName}>
-                <NameSportDate styles={styles} data={data.workout} key={id + 'name'}/>
+                <NameSportDate styles={styles} data={data.workout} key={id + 'name'} setState={setWriting}/>
               </div>
               <MainWorkoutStats data={data.workout} styles={styles}/>
               {maps}
-              <h1>Cтатистика</h1>
+              <h1>{dict.title.stats[userLang]}</h1>
               <WorkoutStats styles={styles} data={data.sessionMesgs[0]} key={id + 'stats'}/>
-              <h1>Заметки</h1>
-              <TextArea id={id} text={data?.workout?.note} styles={styles}/>
+              <h1>{dict.title.notes[userLang]}</h1>
+              <TextArea id={id} text={data?.workout?.note} styles={styles} setState={setWriting}/>
             </div>
           </div>
           <ShiftWorkoutButton
-            styles={styles} loaded={chartsIsLoaded}
+            styles={styles} loaded={chartsContainer ? chartsIsLoaded : true}
             dir={1} id={id} key={id + '1'} />
         </div>
     )
