@@ -54,6 +54,69 @@ export function loadCss(cssUrl) {
   });
 }
 
+export async function validateFiles(files) {
+  let result = {};
+  let validate = [];
+  let duplicate = [];
+  let nonValidate = [];
+  let duplicateFilesName = [];
+  for (let file of files) {
+    if(file.name.split('.').at(-1) !== 'fit') {
+      nonValidate.push(file.name);
+      continue
+    };
+    const sha256 = await sha256File(file)
+    //проверка на уникальность
+    let index = await db.transaction('workoutsData').store.index('sha256');
+    for await (const cursor of index.iterate()) {
+      if (cursor.key === sha256) {
+        duplicate.push([cursor.value.id_workouts, file.name]);
+        duplicateFilesName.push(file.name)
+      }
+    }
+  }
+  files.forEach(item =>
+    (!duplicateFilesName.includes(item.name)
+      && !nonValidate.includes(item.name))
+      ? validate.push(item) : null)
+  result.validate = validate;
+  result.duplicate = duplicate;
+  result.nonValidate = nonValidate;
+  return result
+}
+
+export async function addFiles(files) {
+  let result = {};
+  result.repeat = [];
+  result.added = [];
+  for (let file of files) {
+    let repeat = false;
+    const filename = file.name.replace('.fit','');
+    const newWorkoutData = await parseFit(file);
+    const sha256 = await sha256File(file)
+    //проверка на уникальность
+    let index = await db.transaction('workoutsData').store.index('sha256');
+    for await (const cursor of index.iterate()) {
+      if (cursor.key === sha256) {
+        // console.log('Такая тренировка уже существует ' + cursor.key);
+        repeat = true;
+        result.repeat.push(cursor.value.id_workouts);
+      }
+    }
+    if (repeat) continue
+    newWorkoutData.sha256 = sha256;
+    //добавляем параметры из newWorkoutData
+    const newWorkout = {name: filename};
+    copyKeyInObj(newWorkoutData, newWorkout);
+
+    //создаем объект тренировки
+    const newRecId = await addWorkout(newWorkout, newWorkoutData);
+    await db.get('workouts', newRecId);
+    result.added.push(newWorkout);
+  }
+  return console.log(result)
+}
+
 export async function addFitFile(e) {
   let result = {};
   result.repeat = [];

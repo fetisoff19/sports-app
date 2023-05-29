@@ -1,5 +1,5 @@
 import {dict, userLang} from "../../config/config";
-import {getHourMinSec, getMinSec} from "../../API/functionsDate&Values";
+import {getHourMinSec} from "../../API/functionsDate&Values";
 
 //конфиги графиков
 

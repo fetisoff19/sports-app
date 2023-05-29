@@ -3,7 +3,7 @@ import {ThreeDots} from "react-loader-spinner";
 
 const AddWorkoutsLoader = () => {
   return (
-    <div>
+    <div className='container'>
       <ThreeDots
         height="80"
         width="80"

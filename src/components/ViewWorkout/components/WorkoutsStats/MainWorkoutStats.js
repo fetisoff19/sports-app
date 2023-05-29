@@ -31,4 +31,4 @@ const MainWorkoutStats = ({data, styles}) => {
   );
 };
 
-export default MainWorkoutStats;
+export default React.memo(MainWorkoutStats);

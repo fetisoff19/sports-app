@@ -15,17 +15,19 @@ export function App() {
     smoothing: 8,
   })
 
+
   useEffect(() => {
+
     localStorage.getItem('auth') ? setAuth(true) : null
     return () => {}
   }, [])
-
   // сделать через localStorage
   changeLanguage(settings.language)
   // console.log(workouts, loading, error, random, settings)
 
   async function getData() {
-    return await db.getAll('workouts')
+   return await db.getAll('workouts')
+      .then(r => r.sort((a, b) => b.timestamp - a.timestamp))
   }
 
   return (

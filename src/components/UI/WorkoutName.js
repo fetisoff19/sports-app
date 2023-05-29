@@ -11,14 +11,6 @@ const WorkoutName = ({data, className}) => {
         {data.name || null}
       </Link>
     </div>
-
-    // <div
-    //   // onClick={() => setContent(<ViewWorkout id={data.id}/>)}
-    // >
-    //   <div>
-    //
-    //   </div>
-    // </div>
   );
 };
 

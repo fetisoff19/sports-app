@@ -11,7 +11,7 @@ const Login = () => {
   }
 
   return (
-      <div>
+      <div className={'content'}>
         <h1>Авторизация</h1>
         <form onSubmit={login}>
           <input type={'text'} placeholder={'Enter a login'}/>

@@ -64,7 +64,7 @@ const Workout = ({data}) => {
           polylineStyle={{color: 'green'}}
           scrollWheelZoom={false}
         />
-        : <div className={styles.plug}>{'no map('}</div>}
+        : <div className={styles.plug}>{dict.title.indoorWorkout[userLang]}</div>}
     </div>
   );
 };

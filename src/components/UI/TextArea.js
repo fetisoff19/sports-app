@@ -57,4 +57,4 @@ const TextArea = ({text, id, styles, setState}) => {
   );
 };
 
-export default TextArea;
+export default React.memo(TextArea);

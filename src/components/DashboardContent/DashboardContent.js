@@ -5,6 +5,7 @@ import Workout from "./components/Workout";
 import useScroll from "../../hooks/useScroll";
 import styles from './styles.module.scss'
 import AppLoader from "../Loaders/AppLoader";
+import NoWorkouts from "../NoWorkouts/NoWorkouts";
 
 
 const DashboardContent = () => {
@@ -28,19 +29,22 @@ const DashboardContent = () => {
 
   return (
     <div ref={parentRef} className={styles.page}>
-        <div/>
-        <div className={styles.container} >
-          <div>
-            <div className={styles.stats} >
-              <StartStats />
-            </div>
-          </div>
-          <div className={styles.workouts}>
-            {trainings.map((item, index) => <Workout key={index} data={item}/>)}
-            <div ref={childRef}></div>
-            {workouts.length !== trainings.length ? <AppLoader/> : null}
+      {workouts.length ?
+        <div className={styles.container}>
+        <div>
+          <div className={styles.stats}>
+            <StartStats/>
           </div>
         </div>
+          <div>
+            {trainings.map((item, index) => <Workout key={index} data={item}/>)}
+            <div ref={childRef}></div>
+            {workouts.length !== trainings.length
+              ? <div className={styles.loader}><AppLoader/></div>
+              : null}
+          </div>
+      </div>
+      : <NoWorkouts childRef={childRef}/> }
     </div>
   );
 };

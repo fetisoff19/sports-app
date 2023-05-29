@@ -2,13 +2,12 @@
   "name": "sports-app",
   "version": "1.0.0",
   "description": "A React.js education project",
-  "private": "true",
+  "private": true,
   "author": {
     "name": "Oleg Fetisov",
     "email": "fetisoff19@gmail.com",
     "telegram": "@fetisoff19",
-    "url": "https://github.com/fetisoff19/sports-app",
-    "main": "index.js"
+    "url": "https://github.com/fetisoff19/sports-app"
   },
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",

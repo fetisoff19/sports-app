@@ -1,6 +1,8 @@
 import {convertDistance, convertPace, convertSpeed, doubleValue, getHourMinSec} from "../API/functionsDate&Values";
+import React from "react";
+import NonValidateFile from "../components/AddWorkouts/components/NonValidateFile";
 
-export let userLang = 'en';
+export let userLang = 'ru';
 export const changeLanguage = b => b ? userLang = b : null;
 
 export const dict = {
@@ -75,7 +77,7 @@ export const dict = {
     swimming: {ru: 'Плавание', en: 'Swimming',}
   },
   ui: {
-    default: {ru: 'По-умолчанию', en: 'Default',},
+    default: {ru: 'По умолчанию', en: 'Default',},
     smoothing: {ru: 'Сглаживание', en: 'Smoothing'},
     createTraining: {ru: 'Создание тренировки', en: 'Create workout'},
     editTraining: {ru: 'Изменение тренировки', en: 'Edit workout'},
@@ -89,13 +91,18 @@ export const dict = {
     add: {ru: 'Добавить', en: 'Add'},
     view: {ru: 'Показать', en: 'View',},
     delete: {ru: 'Удалить', en: 'delete'},
-
+    loading: {ru: 'Загрузка...', en: 'Loading...'},
+    error: {ru: 'Произошла ошибка', en: 'Error'},
   },
+
   title: {
     settings: {ru: 'Настройки', en: 'Settings'},
     activities: {ru: 'Тренировки', en: 'Activities'},
     all: {ru: 'Все', en: 'All'},
-    appLanguage: {ru: 'Язык приложения', en: 'App Language'},
+    about: {ru: 'О проекте', en: 'About'},
+    add: {ru: 'Добавить', en: 'Add'},
+    dashBoard: {ru: 'Панель управления', en: 'Dashboard'},
+    appLanguage: {ru: 'Язык приложения', en: 'App language'},
     title: {ru: 'Название', en: 'Title'},
     viewTraining: {ru: 'Просмотр тренировки'},
     workouts: {ru: 'Тренировки', en: 'Workouts'},
@@ -111,13 +118,54 @@ export const dict = {
     left: {ru: 'Левее', en: 'Left'},
     right: {ru: 'Правее', en: 'Right'},
     resetZoom: {ru: 'Сбросить', en: 'Reset'},
+    goToDashboard: {ru: 'Перейти на главную страницу', en: 'Go to main page'},
+    pageNotFound: {ru: 'Упс, страница не найдена', en: 'Oops, page not found!'},
     phraseValueBetter: {ru: 'больше среднего значения на ', en: 'better of the average value on'},
+    out: {ru: 'Выйти', en: 'Out'},
+    indoorWorkout:{ru: 'Занятие в помещении', en: 'Indoor workout',},
     info1: {ru: 'Используй стрелки на клавиатуре ' +
         'для управления графиками, ' +
         'а также пробел или Enter для сброса зума. Данные на графиках сжаты в '
       , en: 'перевести на иностранный'},
     info2: {ru: ' раз. Изменить значение можно в настройках',
       en: 'перевести на иностранный'},
+    aboutApp1:{
+      ru: 'Приложение создано в образовательных целях.\n' +
+        'Просматривай активности, загрузив свои треки в расширении .fit' +
+        ' или скачай мои файлы по ',
+      en: 'перевести на иностранный'
+    },
+    aboutApp2:{
+      ru:
+        '\nСтабильная поддержка следующих видов спорта: велоспорт, бег. \n' +
+        'Проверено на треках с устройств: garmin, wahoo, bryton, lezyne. \n' +
+        'Репозиторий: ',
+      en: 'перевести на иностранный'
+    },
+    footer1: {ru: 'Размер базы: ',
+      en: 'перевести на иностранный'
+    },
+    footer2: {ru: ' Мб. Занимает ',
+      en: 'перевести на иностранный'
+    },
+    footer3: {ru: 'менее',
+      en: 'перевести на иностранный'
+    },
+    footer4: {ru: ' % от выделенной браузером памяти.',
+      en: 'перевести на иностранный'
+    },
+    settingInfo: {
+      ru: 'Значение величины сглаживания: ' +
+        '\n1 - точки на графиках соответствуют точкам трека с твоего устройства,' +
+        '\n16 - отображается усредненное значение за 16 секунд записи трека.' +
+        '\nЕсли производительность устройства недостаточна, увеличь значение',
+      en: 'перевести на иностранный'
+    },
+    nonValidateFile: {ru: 'Тип импортируемого файла не поддерживается',
+     en: 'Imported file type is not supported'},
+    duplicateFile: {ru: 'Этот файл уже загружен',
+      en: 'This file has already been uploaded'},
+    more: {ru: 'Подробнее', en: 'More'},
   },
   month:{
     0: {ru: 'Января', en: 'January'},

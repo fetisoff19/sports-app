@@ -5,6 +5,7 @@ import FilterBar from "./Components/FilterBar";
 import styles from './styles.modules.scss'
 import Titles from "./Components/Titles";
 import {dict, userLang} from "../../config/config";
+import NoWorkouts from "../NoWorkouts/NoWorkouts";
 
 const fields = ['id', 'sport', 'timestamp', 'name',  'totalDistance', 'totalTimerTime', 'enhancedAvgSpeed', 'totalAscent', 'avgHeartRate', ' '];
 
@@ -64,13 +65,13 @@ export function WorkoutsList() {
       <ListItem key={index} data={item}/>)
 
     return (
-
+      workouts.length ?
       <div className={styles.container}>
         <h1>{dict.title.activities[userLang]}</h1>
         <FilterBar data={data} filterSport={filterSport}/>
         <Titles status={status} f={handleTitleClick}/>
         <ul>{list}</ul>
       </div>
-
+      : <NoWorkouts/>
     )
 }

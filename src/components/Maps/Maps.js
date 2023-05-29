@@ -10,6 +10,8 @@ const Maps = (props) => {
   const tileLayerRef = useRef(null);
   const containerRef = useRef(null);
   const polylinePoints = props.polylinePoints || [];
+  const polylinePowerCurve = props.polylinePowerCurve || [];
+
   let marketCoordinates = [];
   let i;
   if (props.index) {
@@ -25,6 +27,7 @@ const Maps = (props) => {
   const startZoom = props.startZoom || 7;
   const maxZoom = props.maxZoom || 19;
   const polylineStyle = props.polylineStyle || {color: 'blue'}
+  const polylinePowerCurveStyle = props.polylinePowerCurveStyle || {color: 'red'}
   let bounds = polylinePoints.getBounds ? polylinePoints.getBounds() : L.latLngBounds(polylinePoints);
 
   return (
@@ -33,7 +36,6 @@ const Maps = (props) => {
       zoom={startZoom}
       maxZoom={maxZoom}
       scrollWheelZoom={props.scrollWheelZoom}
-      // scrollWheelZoom={false}
       bounds={[bounds.getSouthWest(), bounds.getNorthEast()]}
 
     >
@@ -44,12 +46,14 @@ const Maps = (props) => {
         />
       </div>
 
-      {props.markerStart ? <NewMarker position={startCoordinates} icon={start} className={'start'}/> : null}
-      {props.markerEnd ? <NewMarker position={endCoordinates} icon={stop} className={'end'}/> : null}
-      {i ? <NewMarker position={marketCoordinates} icon={now} className={'marker'} iconSize={[30, 30]} iconAnchor={[2, 28]}/> : null}
+      {props.markerStart ? <NewMarker position={startCoordinates} icon={start}/> : null}
+      {props.markerEnd ? <NewMarker position={endCoordinates} icon={stop}/> : null}
+      {i ? <NewMarker position={marketCoordinates} icon={now} iconSize={[30, 30]} iconAnchor={[2, 28]}/> : null}
       {props.button ? props.button : null}
       <Polyline pathOptions={polylineStyle}
                 positions={polylinePoints}/>
+      <Polyline pathOptions={polylinePowerCurveStyle}
+                positions={polylinePowerCurve}/>
     </MapContainer>
   );
 };

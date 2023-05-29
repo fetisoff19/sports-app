@@ -26,8 +26,7 @@ export function setCharts(data, order, setZooming,setLoaded) {
   }
 }
 
-export function getIndex(e, setIndex, ref, status) {
-  // if (!status) return
+export function getIndex(e, setIndex, ref) {
   let charts = Highcharts.charts;
   if (ref && charts?.length) {
     let width = +document.querySelector('.highcharts-plot-border').getAttribute('width')
@@ -65,7 +64,6 @@ export function getIndex(e, setIndex, ref, status) {
         fill: '#383838',
         zIndex: 1,
       }).add()
-      // chart.tooltip.refresh([chart.series[0].points[index]]);
     }
   }
 }
@@ -182,4 +180,12 @@ export function resetZoom() {
     chart.xAxis[0]
       .setExtremes(chart.xAxis[0].dataMin, chart.xAxis[0].dataMax)
   );
+}
+
+export function addPolylinePowerCurve(point, data, setState){
+  if (!point) return [];
+  let firstIndex =  data.powerCurve.get(point.x).index;
+  let secondIndex = firstIndex + (point.x);
+  if (secondIndex - firstIndex <= 2) secondIndex += 2;
+  setState(data.polylinePoints.slice(firstIndex, secondIndex));
 }

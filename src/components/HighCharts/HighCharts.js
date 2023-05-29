@@ -16,6 +16,8 @@ const Charts = props => {
       }
     }
   },[])
+
+
   const options = {
     series: [{
       data: props.data.data,
@@ -23,6 +25,14 @@ const Charts = props => {
       color: chartsConfig[props.name].lineColor,
       lineWidth: 1,
       marker: { radius: 1 },
+      point: {
+        events:{
+          mouseOver: props.f && props?.mouseOver ? function (){
+            props.f(this, ...props.mouseOver)
+  } : null,
+          mouseOut: props?.mouseOut,
+        },
+      },
     }],
     accessibility: {
       enabled: false

@@ -1,5 +1,6 @@
 import {convertPaceInMinute, convertSpeed} from "../../../API/functionsDate&Values";
 import {garminLatLongToNormal} from "../../../API/utils";
+import {logPlugin} from "@babel/preset-env/lib/debug";
 
 export function getDataForCharts(workoutData, smoothing) {
   if (!workoutData) return;
@@ -15,7 +16,8 @@ export function getDataForCharts(workoutData, smoothing) {
   let powerCurveArray = [];
 
   let timeBetweenRecords = Math.round((workoutData.sessionMesgs[0].totalTimerTime / recordMesgs.length))
-  if(Math.round(timeBetweenRecords / smoothing) > 0.5) smoothing = timeBetweenRecords;
+  smoothing = Math.ceil(smoothing / timeBetweenRecords);
+
   let step = 0;
   let avgTimeSmoothing = 0;
   let stepTimeArray = [];
@@ -210,7 +212,9 @@ export function getDataForCharts(workoutData, smoothing) {
       } : null
     },
     step: stepTimeArray,
+    smoothing: smoothing,
     polylinePoints: polylinePoints,
+    powerCurve: workoutData.workout.powerCurve || null,
     sport: workoutData.sessionMesgs[0].sport || null,
   }
   return result

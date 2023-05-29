@@ -15,6 +15,5 @@ export default function (request, deps) {
     },200)
 
   }, [deps])
-
   return [data, loading, error]
 }

@@ -3,7 +3,7 @@ import {TailSpin} from "react-loader-spinner";
 
 const AppLoader = () => {
   return (
-    <div>
+    <div className='appLoader'>
       <TailSpin
         height="80"
         width="80"

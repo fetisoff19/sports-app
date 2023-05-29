@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {db, setIndexedDbUsageInfo} from "../../API/db.js";
 import AppContext from "../../context/AppContext.js";
-import FooterLoader from "../Loaders/FooterLoader.jsx";
+import {dict, userLang} from "../../config/config";
 
 const Footer = () => {
   const [state, setState] = useState([])
@@ -19,7 +19,13 @@ const Footer = () => {
   return (
     <footer>
       <div>
-        { loading && state ? <FooterLoader/> : 'Размер базы: ' + state[0] + ' Мб. Занимает ' + (state[1] ? state[1] : 'менее 1' ) + ' % от выделенной браузером памяти.'}
+        {loading && state ?
+          dict.ui.loading[userLang]
+          : (dict.title.footer1[userLang] + state[0]
+          + dict.title.footer2[userLang] + (state[1] ? state[1]
+            : (dict.title.footer3[userLang] + ' 1 '))
+            + dict.title.footer4[userLang])
+        }
         </div>
     </footer>
   );

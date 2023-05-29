@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import AppContext from "../context/AppContext.js";
 import AppLoader from "../components/Loaders/AppLoader.jsx";
+import {dict, userLang} from "../config/config";
 
 const About = () => {
   const {loading, error, workouts} = useContext(AppContext);
@@ -14,10 +15,18 @@ const About = () => {
   }
   else if (workouts) {
     return (
-      <div >
+      <div className='content about'>
         <h1>
-          About App
+          {dict.title.about[userLang]}
         </h1>
+        <p>
+          {dict.title.aboutApp1[userLang]}
+          <a href='https://drive.google.com/drive/folders/1NCrcDjoPpgEUH09G-hz3cVeMb9vs1rhc?usp=drive_link'>
+            по ссылке.
+          </a>
+          {dict.title.aboutApp2[userLang]}
+          <a href='https://github.com/fetisoff19/sports-app'>github.com/fetisoff19/sports-app</a>
+        </p>
       </div>
     );
   }
