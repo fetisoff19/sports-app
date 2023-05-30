@@ -69,17 +69,20 @@
 
 
       input {
+        font-size: 16px;
+        font-weight: 400;
+        margin-top: 30px;
+        border: none;
+        border-radius: 3px;
+        padding: 5px 15px;
         cursor: pointer;
         font: 14px/22px 'Open Sans',  sans-serif;
         font-weight: 100;
-        padding: 5px 10px;
-        border: 1px #e5e5e5 solid;
-        border-radius: 2px;
-        background: white;
+        background: #009100;
+        color: white;
       }
       input:hover{
-        color: green;
-        border-color: green;
+        background: green;
       }
     }
 

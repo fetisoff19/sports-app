@@ -66,17 +66,20 @@
       .resetZoomInfo{
         display: flex;
         justify-content: space-between;
-        align-items: baseline;
-        gap: 20px;
+        align-items: flex-start;
+        gap: 15px;
       }
       .resetZoom{
-        border: 1px solid gray;
-        border-radius: 2px;
+        border-radius: 3px;
+        font: 14px/22px 'Open Sans',  sans-serif;
+        font-weight: 100;
         cursor: pointer;
-        padding: 5px;
+        padding: 5px 10px;
+        background: #009100;
+        color: white;
       }
       .resetZoom:hover{
-        background: whitesmoke;
+        background: green;
       }
       .info{
         position: relative;

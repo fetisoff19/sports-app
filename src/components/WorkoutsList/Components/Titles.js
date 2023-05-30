@@ -37,7 +37,7 @@ const Titles = ({status, f}) => {
           </div>
         </div>
         <div className={styles.xsBlock}>
-          <Delete height={'16px'} width={'16px'} fill={'rgba(0,0,0,0)'}/>
+          <Delete fill={'rgba(0,0,0,0)'}/>
         </div>
       </li>
     </ul>

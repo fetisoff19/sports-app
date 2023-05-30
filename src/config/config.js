@@ -92,6 +92,7 @@ export const dict = {
     view: {ru: 'Показать', en: 'View',},
     delete: {ru: 'Удалить', en: 'delete'},
     loading: {ru: 'Загрузка...', en: 'Loading...'},
+    download: {ru: 'Загрузить', en: 'Download'},
     error: {ru: 'Произошла ошибка', en: 'Error'},
   },
 
@@ -166,6 +167,10 @@ export const dict = {
     duplicateFile: {ru: 'Этот файл уже загружен',
       en: 'This file has already been uploaded'},
     more: {ru: 'Подробнее', en: 'More'},
+    add1: {ru: 'Перетащите файлы (в формате .fit) или нажмите',
+      en: 'Drop files here or'},
+    add2: {ru: 'для выбора', en: 'to select'},
+    browse: {ru: ' Обзор', en: 'Browse'},
   },
   month:{
     0: {ru: 'Января', en: 'January'},

@@ -36,7 +36,9 @@ const ListItem = ({data}) => {
       <div className={styles.xsBlock}
         onClick={(e) => {
             deleteWorkout(+data.id, setRandom)
-          }}><Delete className={styles.delete} height={'16px'} width={'16px'}/></div>
+          }}>
+        <Delete className={styles.delete} />
+      </div>
       </div>
     </li>
   );

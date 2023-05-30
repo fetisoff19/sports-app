@@ -1,72 +1,99 @@
-.drop{
-  width: calc(70% - 4px);
-  border-radius: 5px;
-  border: 2px dashed #e5e5e5;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  .label{
-    font-size: 18px;
-    font-weight: 100;
+.content{
+  .drop{
+    width: calc(70% - 4px);
+    border-radius: 5px;
+    border: 2px dashed #e5e5e5;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 150px;
-  }
-  .files{
-    //display: flex;
-    //justify-content: space-between;
-    //align-items: center;
-    width: 94%;
-    margin: 0 3% 10px 3%;
-    border-top: 1px solid #ddd;
-    .file:nth-child(2n+1) {
-      background-color: whitesmoke;
-    }
-    .file {
-      padding: 5px 0;
+    cursor: pointer;
+    .label{
+      font-size: 18px;
       font-weight: 100;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      span {
-        color: red;
-      }
-      a {
-        text-decoration: none;
-        span {
-          color: black;
-        }
-      }
-    }
-  }
-  .validateFiles{
-    div{
-      cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 150px;
+      .input{
+        font-weight: 400;
+        padding: 0 4px;
+        input{
+          display: none;
+        }
+        color: green;
+      }
     }
-    div:hover svg{
-      fill: red;
+    .files{
+      width: 94%;
+      margin: 0 3% 10px 3%;
+      border-top: 1px solid #ddd;
+      .file:nth-child(2n+1) {
+        background-color: whitesmoke;
+      }
+      .file {
+        padding: 5px;
+        font-weight: 100;
+        width: calc(100% - 10px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        span {
+          color: red;
+        }
+        a {
+          text-decoration: none;
+          span {
+            color: black;
+          }
+        }
+      }
     }
+    .validateFiles{
+      div{
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      div div:hover svg{
+        cursor: pointer;
+        fill: red;
+      }
+    }
+
+    .duplicateFiles{
+      a span{
+        color: black;
+      }
+      a:hover span{
+        color: green;
+        text-decoration: underline;
+      }
+    }
+
+  }
+  .dropArea{
+    border: 2px dashed green;
   }
 
-  .duplicateFiles{
-    a span{
-      color: black;
-    }
-    a:hover span{
-      color: green;
-      text-decoration: underline;
-    }
+  button{
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 30px;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 15px;
+    color: white;
+    background-color: grey;
+    cursor: not-allowed;
   }
-
-}
-.dropArea{
-  border: 2px dashed green;
+  .active{
+    cursor: pointer;
+    background: #009100;
+  }
+  .active:hover{
+    background: green;
+  }
 }

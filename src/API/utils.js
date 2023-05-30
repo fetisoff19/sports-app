@@ -85,7 +85,7 @@ export async function validateFiles(files) {
   return result
 }
 
-export async function addFiles(files) {
+export async function addFiles(files, setState) {
   let result = {};
   result.repeat = [];
   result.added = [];
@@ -101,6 +101,7 @@ export async function addFiles(files) {
         // console.log('Такая тренировка уже существует ' + cursor.key);
         repeat = true;
         result.repeat.push(cursor.value.id_workouts);
+        setState(prev => [...prev, false])
       }
     }
     if (repeat) continue
@@ -113,6 +114,7 @@ export async function addFiles(files) {
     const newRecId = await addWorkout(newWorkout, newWorkoutData);
     await db.get('workouts', newRecId);
     result.added.push(newWorkout);
+    setState(prev => [...prev, true])
   }
   return console.log(result)
 }
