@@ -67,21 +67,23 @@
         }
       }
 
-
       input {
         font-size: 16px;
         font-weight: 400;
-        margin-top: 30px;
         border: none;
         border-radius: 3px;
         padding: 5px 15px;
-        cursor: pointer;
+        cursor: not-allowed;
         font: 14px/22px 'Open Sans',  sans-serif;
         font-weight: 100;
-        background: #009100;
+        background-color: grey;
         color: white;
       }
-      input:hover{
+      .active{
+        cursor: pointer;
+        background: #009100;
+      }
+      .active:hover{
         background: green;
       }
     }

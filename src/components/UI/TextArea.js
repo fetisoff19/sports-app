@@ -33,9 +33,9 @@ const TextArea = ({text, id, styles, setState}) => {
   return (
     <div className={styles?.note}>
       <textarea
-        ref={ref} id="about" name="about"
+        ref={ref} id={id || "about"} name="about"
         minLength="10" maxLength="300"
-        defaultValue={value || dict.ui.placeholderNote[userLang]}
+        defaultValue={value || dict.title.placeholderNote[userLang]}
         onChange={handleChange}
         onFocus={() => setState && setState(true)}
         onBlur={() => setState && setState(false)}

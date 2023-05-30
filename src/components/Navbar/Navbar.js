@@ -27,7 +27,7 @@ const Navbar = () => {
         </NavLink>
         <NavLink to={'add'}  className={({ isActive, isPending }) =>
           isPending ? "pending" : isActive ? "active" : ""
-        }>{dict.ui.add[userLang]}</NavLink>
+        }>{dict.title.add[userLang]}</NavLink>
         <NavLink to={'settings'}  className={({ isActive, isPending }) =>
           isPending ? "pending" : isActive ? "active" : ""
         }>{dict.title.settings[userLang]}</NavLink>

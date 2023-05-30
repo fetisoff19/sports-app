@@ -2,13 +2,13 @@ import React, {useEffect} from 'react';
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import Exporting from 'highcharts/modules/exporting';
-import {chartsConfig} from "./config";
 import {getMinSec} from "../../API/functionsDate&Values";
-import {dict, userLang} from "../../config/config";
+import {dict, userLang, chartsConfig} from "../../config/config";
 
 Exporting(Highcharts);
 
 const Charts = props => {
+
   useEffect(() => {
     return () => {
       while (Highcharts.charts.length > 0) {
@@ -16,7 +16,6 @@ const Charts = props => {
       }
     }
   },[])
-
 
   const options = {
     series: [{
@@ -55,14 +54,14 @@ const Charts = props => {
           y: 1000,
         },
         // theme: {
-        //   fill: chartsConfig[props.name].themeLightBG,
+        //   fill: config[props.name].themeLightBG,
         //     stroke: 'silver',
         //     states: {
         //     hover: {
-        //       fill: chartsConfig[props.name].themeColor,
+        //       fill: config[props.name].themeColor,
         //         style: {
         //         display: 'none',
-        //           color: chartsConfig[props.name].themeLightBG,
+        //           color: config[props.name].themeLightBG,
         //       }
         //     }
         //   }
@@ -77,7 +76,7 @@ const Charts = props => {
     },
     title: {
       enabled: false,
-      text: '&#9900' + ' ' + chartsConfig[props.name].title,
+      text: '&#9900' + ' ' + dict.fields[chartsConfig[props.name].title][userLang],
         align: 'left',
         x: - 10,
         y: 30,
@@ -126,12 +125,12 @@ const Charts = props => {
       value: props.data.avg ? props.data.avg : null,
       dashStyle: 'shortdash',
       label: {
-        text: `${chartsConfig[props.name].plotLinesText} 
+        text: `${chartsConfig[props.name].plotLinesText && dict.fields[chartsConfig[props.name].plotLinesText][userLang]} 
           ${props.name === 'pace'
             ? getMinSec(props.data.avg) : props.data.avg} 
           ${props.sport === 'running' && props.name === 'cadence' 
-            ? chartsConfig[props.name].plotLinesTextValueRunning
-            : chartsConfig[props.name].plotLinesTextValue}`,
+            ? dict.units[chartsConfig[props.name].plotLinesTextValueRunning][userLang]
+            : dict.units[chartsConfig[props.name].plotLinesTextValue][userLang]}`,
         align: 'right',
         x: - 5,
         y: 15,

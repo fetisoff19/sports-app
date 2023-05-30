@@ -1,7 +1,6 @@
 import React from 'react';
 import {getHourMinSec, getMinSec} from "../../../API/functionsDate&Values";
-import {dict, userLang} from "../../../config/config";
-import {chartsConfig} from "../../HighCharts/config";
+import {dict, userLang, chartsConfig} from "../../../config/config";
 
 const RefreshValuesFromCharts = (props) => {
   let tbody = props.charts.map(item => {
@@ -16,12 +15,12 @@ const RefreshValuesFromCharts = (props) => {
     }
   )
   tbody.push(
-    <td key={'distance'} style={{color: 'orange'}}>
+    <td key={'distance'} style={{color: 'orange', minWidth: 75}}>
       {Number.isInteger(props.index)
         ? props.data[props.charts[0]].data[props.index][0]
         : '--'}
     </td>,
-    <td key={'time'} style={{color: 'gray'}}>
+    <td key={'time'} style={{color: 'gray', minWidth: 85}}>
       {Number.isInteger(props.index)
         ? getHourMinSec(props.time[props.index][0])
         : '--'}

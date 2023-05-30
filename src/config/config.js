@@ -1,9 +1,8 @@
 import {convertDistance, convertPace, convertSpeed, doubleValue, getHourMinSec} from "../API/functionsDate&Values";
 import React from "react";
-import NonValidateFile from "../components/AddWorkouts/components/NonValidateFile";
 
 export let userLang = 'ru';
-export const changeLanguage = b => b ? userLang = b : null;
+export const changeLanguage = l => l ? userLang = l : null;
 
 export const dict = {
   fields: {
@@ -31,13 +30,12 @@ export const dict = {
     avgPower: {ru: 'Средняя мощность', en: 'Average power'},
     maxPower: {ru: 'Макс. мощность', en: 'Maximum power'},
     normalizedPower:  {ru: 'Нормализованная мощность', en: 'Normalized power',},
-    // hr: {ru: 'Пульс', en: 'Heart rate'},
+    powerCurve: {ru: 'Кривая мощности', en: 'Power curve'},
     heartRate: {ru: 'Пульс', en: 'Heart rate'},
     minHeartRate: {ru: 'Мин. пульс', en: 'Minimum HR'},
     avgHeartRate: {ru: 'Средний пульс', en: 'Average HR'},
     maxHeartRate: {ru: 'Макс. пульс', en: 'Maximum HR'},
     cadence: {ru: 'Каденс', en: 'Cadence'},
-    // cadenceCycling: {ru: 'Каденс', en: 'Cadence'},
     cadenceRun: {ru: 'Каденс', en: 'Cadence'},
     avgCadence: {ru: 'Средний каденс', en: 'Average cadence'},
     maxCadence: {ru: 'Макс. каденс', en: 'Average cadence'},
@@ -55,6 +53,7 @@ export const dict = {
     temperature: {ru: 'Температура', en: 'Temperature',},
     other: {ru: 'Другое', en: 'Other',},
   },
+
   units: {
     seconds: {ru: 'Секунды', en: 'Seconds'},
     s: {ru: 'с', en: 's'},
@@ -70,38 +69,27 @@ export const dict = {
     degreeCelsius: {ru: '°C', en: '°C'},
     days: {ru: 'дней', en: 'day(s)'},
   },
+
   sports: {
     cycling: {ru: 'Велоспорт', en: 'Cycling'},
     running: {ru: 'Бег', en: 'Running'},
     walking: {ru: 'Прогулка', en: 'Walking',},
     swimming: {ru: 'Плавание', en: 'Swimming',}
   },
-  ui: {
-    default: {ru: 'По умолчанию', en: 'Default',},
-    smoothing: {ru: 'Сглаживание', en: 'Smoothing'},
-    createTraining: {ru: 'Создание тренировки', en: 'Create workout'},
-    editTraining: {ru: 'Изменение тренировки', en: 'Edit workout'},
-    placeholderText: {ru: 'Необходимо заполнить'},
-    placeholderTime: {ru: 'чч:мм', en: 'hh:mm'},
-    placeholderDistance: {ru: 'км', en: 'km'},
-    placeholderNote: {ru: 'О тренировке', en: 'About workout',},
-    close: {ru: 'Закрыть', en: 'Close',},
-    save: {ru: 'Сохранить', en: 'Save',},
-    edit: {ru: 'Изменить', en: 'Edit',},
-    add: {ru: 'Добавить', en: 'Add'},
-    view: {ru: 'Показать', en: 'View',},
-    delete: {ru: 'Удалить', en: 'delete'},
-    loading: {ru: 'Загрузка...', en: 'Loading...'},
-    download: {ru: 'Загрузить', en: 'Download'},
-    error: {ru: 'Произошла ошибка', en: 'Error'},
-  },
 
   title: {
+    placeholderNote: {ru: 'О тренировке', en: 'About workout',},
+    save: {ru: 'Сохранить', en: 'Save',},
+    error: {ru: 'Произошла ошибка', en: 'Error'},
+    add: {ru: 'Добавить', en: 'Add'},
+    loading: {ru: 'Загрузка...', en: 'Loading...'},
+    smoothing: {ru: 'Сглаживание', en: 'Smoothing'},
+    download: {ru: 'Загрузить', en: 'Download'},
     settings: {ru: 'Настройки', en: 'Settings'},
     activities: {ru: 'Тренировки', en: 'Activities'},
     all: {ru: 'Все', en: 'All'},
     about: {ru: 'О проекте', en: 'About'},
-    add: {ru: 'Добавить', en: 'Add'},
+    addWorkouts: {ru: 'Добавить занятия', en: 'Add workouts'},
     dashBoard: {ru: 'Панель управления', en: 'Dashboard'},
     appLanguage: {ru: 'Язык приложения', en: 'App language'},
     title: {ru: 'Название', en: 'Title'},
@@ -109,19 +97,10 @@ export const dict = {
     workouts: {ru: 'Тренировки', en: 'Workouts'},
     stats: {ru: 'Статистика', en: 'Stats'},
     notes: {ru: 'Заметки', en: 'Notes'},
-    analytics: {ru: 'Аналитика за период', en: 'Analytics for the period'},
     powerCurve: {ru: 'Кривая мощности', en: 'Power curve'},
-    hideMap: {ru: 'Скрыть карту', en: 'Hide map'},
-    showMap: {ru: 'Показать карту', en: 'Show map'},
-    anchorMap: {ru: 'Закрепить карту', en: 'Anchor the map'},
-    zoomIn: {ru: 'Приблизить', en: 'Zoom in'},
-    zoomOut: {ru: 'Отдалить', en: 'Zoom out'},
-    left: {ru: 'Левее', en: 'Left'},
-    right: {ru: 'Правее', en: 'Right'},
     resetZoom: {ru: 'Сбросить', en: 'Reset'},
     goToDashboard: {ru: 'Перейти на главную страницу', en: 'Go to main page'},
     pageNotFound: {ru: 'Упс, страница не найдена', en: 'Oops, page not found!'},
-    phraseValueBetter: {ru: 'больше среднего значения на ', en: 'better of the average value on'},
     out: {ru: 'Выйти', en: 'Out'},
     indoorWorkout:{ru: 'Занятие в помещении', en: 'Indoor workout',},
     info1: {ru: 'Используй стрелки на клавиатуре ' +
@@ -152,7 +131,7 @@ export const dict = {
     footer3: {ru: 'менее',
       en: 'перевести на иностранный'
     },
-    footer4: {ru: ' % от выделенной браузером памяти.',
+    footer4: {ru: '% от выделенной браузером памяти.',
       en: 'перевести на иностранный'
     },
     settingInfo: {
@@ -167,11 +146,12 @@ export const dict = {
     duplicateFile: {ru: 'Этот файл уже загружен',
       en: 'This file has already been uploaded'},
     more: {ru: 'Подробнее', en: 'More'},
-    add1: {ru: 'Перетащите файлы (в формате .fit) или нажмите',
+    add1: {ru: 'Перетяните файлы (в формате .fit) или нажмите',
       en: 'Drop files here or'},
     add2: {ru: 'для выбора', en: 'to select'},
     browse: {ru: ' Обзор', en: 'Browse'},
   },
+
   month:{
     0: {ru: 'Января', en: 'January'},
     1: {ru: 'Февраля', en: 'February'},
@@ -313,3 +293,90 @@ export let statsFields = {
     unit: null,
   }
 }
+
+export const chartsConfig = {
+  speed: {
+    title: 'speed',
+    plotLinesText: 'avgSpeed',
+    plotLinesTextValue: 'kmph',
+    lineColor: '#11a9ed',
+    reversed: false,
+
+  },
+  pace: {
+    title: 'pace',
+    plotLinesText: 'avgPace',
+    plotLinesTextValue: 'pace',
+    lineColor: '#11a9ed',
+    reversed: true,
+  },
+  power: {
+    title: 'power',
+    plotLinesText: 'avgPower',
+    plotLinesTextValue: 'w',
+    lineColor: '#6bc531',
+    reversed: false,
+  },
+  heartRate: {
+    title: 'heartRate',
+    plotLinesText: 'avgHeartRate',
+    plotLinesTextValue: 'bpm',
+    lineColor: '#ff0035',
+    reversed: false,
+  },
+  cadence: {
+    title: 'cadence',
+    plotLinesText: 'avgCadence',
+    plotLinesTextValue: 'cadenceCycling',
+    plotLinesTextValueRunning: 'cadenceRun',
+    lineColor: '#c74cb1',
+    reversed: false,
+  },
+  altitude: {
+    title: 'altitude',
+    plotLinesText: 'avgAltitude',
+    plotLinesTextValue: 'm',
+    lineColor: '#750bc4',
+    reversed: false,
+  },
+  powerCurve: {
+    title: 'powerCurve',
+    plotLinesTextValue: 'w',
+    lineColor: '#02afaf',
+    reversed: false,
+    formatter: function () {
+      let x = this.x;
+      if (x < 60) return `${x}${dict.units.s[userLang]}<br>${this.y} ${dict.units.w[userLang]}`
+      else
+      {
+        x = getHourMinSec(this.x)
+        return `${x}<br>${this.y}${dict.units.w[userLang]}`;
+      }
+    },
+    options: {
+      xAxis: {
+        tickWidth: 1,
+        tickLength: 0,
+        minorTickPosition: 'outside',
+        showFirstLabel: true,
+        labels: {
+          formatter: function () {
+            if (this.value < 60) return this.value + dict.units.s[userLang];
+            else return getHourMinSec(this.value)
+          },
+          enabled: true,
+          y: 12,
+        },
+        min: 1,
+      }
+    }
+  },
+  powerCurveAllTime: {
+    title: 'powerCurve',
+    plotLinesText: '',
+    plotLinesTextValue: 'w',
+    lineColor: '#2fa65a',
+    reversed: false,
+  },
+}
+

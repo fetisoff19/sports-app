@@ -6,13 +6,11 @@ import AppLoader from "../Loaders/AppLoader.jsx";
 import Main from "../Main/Main.jsx";
 
 const AppRouter = () => {
-  const {auth, loading, error} = useContext(AppContext);
+  const {auth, loading,} = useContext(AppContext);
 
   return (
     loading
     ? <AppLoader/>
-     // : error
-     //    ? <h1>Ошибкааа</h1>
     : auth
     ? (
       <Routes>

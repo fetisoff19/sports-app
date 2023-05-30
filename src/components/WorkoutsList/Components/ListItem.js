@@ -1,7 +1,6 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {dict, userLang} from "../../../config/config";
 import {deleteWorkout} from "../../../API/db";
-import AppContext from "../../../context/AppContext";
 import BlockMetricContainer from "./BlockMetricContainer";
 import ChangeName from "../../UI/ChangeName";
 import styles from '../styles.modules'
@@ -9,9 +8,7 @@ import Delete from "../../UI/svgComponents/Delete";
 import SportIcon from "../../UI/SportIcon.js";
 
 
-const ListItem = ({data}) => {
-  const {setRandom} = useContext(AppContext)
-
+const ListItem = ({data, setTrainings, setSortedData, index, i}) => {
   return (
     <li className={styles.listItem}>
       <div className={styles.xsBlock + ' ' +  styles.unit}  key={data.id}>
@@ -34,8 +31,14 @@ const ListItem = ({data}) => {
       <BlockMetricContainer data={data}/>
       <div key={Math.random()} >
       <div className={styles.xsBlock}
-        onClick={(e) => {
-            deleteWorkout(+data.id, setRandom)
+        onClick={() => {
+            deleteWorkout(+data.id)
+              .then(() => {
+                setTrainings(prev => [...prev.slice(0, index),
+                  ...prev.slice(index + 1)]);
+                setSortedData(prev => [...prev.slice(0, i),
+                  ...prev.slice(i + 1)]);
+              })
           }}>
         <Delete className={styles.delete} />
       </div>

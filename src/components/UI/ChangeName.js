@@ -28,6 +28,7 @@ const ChangeName = ({data, isLink, styles, setState}) => {
     className={disabled ? (styles?.input + ' ' +  styles?.read) : (styles?.input + ' ' +  styles?.edit)}
     disabled={disabled}
     type="text"
+    id={data?.id + 'input'}
     value={value}
     size={value.toString().length || 1}
     autoFocus={true}

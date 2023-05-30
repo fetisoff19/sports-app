@@ -116,7 +116,6 @@ export async function addFiles(files, setState) {
     result.added.push(newWorkout);
     setState(prev => [...prev, true])
   }
-  return console.log(result)
 }
 
 export async function addFitFile(e) {

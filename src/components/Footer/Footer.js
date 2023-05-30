@@ -20,10 +20,10 @@ const Footer = () => {
     <footer>
       <div>
         {loading && state ?
-          dict.ui.loading[userLang]
+          dict.title.loading[userLang]
           : (dict.title.footer1[userLang] + state[0]
           + dict.title.footer2[userLang] + (state[1] ? state[1]
-            : (dict.title.footer3[userLang] + ' 1 '))
+            : (dict.title.footer3[userLang] + ' 1'))
             + dict.title.footer4[userLang])
         }
         </div>

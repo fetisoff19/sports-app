@@ -43,7 +43,7 @@ export async function addWorkout(newWorkout, newWorkoutData) {
   }
 }
 
-export async function deleteWorkout(id, setRandom) {
+export async function deleteWorkout(id) {
   const tx = db.transaction(['workouts', 'workoutsData'], 'readwrite');
   const workoutsOS = tx.objectStore('workouts');
   const workoutsDataOS = tx.objectStore('workoutsData');
@@ -53,12 +53,10 @@ export async function deleteWorkout(id, setRandom) {
     await workoutsDataOS.delete(id);
     await tx.done;
     console.log('успешно удалено');
-    setRandom(Math.random());
   }
   catch(err) {
     console.error('ошибка', err.message);
   }
-
 }
 
 //ф-я отображения размера локального хранилища

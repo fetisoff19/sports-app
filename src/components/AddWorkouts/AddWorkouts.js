@@ -13,11 +13,6 @@ export default function AddWorkouts() {
   const [drag, setDrag] = useState(false);
   const inputHiddenRef = useRef()
 
-  useEffect(() => {
-    return upLoadedFiles?.length === validatedFiles?.validate?.length
-    ? () => setRandom(Math.random()) : () => {};
-  }, [upLoadedFiles])
-
   function dragStartHandler(e) {
     e.preventDefault();
     setDrag(true);
@@ -49,9 +44,14 @@ export default function AddWorkouts() {
       : null
   }
 
+  useEffect(() => {
+    return upLoadedFiles?.length === validatedFiles?.validate?.length
+      ? () => setRandom(Math.random()) : () => {};
+  }, [upLoadedFiles])
+
   return (
     <div className={'content ' + styles?.content}>
-      <h1>Добавить занятия</h1>
+      <h1>{dict.title.addWorkouts[userLang]}</h1>
         <div className={drag ? (styles.drop + ' ' + styles.dropArea) : styles.drop}
           onDragStart={e => dragStartHandler(e)}
           onDragLeave={e => dragLeaveHandler(e)}
@@ -75,7 +75,7 @@ export default function AddWorkouts() {
         <button
           className={validatedFiles?.validate?.length ? styles.active : null}
           onClick={() => addFiles(validatedFiles?.validate, setUpLoadedFiles)}>
-          {dict.ui.download[userLang]}
+          {dict.title.download[userLang]}
         </button>
     </div>
   );

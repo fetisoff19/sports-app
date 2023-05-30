@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import AppContext from "../../context/AppContext.js";
 import ListItem from "./Components/ListItem.js";
 import FilterBar from "./Components/FilterBar";
@@ -10,8 +10,9 @@ import NoWorkouts from "../NoWorkouts/NoWorkouts";
 const fields = ['id', 'sport', 'timestamp', 'name',  'totalDistance', 'totalTimerTime', 'enhancedAvgSpeed', 'totalAscent', 'avgHeartRate', ' '];
 
 export function WorkoutsList() {
-  const {workouts} = useContext(AppContext)
+  const {workouts, setRandom} = useContext(AppContext)
   const [order, setOrder] = useState(true);
+  const [changed, setChanged] = useState(false);
   const [status, setStatus] = useState(fields.map(() => {return {active: false}}));
   const chooseItem = (id) => {
     const newArr = status.map((item, i) =>
@@ -31,7 +32,9 @@ export function WorkoutsList() {
     return result
   }, [workouts]);
 
-  const [sortedData, setSortedData] = useState(data);
+  const [trainings, setTrainings] = useState(data)
+  const [sortedData, setSortedData] = useState(trainings);
+
 
   function sort(key){
     let newItems = sortedData.concat();
@@ -51,8 +54,8 @@ export function WorkoutsList() {
   function filterSport(sport) {
     setStatus(fields.map(() => {return {active: false}}));
     sport === 'all'
-      ? setSortedData(data)
-      : setSortedData(data.filter(item => item.sport === sport));
+      ? setSortedData(trainings)
+      : setSortedData(trainings.filter(item => item.sport === sport));
   }
 
   function handleTitleClick(item,index){
@@ -60,18 +63,30 @@ export function WorkoutsList() {
     chooseItem(index)
   }
 
+  useEffect(() => {
+    return data?.length !== trainings?.length
+      ? () => setChanged(true) : () => {};
+  },[trainings])
+
+  useEffect(() => {
+    return changed ? () => setRandom(Math.random()) : () => {};
+  },[changed])
+
   let list = sortedData
     .map((item, index) =>
-      <ListItem key={index} data={item}/>)
+      <ListItem
+        key={index} i={index} data={item}
+        index={trainings.findIndex(elem => elem.id === item.id)}
+        setSortedData={setSortedData} setTrainings={setTrainings}/>)
 
-    return (
-      workouts.length ?
-      <div className={styles.container}>
-        <h1>{dict.title.activities[userLang]}</h1>
-        <FilterBar data={data} filterSport={filterSport}/>
-        <Titles status={status} f={handleTitleClick}/>
-        <ul>{list}</ul>
-      </div>
-      : <NoWorkouts/>
-    )
+  return (
+    workouts.length ?
+    <div className={styles.container}>
+      <h1>{dict.title.activities[userLang]}</h1>
+      <FilterBar data={data} filterSport={filterSport}/>
+      <Titles status={status} f={handleTitleClick}/>
+      <ul>{list}</ul>
+    </div>
+    : <NoWorkouts/>
+  )
 }

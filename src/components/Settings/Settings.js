@@ -6,15 +6,18 @@ import Question from "../UI/svgComponents/Question";
 
 const Settings = () => {
   const {settings, setSettings} = useContext(AppContext)
-  const [smoothing, setSmoothing] = useState(settings?.smoothing || null);
-  const [language, setLanguage] = useState(settings?.language || null);
+  const [smoothing, setSmoothing] = useState(settings.smoothing);
+  const [language, setLanguage] = useState(settings.language);
 
   function handlerChange(e) {
     e.preventDefault();
-    setSettings(prev => ({...prev,
-      language: language || prev.language,
-      smoothing: smoothing || prev.smoothing,
-    }))
+    language && localStorage.setItem('language', language.toString());
+    smoothing && localStorage.setItem('smoothing', smoothing.toString());
+    language !== settings.language || smoothing !== settings.smoothing
+      ? setSettings(prev => ({...prev,
+        language: language || prev.language,
+        smoothing: smoothing || prev.smoothing,}))
+      : null
   }
   //сделать запрос на сервер, чтобы получить настройки пользователя
   return (
@@ -23,9 +26,10 @@ const Settings = () => {
       <form className={styles.form} action="" onSubmit={handlerChange}>
         <div>
           <div>
-            <label htmlFor="smoothing">{dict.ui.smoothing[userLang]}</label>
-            <select name="value" id="smoothing" onChange={(e) => setSmoothing(e.target.value)}>
-              <option selected value="8">{dict.ui.default[userLang]} 8</option>
+            <label htmlFor="smoothing">{dict.title.smoothing[userLang]}</label>
+            <select
+              defaultValue={settings?.smoothing || '8'} name="smoothing" id="smoothing"
+              onChange={(e) => setSmoothing(e.target.value)}>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="4">4</option>
@@ -42,14 +46,20 @@ const Settings = () => {
           </div>
           <div>
             <label htmlFor="language">{dict.title.appLanguage[userLang]}</label>
-            <select name="value" id="language" onChange={(e) => setLanguage(e.target.value)}>
-              <option selected={settings?.language === 'en'} value='en'>English</option>
-              <option selected={settings?.language === 'ru'} value='ru'>Русский</option>
+            <select
+              defaultValue={settings?.language}
+              name="language" id="language"
+              onChange={(e) => setLanguage(e.target.value)}>
+              <option value='en'>English</option>
+              <option value='ru'>Русский</option>
             </select>
             <div className={styles.info}/>
           </div>
           <div>
-            <input type="submit" value={dict.ui.save[userLang]} />
+            <input
+              type="submit" value={dict.title.save[userLang]}
+              className={(language !== settings.language
+                || smoothing !== settings.smoothing) ? styles.active : null}/>
             <div className={styles.info}/>
           </div>
         </div>
