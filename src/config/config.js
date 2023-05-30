@@ -78,6 +78,8 @@ export const dict = {
   },
 
   title: {
+    inDeveloping: {ru: 'Статистика, графики\nВ разработке...',
+      en: 'Stats, charts\nIn developing...',},
     placeholderNote: {ru: 'О тренировке', en: 'About workout',},
     save: {ru: 'Сохранить', en: 'Save',},
     error: {ru: 'Произошла ошибка', en: 'Error'},
@@ -90,6 +92,13 @@ export const dict = {
     all: {ru: 'Все', en: 'All'},
     about: {ru: 'О проекте', en: 'About'},
     addWorkouts: {ru: 'Добавить занятия', en: 'Add workouts'},
+    addActivities: {ru: 'Добавь занятия!', en: 'Add activities!'},
+    fakeAuth: {ru: 'Фейковая авторизация', en: 'Fake authorization'},
+    signIn: {ru: 'Войти', en: 'Sign in'},
+    login: {ru: 'Логин', en: 'Login'},
+    enterLogin: {ru: 'Введите логин', en: 'Enter a login'},
+    password: {ru: 'Пароль', en: 'Password'},
+    enterPassword: {ru: 'Введите пароль', en: 'Enter a password'},
     dashBoard: {ru: 'Панель управления', en: 'Dashboard'},
     appLanguage: {ru: 'Язык приложения', en: 'App language'},
     title: {ru: 'Название', en: 'Title'},
@@ -106,41 +115,41 @@ export const dict = {
     info1: {ru: 'Используй стрелки на клавиатуре ' +
         'для управления графиками, ' +
         'а также пробел или Enter для сброса зума. Данные на графиках сжаты в '
-      , en: 'перевести на иностранный'},
+      , en: 'Use the arrow keys on your keyboard to manage charts, ' +
+        'and space or Enter to reset the zoom. ' +
+        'The data on the graphs is compressed by '},
     info2: {ru: ' раз. Изменить значение можно в настройках',
-      en: 'перевести на иностранный'},
+      en: ' times. You can change the value in the settings'},
     aboutApp1:{
       ru: 'Приложение создано в образовательных целях.\n' +
         'Просматривай активности, загрузив свои треки в расширении .fit' +
         ' или скачай мои файлы по ',
-      en: 'перевести на иностранный'
-    },
+      en: 'The app was created for educational purposes.\n' +
+        'View activities by uploading your tracks in the .fit extension' +
+        ' or download my files from ',},
     aboutApp2:{
       ru:
         '\nСтабильная поддержка следующих видов спорта: велоспорт, бег. \n' +
         'Проверено на треках с устройств: garmin, wahoo, bryton, lezyne. \n' +
         'Репозиторий: ',
-      en: 'перевести на иностранный'
-    },
-    footer1: {ru: 'Размер базы: ',
-      en: 'перевести на иностранный'
-    },
-    footer2: {ru: ' Мб. Занимает ',
-      en: 'перевести на иностранный'
-    },
-    footer3: {ru: 'менее',
-      en: 'перевести на иностранный'
-    },
+      en: '\nStable support for the following sports: cycling, running. \n' +
+        'Tested on records from devices: garmin, wahoo, bryton, lezyne. \n' +
+        'Repository: ',},
+    link:{ru: 'ссылке', en: 'the link',},
+    footer1: {ru: 'Размер базы: ', en: 'Database size: '},
+    footer2: {ru: ' Мб. Занимает ', en: ' Mb. Takes '},
+    footer3: {ru: 'менее', en: 'up less than'},
     footer4: {ru: '% от выделенной браузером памяти.',
-      en: 'перевести на иностранный'
-    },
+      en: '% of the memory allocated by the browser'},
     settingInfo: {
       ru: 'Значение величины сглаживания: ' +
         '\n1 - точки на графиках соответствуют точкам трека с твоего устройства,' +
         '\n16 - отображается усредненное значение за 16 секунд записи трека.' +
         '\nЕсли производительность устройства недостаточна, увеличь значение',
-      en: 'перевести на иностранный'
-    },
+      en: 'The value of the smoothing value is: ' +
+        '\n1 - points on the graphs correspond to track points from your device,' +
+        '\n16 - displays the average value for 16 seconds of track recording.' +
+        '\nIf the performance of the device is insufficient, increase the value',},
     nonValidateFile: {ru: 'Тип импортируемого файла не поддерживается',
      en: 'Imported file type is not supported'},
     duplicateFile: {ru: 'Этот файл уже загружен',

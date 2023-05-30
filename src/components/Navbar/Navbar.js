@@ -35,7 +35,7 @@ const Navbar = () => {
           isPending ? "pending" : isActive ? "active" : ""
         }>{dict.title.about[userLang]}</NavLink>
       </nav>
-      {auth ? <a onClick={logout}>{dict.title.out[userLang]}</a> : null}
+      {auth ? <a className={'out'} onClick={logout}>{dict.title.out[userLang]}</a> : null}
     </header>
   );
 };

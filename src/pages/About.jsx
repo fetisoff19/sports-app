@@ -22,7 +22,7 @@ const About = () => {
         <p>
           {dict.title.aboutApp1[userLang]}
           <a href='https://drive.google.com/drive/folders/1NCrcDjoPpgEUH09G-hz3cVeMb9vs1rhc?usp=drive_link'>
-            по ссылке.
+          {dict.title.link[userLang] + '.'}
           </a>
           {dict.title.aboutApp2[userLang]}
           <a href='https://github.com/fetisoff19/sports-app'>github.com/fetisoff19/sports-app</a>

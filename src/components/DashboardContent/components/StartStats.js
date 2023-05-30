@@ -1,9 +1,10 @@
 import React from 'react';
+import {dict, userLang} from "../../../config/config";
 
 const StartStats = () => {
   return (
-      <div>
-        Статистика, графики
+      <div style={{fontWeight: 100, fontStyle: 'italic', whiteSpace: "pre-wrap"}}>
+        {dict.title.inDeveloping[userLang]}
       </div>
 
   );

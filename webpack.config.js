@@ -39,10 +39,10 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    assetModuleFilename: 'assets/[hash][ext][query]',
+    // assetModuleFilename: 'assets/[hash][ext][query]',
     clean: true,
     filename: 'bundle.js',  // добавил
-    publicPath: '/',        //
+    // publicPath: './',        //
   },
   experiments: {
     topLevelAwait: true

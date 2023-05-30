@@ -4,7 +4,6 @@ import View from "../pages/View";
 import Add from "../pages/Add";
 import Dashboard from "../pages/Dashboard.jsx";
 import Login from "../pages/Login";
-import Error from "../pages/Error";
 import SettingsPage from "../pages/SettingsPage.jsx";
 import PageNotFound from "../pages/PageNotFound.jsx";
 
@@ -15,6 +14,7 @@ export let privateRoutes = [
   {path: 'workouts/:id', element: View},
   {path: 'about', element: About},
   {path: 'settings', element: SettingsPage},
+  {path: '/sports-app', navigate: true,},
   {path: "*", element: PageNotFound},
 ];
 
@@ -22,5 +22,6 @@ export let publicRoutes = [
   {path: '/', element: Login},
   {path: '/login', element: Login},
   {path: '/about', element: About},
+  {path: '/sports-app', navigate: true,},
   {path: "*", element: Login},
 ];

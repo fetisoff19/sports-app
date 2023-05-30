@@ -33,7 +33,7 @@ const TextArea = ({text, id, styles, setState}) => {
   return (
     <div className={styles?.note}>
       <textarea
-        ref={ref} id={id || "about"} name="about"
+        ref={ref} id={'about' + id}
         minLength="10" maxLength="300"
         defaultValue={value || dict.title.placeholderNote[userLang]}
         onChange={handleChange}
@@ -44,11 +44,11 @@ const TextArea = ({text, id, styles, setState}) => {
       ? null
         : <div className={styles?.buttons}>
             <div className={styles?.ok} onClick={saveNote}>
-              <Ok  fill={'grey'} height={'20px'} width={'20px'}/>
+              <Ok fill={'grey'} height={'20px'} width={'20px'}/>
             </div>
             <div className={styles?.close} onClick={() => {
               setValue(text);
-              ref.current.value = text;
+              ref.current.value = text || dict.title.placeholderNote[userLang];
             }}>
               <Close fill={'grey'} height={'20px'} width={'20px'}/>
             </div>

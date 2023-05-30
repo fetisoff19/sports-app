@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import AppContext from "../../context/AppContext.js";
 import StartStats from "./components/StartStats";
 import Workout from "./components/Workout";
@@ -36,13 +36,13 @@ const DashboardContent = () => {
             <StartStats/>
           </div>
         </div>
-          <div>
-            {trainings.map((item, index) => <Workout key={index} data={item}/>)}
-            <div ref={childRef}></div>
-            {workouts.length !== trainings.length
-              ? <div className={styles.loader}><AppLoader/></div>
-              : null}
-          </div>
+        <div>
+          {trainings.map((item, index) => <Workout key={index} data={item}/>)}
+          <div ref={childRef}></div>
+          {workouts.length !== trainings.length
+            ? <div className={styles.loader}><AppLoader/></div>
+            : null}
+        </div>
       </div>
       : <NoWorkouts childRef={childRef}/> }
     </div>
