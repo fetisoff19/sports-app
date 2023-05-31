@@ -1,5 +1,6 @@
 .container{
   width: 1300px;
+  height: 100%;
   //padding: 0 20vh;
   margin: 0 auto;
   //display: grid;
@@ -14,6 +15,20 @@ ul {
   padding: 0;
   margin: 0;
 }
+
+.up{
+  position: sticky;
+  top : 0;
+  background: white;
+}
+.down{
+  overflow: auto;
+}
+
+//.down::-webkit-scrollbar {
+//  width: 10px;
+//}
+
 
 .titles {
   display: flex;
@@ -149,4 +164,3 @@ ul {
   font-size: 16px;
   font-weight: 100;
 }
-

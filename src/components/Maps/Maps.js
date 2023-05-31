@@ -1,10 +1,17 @@
-import React, {useRef} from 'react';
+import React, {useMemo, useRef} from 'react';
 import {MapContainer, Marker, Polyline, TileLayer} from 'react-leaflet'
 import Leaflet from "leaflet";
 import "leaflet/dist/leaflet.css";
 import start from './icons/start.svg';
 import stop from './icons/stop.svg';
-import now from './icons/now.svg';
+import pizza from './icons/pizza.svg';
+import donut from './icons/donut.svg';
+import cone from './icons/cone.svg';
+import iceCream from './icons/iceCream.svg';
+import banana from './icons/banana.svg';
+import watermelon from './icons/watermelon.svg';
+import coffee from './icons/coffee.svg';
+import energyBottle from './icons/energyBottle.svg';
 
 const Maps = (props) => {
   const tileLayerRef = useRef(null);
@@ -20,6 +27,17 @@ const Maps = (props) => {
     i < 0 ? i = 0 : i;
     marketCoordinates = polylinePoints[i];
   }
+
+  const markers = [
+    <NewMarker position={marketCoordinates} icon={pizza} iconSize={[30, 30]} iconAnchor={[4, 28]}/>,
+    <NewMarker position={marketCoordinates} icon={donut} iconSize={[30, 30]} iconAnchor={[15, 14]}/>,
+    <NewMarker position={marketCoordinates} icon={watermelon} iconSize={[30, 30]} iconAnchor={[6, 26]}/>,
+    <NewMarker position={marketCoordinates} icon={energyBottle} iconSize={[30, 30]} iconAnchor={[4, 28]}/>,
+    <NewMarker position={marketCoordinates} icon={coffee} iconSize={[30, 30]} iconAnchor={[6, 28]}/>,
+    <NewMarker position={marketCoordinates} icon={banana} iconSize={[36, 36]} iconAnchor={[12, 28]}/>,
+  ]
+
+  const randomMarkerIndex = useMemo(() => Math.floor(Math.random() * markers.length), [])
 
   if (polylinePoints.length === 0) return;
   const startCoordinates = polylinePoints[0];
@@ -48,7 +66,7 @@ const Maps = (props) => {
 
       {props.markerStart ? <NewMarker position={startCoordinates} icon={start}/> : null}
       {props.markerEnd ? <NewMarker position={endCoordinates} icon={stop}/> : null}
-      {i ? <NewMarker position={marketCoordinates} icon={now} iconSize={[30, 30]} iconAnchor={[2, 28]}/> : null}
+      {i ? markers[randomMarkerIndex] : null}
       {props.button ? props.button : null}
       <Polyline pathOptions={polylineStyle}
                 positions={polylinePoints}/>
@@ -59,7 +77,6 @@ const Maps = (props) => {
 };
 
 export default Maps;
-
 
 function NewMarker({position, className, icon, iconSize, iconAnchor}) {
   const newIcon = new Leaflet.Icon({
@@ -77,3 +94,4 @@ function NewMarker({position, className, icon, iconSize, iconAnchor}) {
     </Marker>
   );
 }
+

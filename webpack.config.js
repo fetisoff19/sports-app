@@ -12,7 +12,8 @@ if (process.env.NODE_ENV === 'production') {
 
 const plugins = [
   new MiniCssExtractPlugin({
-    filename: '[name].[contenthash].css',
+    // filename: '[name].[contenthash].css',
+    filename: '[name].css',
   }),
   new HtmlWebpackPlugin({
     template: './src/index.html',
@@ -42,7 +43,7 @@ module.exports = {
     // assetModuleFilename: 'assets/[hash][ext][query]',
     clean: true,
     filename: 'bundle.js',  // добавил
-    // publicPath: './',        //
+    publicPath: '/',        //
   },
   experiments: {
     topLevelAwait: true

@@ -78,8 +78,12 @@ export const dict = {
   },
 
   title: {
-    inDeveloping: {ru: 'Статистика, графики\nВ разработке...',
-      en: 'Stats, charts\nIn developing...',},
+    deleteAll: {ru: 'Удалить всё', en: 'Delete all'},
+    yes: {ru: 'Да', en: 'Yes'},
+    no: {ru: 'Нет', en: 'No'},
+    deleteAllWorkouts: {ru: 'Удалить все тренировки?', en: 'Delete all workouts?'},
+    inDeveloping: {ru: 'Здесь будет статистика, графики\nВ разработке...',
+      en: 'There will be statistics, charts\nIn developing...',},
     placeholderNote: {ru: 'О тренировке', en: 'About workout',},
     save: {ru: 'Сохранить', en: 'Save',},
     error: {ru: 'Произошла ошибка', en: 'Error'},

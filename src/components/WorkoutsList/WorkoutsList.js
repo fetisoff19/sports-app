@@ -82,10 +82,14 @@ export function WorkoutsList() {
   return (
     workouts.length ?
     <div className={styles.container}>
-      <h1>{dict.title.activities[userLang]}</h1>
-      <FilterBar data={data} filterSport={filterSport}/>
-      <Titles status={status} f={handleTitleClick}/>
-      <ul>{list}</ul>
+      <div className={styles.up}>
+        <h1>{dict.title.activities[userLang]}</h1>
+        <FilterBar data={data} filterSport={filterSport}/>
+        <Titles status={status} f={handleTitleClick}/>
+      </div>
+      <div className={styles.down}>
+        <ul>{list}</ul>
+      </div>
     </div>
     : <NoWorkouts/>
   )
