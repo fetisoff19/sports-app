@@ -24,15 +24,26 @@ const Charts = props => {
       color: chartsConfig[props.name].lineColor,
       lineWidth: 1,
       marker: { radius: 1 },
+      zIndex: 2,
       point: {
         events:{
-          mouseOver: props.f && props?.mouseOver ? function (){
-            props.f(this, ...props.mouseOver)
+          mouseOver: props.addPolylinePowerCurve && props?.mouseOver ? function (){
+            props.addPolylinePowerCurve(this, ...props.mouseOver)
   } : null,
           mouseOut: props?.mouseOut,
         },
       },
-    }],
+    },
+    {
+      data: props.data2?.data,
+      name: props.name2 && null,
+      color: props.data2 && chartsConfig[props.name2].lineColor,
+      lineWidth: 1,
+      zIndex: 1,
+      marker: { radius: 1 },
+      },
+    ],
+
     accessibility: {
       enabled: false
     },
@@ -47,12 +58,9 @@ const Charts = props => {
         // styledMode: true,
         zoomType: 'x',
         resetZoomButton: {
-        position: {
-          // x: 0,
-          // y: -40,
-          x: 5000,
-          y: 1000,
-        },
+        position: props.data2
+          ? {x: - 1, y: 0,}
+          : {x: 5000, y: 1000,},
         // theme: {
         //   fill: config[props.name].themeLightBG,
         //     stroke: 'silver',
@@ -72,6 +80,35 @@ const Charts = props => {
       events: {
         selection: props.selection || null,
         load: props.setLoaded || null,
+        // render: function() {
+        //   let chart = this;
+        //
+        //   chart.renderer
+        //     .button("<<", 620, 40, () => refreshPosition (true, chart))
+        //     .attr({
+        //       zIndex: 3
+        //     })
+        //     .add();
+        //   chart.renderer
+        //     .button(">>", 660, 40, () => refreshPosition (false, chart))
+        //     .attr({
+        //       zIndex: 3
+        //     })
+        //     .add();
+        //   chart.renderer
+        //     .button("-", 620, 80, () => zoomOut(chart))
+        //     .attr({
+        //       zIndex: 3
+        //     })
+        //     .add();
+        //   chart.renderer
+        //     .button("+", 660, 80, () => zoomIn(chart))
+        //     .attr({
+        //       zIndex: 3
+        //     })
+        //     .add();
+        //
+        // }
       },
     },
     title: {
@@ -107,7 +144,7 @@ const Charts = props => {
     title: {
       enabled: false,
     },
-    min: props.data.data.min,
+    min: props.data.data.min || 0,
     labels: {
       align: 'left',
       x: 0,
@@ -150,7 +187,23 @@ const Charts = props => {
   },
     tooltip: {
       enabled: props.tooltip || false,
-      formatter: chartsConfig[props.name].formatter ? chartsConfig[props.name].formatter : null,
+      formatter: chartsConfig[props.name].formatter ? function (){
+        // const date = this.color !== chartsConfig[props.name].lineColor
+        //   ? props.powerCurveAllTimeMap.get(this.x).timestamp.toLocaleDateString() : null
+        return chartsConfig[props.name].formatter(this.x, this.y)
+       //  const date = this.color !== chartsConfig[props.name].lineColor
+       //    ? props.powerCurveAllTimeMap.get(this.x).timestamp.toLocaleDateString() : null;
+       //  const id = this.color !== chartsConfig[props.name].lineColor
+       //    ? props.powerCurveAllTimeMap.get(this.x).id : null
+       //
+       //  return `<span>
+       //  {chartsConfig[props.name].formatter(this.x, this.y)}
+       //  <a href={'/workouts/' + id}>{date}</a>
+       // </span>`
+        // return (<span>{chartsConfig[props.name].formatter(this.x, this.y)}
+        //   <Navigate to={'/workouts/' + id}>{date}</Navigate>
+        // </span>)
+      }  : null,
         backgroundColor: {
         linearGradient: [0, 0, 0, 60],
           stops: [

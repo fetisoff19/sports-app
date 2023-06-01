@@ -6,7 +6,7 @@ import start from './icons/start.svg';
 import stop from './icons/stop.svg';
 import pizza from './icons/pizza.svg';
 import donut from './icons/donut.svg';
-import cone from './icons/cone.svg';
+import now from './icons/now.svg';
 import iceCream from './icons/iceCream.svg';
 import banana from './icons/banana.svg';
 import watermelon from './icons/watermelon.svg';
@@ -66,7 +66,9 @@ const Maps = (props) => {
 
       {props.markerStart ? <NewMarker position={startCoordinates} icon={start}/> : null}
       {props.markerEnd ? <NewMarker position={endCoordinates} icon={stop}/> : null}
-      {i ? markers[randomMarkerIndex] : null}
+      {i ? ((props?.funnyMarkers && markers[randomMarkerIndex])
+        || <NewMarker position={marketCoordinates} icon={now}/>)
+        : null}
       {props.button ? props.button : null}
       <Polyline pathOptions={polylineStyle}
                 positions={polylinePoints}/>

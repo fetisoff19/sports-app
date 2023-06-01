@@ -82,6 +82,7 @@ export const dict = {
     yes: {ru: 'Да', en: 'Yes'},
     no: {ru: 'Нет', en: 'No'},
     deleteAllWorkouts: {ru: 'Удалить все тренировки?', en: 'Delete all workouts?'},
+    funnyMarkers: {ru: 'Забавные маркеры', en: 'Funny markers'},
     inDeveloping: {ru: 'Здесь будет статистика, графики\nВ разработке...',
       en: 'There will be statistics, charts\nIn developing...',},
     placeholderNote: {ru: 'О тренировке', en: 'About workout',},
@@ -357,15 +358,32 @@ export const chartsConfig = {
     plotLinesTextValue: 'w',
     lineColor: '#02afaf',
     reversed: false,
-    formatter: function () {
-      let x = this.x;
-      if (x < 60) return `${x}${dict.units.s[userLang]}<br>${this.y} ${dict.units.w[userLang]}`
+    formatter: function (x, y) {
+      if (x < 60) return `${x}${dict.units.s[userLang]}<br>${y} ${dict.units.w[userLang]}`
       else
       {
-        x = getHourMinSec(this.x)
-        return `${x}<br>${this.y}${dict.units.w[userLang]}`;
+        x = getHourMinSec(x)
+        return `${x}<br>${y}${dict.units.w[userLang]}`;
       }
     },
+    // formatter: function (x, y, date) {
+    //   if(date){
+    //     if (x < 60) return `${x}${dict.units.s[userLang]}<br>${y} ${dict.units.w[userLang]}<br>${date}`
+    //     else
+    //     {
+    //       x = getHourMinSec(x)
+    //       return `${x}<br>${y}${dict.units.w[userLang]}<br>${date}`;
+    //     }
+    //   }
+    //   else{
+    //     if (x < 60) return `${x}${dict.units.s[userLang]}<br>${y} ${dict.units.w[userLang]}`
+    //     else
+    //     {
+    //       x = getHourMinSec(x)
+    //       return `${x}<br>${y}${dict.units.w[userLang]}`;
+    //     }
+    //   }
+    // },
     options: {
       xAxis: {
         tickWidth: 1,
@@ -386,9 +404,9 @@ export const chartsConfig = {
   },
   powerCurveAllTime: {
     title: 'powerCurve',
-    plotLinesText: '',
+    // plotLinesText: '',
     plotLinesTextValue: 'w',
-    lineColor: '#2fa65a',
+    lineColor: 'rgb(90,90,90)',
     reversed: false,
   },
 }

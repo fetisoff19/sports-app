@@ -3,7 +3,14 @@ import useDB from "../../hooks/useDB";
 import {db} from "../../API/db.js";
 import Maps from "../Maps/Maps";
 import RefreshValuesFromCharts from "./components/RefreshValuesFromCharts";
-import {addPolylinePowerCurve, getIndex, handleKeyboardDown, resetZoom, setCharts} from "./functions/functions";
+import {
+  addPolylinePowerCurve,
+  getDataForPowerCurveAllTime,
+  getIndex,
+  handleKeyboardDown,
+  resetZoom,
+  setCharts
+} from "./functions/functions";
 import Highcharts from 'highcharts';
 import Charts from "../HighCharts/HighCharts";
 import AppContext from "../../context/AppContext.js";
@@ -43,7 +50,12 @@ const ViewWorkout = () => {
 
   async function getWorkout(){
       let result = await db.get('workoutsData', id);
-      let wt = await db.get('workouts', id);
+      let wt = await db.get('workouts', id)
+      wt.powerCurve ? await getDataForPowerCurveAllTime(wt.powerCurve)
+        .then(r => {
+          wt.powerCurveAllTime = r[0];
+          wt.powerCurveAllTimeMap = r[1];
+        }) : null;
       return result || wt ? {...result, workout: wt} : null;
   }
 
@@ -55,15 +67,19 @@ const ViewWorkout = () => {
     : null, [data]);
   let chartsNames = useMemo(() => charts ?
     charts.map(item => item.key) : null, [data]);
+  console.log(preparedData)
   let powerCurve = useMemo(() =>
     (preparedData && preparedData.charts.powerCurve ?
     <Charts
       key={id + 'charts'}
       data={preparedData.charts.powerCurve}
+      data2={preparedData.charts.powerCurveAllTime}
       name={'powerCurve'}
+      name2={'powerCurveAllTime'}
+      powerCurveAllTimeMap={preparedData.powerCurveAllTimeMap}
       style={{height: 210,  width: 700}}
       tooltip={true}
-      f={addPolylinePowerCurve}
+      addPolylinePowerCurve={addPolylinePowerCurve}
       mouseOver={[preparedData, setPolylinePowerCurve]}
       mouseOut={() => setPolylinePowerCurve([])}
       xAxis={{...chartsConfig.powerCurve.options.xAxis,
@@ -145,6 +161,7 @@ const ViewWorkout = () => {
           markerEnd={true}
           index={index}
           button={mapsButton}
+          funnyMarkers={settings.funnyMarkers}
         />
       </div> : null, [data, index, stickyMaps, polylinePowerCurve]);
 

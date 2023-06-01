@@ -5,11 +5,73 @@
     border: none;
     border-radius: 3px;
     padding: 5px 15px;
-    cursor: not-allowed;
+    //cursor: not-allowed;
     font: 14px/22px 'Open Sans',  sans-serif;
     font-weight: 100;
     background-color: grey;
     color: white;
+  }
+  .customInputLabel input{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .customInputLabel {
+    display: block;
+    position: relative;
+    padding-right: 35px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+  }
+  .customInput{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 24px;
+    width: 24px;
+    //border-radius: 12px;
+    //background-color: #e5e5e5;
+    border: 1px #e5e5e5 solid;
+    border-radius: 3px;
+
+  }
+  .customInputLabel:hover input ~ .customInput {
+    border-color: green;
+  }
+
+  .customInputLabel input:checked ~ .customInput {
+    background-color: #009100;
+  }
+  .customInputLabel input:checked ~ .customInput:hover {
+    background-color: green;
+  }
+
+  .customInput:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .customInputLabel input:checked ~ .customInput:after {
+    display: block;
+  }
+
+  .customInput:after {
+    left: 9px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
   }
   .active{
     cursor: pointer;
@@ -29,14 +91,12 @@
   width: 1300px;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
-  /* указываем z-индекс для корректного наслаивания */
   z-index: 1;
   transition: opacity 200ms ease-out;
   opacity: 1;
   .modal{
     position: absolute;
     min-width: 200px;
-    //height: 80px;
     top: calc(50% - 250px);
     left: calc(50% - 175px);
     border-radius: 4px;
@@ -71,13 +131,10 @@
   }
 }
 
-
 .form {
   div {
     width: 500px;
     display: flex;
-    //justify-content: left;
-    //align-items: center;
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;

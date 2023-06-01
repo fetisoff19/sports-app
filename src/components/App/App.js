@@ -14,6 +14,7 @@ export function App() {
   const [settings, setSettings] = useState({
     language: localStorage.getItem('language') || 'ru',
     smoothing: localStorage.getItem('smoothing') || 8,
+    funnyMarkers: localStorage.getItem('funnyMarkers') === 'true' || false,
   })
 
   useEffect(() => {

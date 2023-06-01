@@ -1,6 +1,5 @@
 import {convertPaceInMinute, convertSpeed} from "../../../API/functionsDate&Values";
 import {garminLatLongToNormal} from "../../../API/utils";
-import {logPlugin} from "@babel/preset-env/lib/debug";
 
 export function getDataForCharts(workoutData, smoothing) {
   if (!workoutData) return;
@@ -169,6 +168,7 @@ export function getDataForCharts(workoutData, smoothing) {
     workoutData.workout.powerCurve.forEach((value, key) =>
       powerCurveArray.push([key, value.value])
     )
+
   };
 
   result = {
@@ -207,14 +207,18 @@ export function getDataForCharts(workoutData, smoothing) {
         min: altitudeMin,
         max: altitudeMax,
       },
-      powerCurve: powerCurveArray.length ? {
+      powerCurve: powerCurveArray.length && {
         data: powerCurveArray,
-      } : null
+      },
+      powerCurveAllTime: workoutData.workout.powerCurveAllTime && {
+        data: workoutData.workout.powerCurveAllTime,
+      },
     },
     step: stepTimeArray,
     smoothing: smoothing,
     polylinePoints: polylinePoints,
     powerCurve: workoutData.workout.powerCurve || null,
+    powerCurveAllTimeMap: workoutData.workout.powerCurveAllTimeMap || null,
     sport: workoutData.sessionMesgs[0].sport || null,
   }
   return result

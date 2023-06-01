@@ -9,15 +9,20 @@ const Settings = () => {
   const {settings, setSettings, workouts, setRandom} = useContext(AppContext);
   const [clickButtonDeleteAll, setClickButtonDeleteAll] = useState(false)
   const [smoothing, setSmoothing] = useState(settings.smoothing);
+  const [funnyMarkers, setFunnyMarkers] = useState(Boolean(settings.funnyMarkers));
   const [language, setLanguage] = useState(settings.language);
 
-  function handlerChange(e) {
-    if(language !== settings.language || smoothing !== settings.smoothing){
+  function handleChange() {
+    if(language !== settings.language
+      || smoothing !== settings.smoothing
+      || funnyMarkers !== settings.funnyMarkers){
       setSettings(prev => ({...prev,
         language: language || prev.language,
-        smoothing: smoothing || prev.smoothing,}));
+        smoothing: smoothing || prev.smoothing,
+        funnyMarkers: funnyMarkers}));
       language && localStorage.setItem('language', language.toString());
       smoothing && localStorage.setItem('smoothing', smoothing.toString());
+      localStorage.setItem('funnyMarkers', funnyMarkers.toString());
     }
   }
 
@@ -70,9 +75,20 @@ const Settings = () => {
               <div className={styles.info}>
                 <Question stroke={'grey'} height={"20px"} width={'20px'}/>
                 <span className={styles.tooltip}>
-                {dict.title.settingInfo[userLang]}
-              </span>
+                 {dict.title.settingInfo[userLang]}
+                </span>
               </div>
+            </div>
+            <div>
+              <label className={styles.customInputLabel} htmlFor="markers">
+                {dict.title.funnyMarkers[userLang]}
+              <input
+                type="checkbox" id="markers" name="markers"
+                checked={funnyMarkers}
+                onChange={() => setFunnyMarkers(prev => !prev)}/>
+              <span className={styles.customInput}></span>
+              </label>
+                <div className={styles.info}/>
             </div>
             <div>
               <label htmlFor="language">{dict.title.appLanguage[userLang]}</label>
@@ -87,10 +103,11 @@ const Settings = () => {
             </div>
             <div>
               <button
-                onClick={handlerChange}
+                onClick={handleChange}
                 value={dict.title.save[userLang]}
                 className={(language !== settings.language
-                  || smoothing !== settings.smoothing) ? styles.active : null}>
+                  || smoothing !== settings.smoothing
+                  || funnyMarkers !== settings.funnyMarkers) ? styles.active : null}>
                 {dict.title.save[userLang]}
               </button>
               <div className={styles.info}/>
@@ -106,7 +123,6 @@ const Settings = () => {
             </div>
           </div>
         </form>
-
       </div>
     </div>
   );

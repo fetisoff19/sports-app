@@ -229,6 +229,7 @@
         margin-bottom: 5px;
       }
       .statsBlock{
+        padding: 2px 0;
         .statsUnit{
           font-size: 16px;
           font-weight: 100;
@@ -237,6 +238,7 @@
           color: rgb(54, 54, 54);
           font-size: 10px;
           font-weight: 600;
+          line-height: 1.5;
           text-transform: uppercase;
         }
       }

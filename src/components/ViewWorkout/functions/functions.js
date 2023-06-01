@@ -1,6 +1,7 @@
 import Highcharts from "highcharts";
 import Charts from "../../HighCharts/HighCharts";
 import React from "react";
+import {db} from "../../../API/db";
 
 export function setCharts(data, order, setZooming,setLoaded) {
   if (data) {
@@ -148,8 +149,8 @@ export function zoomIn (chart, setZooming) {
   let positionMaxX = chart.xAxis[0].max;
   let offsetPlus = (positionMaxX - positionMinX)/6;
   chart.xAxis[0].setExtremes(positionMinX + offsetPlus, positionMaxX - offsetPlus);
-  setZooming(true);
-  zooming();
+  setZooming ? setZooming(true) : null;
+  setZooming ? zooming() : null;
 }
 
 export function zoomOut (chart, setZooming) {
@@ -161,12 +162,12 @@ export function zoomOut (chart, setZooming) {
   let offsetPlus = (positionMaxX - positionMinX) / 10;
   let offsetMinus = (positionMaxX - positionMinX) / 10;
   if (positionMinX - offsetMinus <= dataMin) {
-    setZooming(false);
+    setZooming ? setZooming(false) : null;
     positionMinX = dataMin;
     offsetMinus = 0;
   }
   if (positionMaxX + offsetPlus >= dataMax) {
-    setZooming(false);
+    setZooming ? setZooming(false) : null;
     positionMaxX = dataMax;
     offsetPlus = 0;
   }
@@ -188,4 +189,35 @@ export function addPolylinePowerCurve(point, data, setState){
   let secondIndex = firstIndex + (point.x);
   if (secondIndex - firstIndex <= 2) secondIndex += 2;
   setState(data.polylinePoints.slice(firstIndex, secondIndex));
+}
+
+export async function getDataForPowerCurveAllTime(workoutPowerCurve){
+  let workouts = await db.getAll('workouts');
+  let powerCurveMap = getPointForPowerCurve(workouts);
+  let powerCurveArray = [];
+  powerCurveMap.forEach((value, key, map) => {
+    if (workoutPowerCurve.get(key))
+      powerCurveArray.push([key, value.value]);
+  })
+  return [powerCurveArray, powerCurveMap]
+}
+
+export function getPointForPowerCurve(allWorkouts){
+  let powerCurveMap = new Map();
+  allWorkouts.forEach(workout => {
+    if ( workout.sport === 'cycling' && workout.powerCurve) {
+      workout.powerCurve.forEach((value, key, _) => {
+        if (Number.isInteger(key) && Number.isInteger(value.value))
+          if (powerCurveMap.has(key)) {
+            if (value.value > powerCurveMap.get(key).value) {
+              powerCurveMap.set(key, {value: value.value, id: workout.id, timestamp: workout.timestamp,});
+            }
+          }
+          else {
+            powerCurveMap.set(key, {value: value.value, id: workout.id, timestamp: workout.timestamp});
+          }
+      })
+    }
+  })
+  return powerCurveMap;
 }
