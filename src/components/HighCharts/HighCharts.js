@@ -49,6 +49,7 @@ const Charts = props => {
     },
     credits: props.credits || false,
     chart: {
+      // backgroundColor: chartsConfig[props.name]?.reversed ? chartsConfig[props.name].lineColor : 'white',
       margin: [40, 0, 20, 0],
       marginLeft: 0,
       height: props.style.height,
@@ -58,21 +59,22 @@ const Charts = props => {
         // styledMode: true,
         zoomType: 'x',
         resetZoomButton: {
-        position: props.data2
-          ? {x: - 1, y: 0,}
-          : {x: 5000, y: 1000,},
+        position:
+        // props.data2
+        //   ? {x: - 1, y: 0,} :
+        {x: 5000, y: 1000,},
         // theme: {
-        //   fill: config[props.name].themeLightBG,
-        //     stroke: 'silver',
-        //     states: {
-        //     hover: {
-        //       fill: config[props.name].themeColor,
-        //         style: {
-        //         display: 'none',
-        //           color: config[props.name].themeLightBG,
-        //       }
-        //     }
-        //   }
+          // backgroundColor: chartsConfig[props.name]?.reversed ? chartsConfig[props.name].lineColor : 'white' ,
+          //   stroke: 'silver',
+          //   states: {
+          //   hover: {
+          //     fill: config[props.name].themeColor,
+          //       style: {
+          //       display: 'none',
+          //         color: config[props.name].themeLightBG,
+          //     }
+          //   }
+          // }
         // }
       },
       panning: true,
@@ -118,7 +120,7 @@ const Charts = props => {
         x: - 10,
         y: 30,
         style: {
-        color: chartsConfig[props.name].lineColor,
+        color: chartsConfig[props.name].themeColor,
         fontSize: '1rem',
       },
     },
@@ -144,6 +146,7 @@ const Charts = props => {
     title: {
       enabled: false,
     },
+        // gridZIndex: 2,
     min: props.data.data.min || 0,
     labels: {
       align: 'left',
@@ -155,7 +158,7 @@ const Charts = props => {
         textShadow: 'white 0 0 10px',
       }
     },
-    reversed: chartsConfig[props.name].reversed,
+    reversed: chartsConfig[props.name]?.reversed,
     plotLines: [{
       color: '#383838',
       width: 1,
@@ -181,6 +184,25 @@ const Charts = props => {
     }],
   }],
     plotOptions: {
+      series: {
+        marker: {
+          fillColor: chartsConfig[props.name].themeColor,
+          // lineWidth: 1,
+          // lineColor: 'black' // inherit from series
+        },
+        allowPointSelect: false,
+        states: {
+          hover: {
+            enabled: false
+          },
+          inactive: {
+            enabled: false
+          },
+          select: {
+            enabled: false
+          }
+        },
+      },
     areaspline: {
       fillOpacity: 1,
     },
@@ -204,15 +226,15 @@ const Charts = props => {
         //   <Navigate to={'/workouts/' + id}>{date}</Navigate>
         // </span>)
       }  : null,
-        backgroundColor: {
-        linearGradient: [0, 0, 0, 60],
-          stops: [
-          [0, '#FFFFFF'],
-          [1, '#E0E0E0']
-        ]
-      },
-      borderWidth: 1,
-        borderColor: '#AAA'
+        // backgroundColor: {
+        // linearGradient: [0, 0, 0, 60],
+        //   stops: [
+      //     [0, '#FFFFFF'],
+      //     [1, '#E0E0E0']
+      //   ]
+      // },
+      // borderWidth: 1,
+      //   borderColor: '#AAA'
     },
     navigation: {
       buttonOptions: {
@@ -226,15 +248,15 @@ const Charts = props => {
       buttons: {
         contextButton: {
           symbolStrokeWidth: 2,
-          symbolStroke: chartsConfig[props.name].lineColor,
+          symbolStroke: chartsConfig[props.name].themeColor,
           symbol: 'menu',
-          symbolFill: chartsConfig[props.name].lineColor,
+          symbolFill: chartsConfig[props.name].themeColor,
         }
       },
     },
   }
   return (
-    <div key={new Date}>
+    <div key={new Date} className={props.name}>
       <HighchartsReact
         key={new Date + 1}
         highcharts={Highcharts}

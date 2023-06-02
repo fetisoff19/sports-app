@@ -67,7 +67,7 @@ const ViewWorkout = () => {
     : null, [data]);
   let chartsNames = useMemo(() => charts ?
     charts.map(item => item.key) : null, [data]);
-  console.log(preparedData)
+
   let powerCurve = useMemo(() =>
     (preparedData && preparedData.charts.powerCurve ?
     <Charts

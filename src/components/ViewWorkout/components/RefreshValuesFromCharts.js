@@ -11,7 +11,7 @@ const RefreshValuesFromCharts = (props) => {
     item === 'pace' && Number.isInteger(props.index)
       ? data = getMinSec(data)
       : data
-    return (<td style={{color: chartsConfig[item].lineColor}} key={item}>{data}</td>)
+    return (<td style={{color: chartsConfig[item].themeColor, minWidth: 65}} key={item}>{data}</td>)
     }
   )
   tbody.push(

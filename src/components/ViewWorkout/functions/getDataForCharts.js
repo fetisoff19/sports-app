@@ -4,11 +4,12 @@ import {garminLatLongToNormal} from "../../../API/utils";
 export function getDataForCharts(workoutData, smoothing) {
   if (!workoutData) return;
   let recordMesgs = workoutData.recordMesgs;
-  if (isNaN(recordMesgs.at(-1).heartRate)
+  if ((isNaN(recordMesgs.at(-1).heartRate)
     && isNaN(recordMesgs.at(-1).heartRate)
     && isNaN(recordMesgs.at(-1).distance)
     && isNaN(recordMesgs.at(-1).power)
-    && isNaN(recordMesgs.at(-1).enhancedAltitude)) return;
+    && isNaN(recordMesgs.at(-1).enhancedAltitude))
+    || !recordMesgs.at(-1).distance) return;
 
   let result = {};
   let polylinePoints = [];
@@ -48,8 +49,11 @@ export function getDataForCharts(workoutData, smoothing) {
   let heartRateMax = 0;
   let avgHeartRateSmoothing = 0;
 
-  // каденс для бега х2
-  let k = workoutData.sessionMesgs[0].sport === 'running'
+  // каденс если шагаешь х2, если крутишь 1 к 1
+  let k = (workoutData.sessionMesgs[0].sport === 'running'
+    || workoutData.sessionMesgs[0].sport === 'training'
+    || workoutData.sessionMesgs[0].sport === 'walking'
+    || workoutData.sessionMesgs[0].sport === 'hiking')
     ? 2 : 1;
   let cadenceAvg = 0;
   if (workoutData.sessionMesgs[0].avgCadence) {
@@ -116,7 +120,7 @@ export function getDataForCharts(workoutData, smoothing) {
     if (recordMesgs[i].enhancedSpeed) {
       pace = convertPaceInMinute(recordMesgs[i].enhancedSpeed)
     } // получаем мин/км
-    if (isNaN(pace) || pace > 12 || pace < 1.5) pace = paceAvg; // отсеиваем брак в данных
+    if (isNaN(pace) || pace > (workoutData.sessionMesgs[0].sport === 'running' ? 15 : 60) || pace < 1.5) pace = paceAvg; // отсеиваем брак в данных
     avgPaceSmoothing += pace;
 
     if (i > 0) {

@@ -22,8 +22,7 @@ const FilterBar = ({data, filterSport}) => {
     }}>
       <div style={{  display: 'flex'}}>
         {sports.map((item, index) =>
-          <div
-               style={{
+          <div style={{
                  background: status[index].active ? 'green' : '',
                  color: status[index].active ? 'white' : 'green',
                  fontSize: 16,
@@ -34,14 +33,17 @@ const FilterBar = ({data, filterSport}) => {
                  alignItems: 'center',
                  border: 'rgb(108, 108, 108) solid 1px',
                  borderRadius:  2,
-                 cursor: 'pointer',
-          }}
+                 cursor: 'pointer',}}
                onClick={() => {
                  filterSport(item);
-                 chooseItem(index);
-               }}
-               key={index}
-          >{item === 'all' ? dict.title.all[userLang] : <SportIcon className={'icon'} height={'20px'} width={'20px'} sport={item} fill={status[index].active ? '#F5F5F5FF' : 'green'}/>}</div>)}
+                 chooseItem(index);}}
+               key={index}>
+            {item === 'all'
+            ? dict.title.all[userLang]
+            : <SportIcon
+              className={'icon'} height={'20px'} width={'20px'}
+              sport={item} fill={status[index].active ? '#F5F5F5FF' : 'green'}/>}
+          </div>)}
       </div>
 
     </div>

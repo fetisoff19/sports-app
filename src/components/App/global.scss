@@ -10,6 +10,13 @@ body {
   margin: 0 auto;
 }
 
+.pace{
+  .highcharts-plot-border{
+    fill: #11a9ed;
+    //z-index: 2;
+  }
+}
+
 .appLoader{
   margin: auto;
   padding: 0;

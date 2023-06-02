@@ -4,7 +4,8 @@ import {dict, userLang, statsFields} from "../../../../config/config";
 const WorkoutStats = ({data, styles}) => {
 
 let order =
-  data.sport === 'running' ?
+  data.sport === 'running' || data.sport === 'hiking'
+  || data.sport === 'training' || data.sport === 'walking'?
   ['heartRate', 'cadenceRun', 'pace', 'altitude', 'temperature', 'time', 'other'] :
   data.sport === 'cycling' ?
   ['heartRate', 'cadence', 'power', 'speed', 'altitude', 'temperature', 'time', 'other'] :

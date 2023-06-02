@@ -26,7 +26,11 @@ const ListItem = ({data, setTrainings, setSortedData, index, i}) => {
       </div>
       <div className={styles.lBlock} key={data.name}>
         <ChangeName data={data} isLink={true} styles={styles} />
-        <div className={styles.label}>{dict.sports[data.sport][userLang]}</div>
+        <div className={styles.label}>
+          {dict.sports.hasOwnProperty(data.sport)
+            ? dict.sports[data.sport][userLang]
+            : dict.sports.other[userLang]}
+        </div>
       </div>
       <BlockMetricContainer data={data}/>
       <div key={Math.random()} >

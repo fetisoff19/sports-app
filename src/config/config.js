@@ -74,7 +74,10 @@ export const dict = {
     cycling: {ru: 'Велоспорт', en: 'Cycling'},
     running: {ru: 'Бег', en: 'Running'},
     walking: {ru: 'Прогулка', en: 'Walking',},
-    swimming: {ru: 'Плавание', en: 'Swimming',}
+    swimming: {ru: 'Плавание', en: 'Swimming',},
+    hiking: {ru: 'Поход', en: 'Hiking'},
+    training: {ru: 'Кардио', en: 'Cardio'},
+    other: {ru: 'Тренировка', en: 'Training'},
   },
 
   title: {
@@ -314,6 +317,7 @@ export const chartsConfig = {
     plotLinesText: 'avgSpeed',
     plotLinesTextValue: 'kmph',
     lineColor: '#11a9ed',
+    themeColor: '#11a9ed',
     reversed: false,
 
   },
@@ -321,7 +325,8 @@ export const chartsConfig = {
     title: 'pace',
     plotLinesText: 'avgPace',
     plotLinesTextValue: 'pace',
-    lineColor: '#11a9ed',
+    lineColor: 'white',
+    themeColor: '#11a9ed',
     reversed: true,
   },
   power: {
@@ -329,6 +334,7 @@ export const chartsConfig = {
     plotLinesText: 'avgPower',
     plotLinesTextValue: 'w',
     lineColor: '#6bc531',
+    themeColor: '#6bc531',
     reversed: false,
   },
   heartRate: {
@@ -336,6 +342,7 @@ export const chartsConfig = {
     plotLinesText: 'avgHeartRate',
     plotLinesTextValue: 'bpm',
     lineColor: '#ff0035',
+    themeColor: '#ff0035',
     reversed: false,
   },
   cadence: {
@@ -344,6 +351,7 @@ export const chartsConfig = {
     plotLinesTextValue: 'cadenceCycling',
     plotLinesTextValueRunning: 'cadenceRun',
     lineColor: '#c74cb1',
+    themeColor: '#c74cb1',
     reversed: false,
   },
   altitude: {
@@ -351,12 +359,14 @@ export const chartsConfig = {
     plotLinesText: 'avgAltitude',
     plotLinesTextValue: 'm',
     lineColor: '#750bc4',
+    themeColor: '#750bc4',
     reversed: false,
   },
   powerCurve: {
     title: 'powerCurve',
     plotLinesTextValue: 'w',
     lineColor: '#02afaf',
+    themeColor: '#02afaf',
     reversed: false,
     formatter: function (x, y) {
       if (x < 60) return `${x}${dict.units.s[userLang]}<br>${y} ${dict.units.w[userLang]}`
@@ -407,6 +417,7 @@ export const chartsConfig = {
     // plotLinesText: '',
     plotLinesTextValue: 'w',
     lineColor: 'rgb(90,90,90)',
+    themeColor: 'rgb(90,90,90)',
     reversed: false,
   },
 }
