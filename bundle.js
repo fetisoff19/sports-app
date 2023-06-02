@@ -6996,7 +6996,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 highcharts_modules_exporting__WEBPACK_IMPORTED_MODULE_3___default()((highcharts__WEBPACK_IMPORTED_MODULE_1___default()));
 var Charts = function Charts(props) {
-  var _props$data;
+  var _props$data, _chartsConfig$props$n;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     return function () {
       while ((highcharts__WEBPACK_IMPORTED_MODULE_1___default().charts.length) > 0) {
@@ -7037,6 +7037,7 @@ var Charts = function Charts(props) {
     },
     credits: props.credits || false,
     chart: {
+      // backgroundColor: chartsConfig[props.name]?.reversed ? chartsConfig[props.name].lineColor : 'white',
       margin: [40, 0, 20, 0],
       marginLeft: 0,
       height: props.style.height,
@@ -7046,25 +7047,25 @@ var Charts = function Charts(props) {
       // styledMode: true,
       zoomType: 'x',
       resetZoomButton: {
-        position: props.data2 ? {
-          x: -1,
-          y: 0
-        } : {
+        position:
+        // props.data2
+        //   ? {x: - 1, y: 0,} :
+        {
           x: 5000,
           y: 1000
         }
         // theme: {
-        //   fill: config[props.name].themeLightBG,
-        //     stroke: 'silver',
-        //     states: {
-        //     hover: {
-        //       fill: config[props.name].themeColor,
-        //         style: {
-        //         display: 'none',
-        //           color: config[props.name].themeLightBG,
-        //       }
+        // backgroundColor: chartsConfig[props.name]?.reversed ? chartsConfig[props.name].lineColor : 'white' ,
+        //   stroke: 'silver',
+        //   states: {
+        //   hover: {
+        //     fill: config[props.name].themeColor,
+        //       style: {
+        //       display: 'none',
+        //         color: config[props.name].themeLightBG,
         //     }
         //   }
+        // }
         // }
       },
 
@@ -7112,7 +7113,7 @@ var Charts = function Charts(props) {
       x: -10,
       y: 30,
       style: {
-        color: _config_config__WEBPACK_IMPORTED_MODULE_5__.chartsConfig[props.name].lineColor,
+        color: _config_config__WEBPACK_IMPORTED_MODULE_5__.chartsConfig[props.name].themeColor,
         fontSize: '1rem'
       }
     },
@@ -7138,6 +7139,7 @@ var Charts = function Charts(props) {
       title: {
         enabled: false
       },
+      // gridZIndex: 2,
       min: props.data.data.min || 0,
       labels: {
         align: 'left',
@@ -7149,7 +7151,7 @@ var Charts = function Charts(props) {
           textShadow: 'white 0 0 10px'
         }
       },
-      reversed: _config_config__WEBPACK_IMPORTED_MODULE_5__.chartsConfig[props.name].reversed,
+      reversed: (_chartsConfig$props$n = _config_config__WEBPACK_IMPORTED_MODULE_5__.chartsConfig[props.name]) === null || _chartsConfig$props$n === void 0 ? void 0 : _chartsConfig$props$n.reversed,
       plotLines: [{
         color: '#383838',
         width: 1,
@@ -7170,6 +7172,26 @@ var Charts = function Charts(props) {
       }]
     }],
     plotOptions: {
+      series: {
+        marker: {
+          fillColor: _config_config__WEBPACK_IMPORTED_MODULE_5__.chartsConfig[props.name].themeColor
+          // lineWidth: 1,
+          // lineColor: 'black' // inherit from series
+        },
+
+        allowPointSelect: false,
+        states: {
+          hover: {
+            enabled: false
+          },
+          inactive: {
+            enabled: false
+          },
+          select: {
+            enabled: false
+          }
+        }
+      },
       areaspline: {
         fillOpacity: 1
       }
@@ -7192,14 +7214,18 @@ var Charts = function Charts(props) {
         // return (<span>{chartsConfig[props.name].formatter(this.x, this.y)}
         //   <Navigate to={'/workouts/' + id}>{date}</Navigate>
         // </span>)
-      } : null,
-      backgroundColor: {
-        linearGradient: [0, 0, 0, 60],
-        stops: [[0, '#FFFFFF'], [1, '#E0E0E0']]
-      },
-      borderWidth: 1,
-      borderColor: '#AAA'
+      } : null
+      // backgroundColor: {
+      // linearGradient: [0, 0, 0, 60],
+      //   stops: [
+      //     [0, '#FFFFFF'],
+      //     [1, '#E0E0E0']
+      //   ]
+      // },
+      // borderWidth: 1,
+      //   borderColor: '#AAA'
     },
+
     navigation: {
       buttonOptions: {
         y: 15,
@@ -7212,15 +7238,16 @@ var Charts = function Charts(props) {
       buttons: {
         contextButton: {
           symbolStrokeWidth: 2,
-          symbolStroke: _config_config__WEBPACK_IMPORTED_MODULE_5__.chartsConfig[props.name].lineColor,
+          symbolStroke: _config_config__WEBPACK_IMPORTED_MODULE_5__.chartsConfig[props.name].themeColor,
           symbol: 'menu',
-          symbolFill: _config_config__WEBPACK_IMPORTED_MODULE_5__.chartsConfig[props.name].lineColor
+          symbolFill: _config_config__WEBPACK_IMPORTED_MODULE_5__.chartsConfig[props.name].themeColor
         }
       }
     }
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    key: new Date()
+    key: new Date(),
+    className: props.name
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((highcharts_react_official__WEBPACK_IMPORTED_MODULE_2___default()), {
     key: new Date() + 1,
     highcharts: (highcharts__WEBPACK_IMPORTED_MODULE_1___default()),
@@ -7986,7 +8013,7 @@ var SportAndDate = function SportAndDate(_ref) {
     className = _ref.className;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: className
-  }, (_config_config__WEBPACK_IMPORTED_MODULE_1__.dict.sports[data.sport][_config_config__WEBPACK_IMPORTED_MODULE_1__.userLang] || '') + ', ' + (data.startTime.toLocaleString() || ''));
+  }, (_config_config__WEBPACK_IMPORTED_MODULE_1__.dict.sports.hasOwnProperty(data.sport) ? _config_config__WEBPACK_IMPORTED_MODULE_1__.dict.sports[data.sport][_config_config__WEBPACK_IMPORTED_MODULE_1__.userLang] : _config_config__WEBPACK_IMPORTED_MODULE_1__.dict.sports.other[_config_config__WEBPACK_IMPORTED_MODULE_1__.userLang]) + ', ' + (data.startTime.toLocaleString() || ''));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SportAndDate);
 
@@ -8429,9 +8456,9 @@ var Hiking = function Hiking(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
     d: "M14 22V16L12 14M12 14L13 8M12 14H10M13 8C14 9.16667 15.6 11 18 11M13 8L12.8212 7.82124C12.2565 7.25648 11.2902 7.54905 11.1336 8.33223L10 14M10 14L8 22M18 9.5V22M8 7H7.72076C7.29033 7 6.90819 7.27543 6.77208 7.68377L5.5 11.5L7 12L8 7ZM14.5 3.5C14.5 4.05228 14.0523 4.5 13.5 4.5C12.9477 4.5 12.5 4.05228 12.5 3.5C12.5 2.94772 12.9477 2.5 13.5 2.5C14.0523 2.5 14.5 2.94772 14.5 3.5Z",
     stroke: fill || "#000000",
-    "stroke-width": "2",
-    "stroke-linecap": "round",
-    "stroke-linejoin": "round"
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
   }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Hiking);
@@ -8966,7 +8993,6 @@ var ViewWorkout = function ViewWorkout() {
       return item.key;
     }) : null;
   }, [data]);
-  console.log(preparedData);
   var powerCurve = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     return preparedData && preparedData.charts.powerCurve ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_HighCharts_HighCharts__WEBPACK_IMPORTED_MODULE_7__["default"], {
       key: id + 'charts',
@@ -9294,7 +9320,8 @@ var RefreshValuesFromCharts = function RefreshValuesFromCharts(props) {
     item === 'pace' && Number.isInteger(props.index) ? data = (0,_API_functionsDate_Values__WEBPACK_IMPORTED_MODULE_1__.getMinSec)(data) : data;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
       style: {
-        color: _config_config__WEBPACK_IMPORTED_MODULE_2__.chartsConfig[item].lineColor
+        color: _config_config__WEBPACK_IMPORTED_MODULE_2__.chartsConfig[item].themeColor,
+        minWidth: 65
       },
       key: item
     }, data);
@@ -9390,7 +9417,7 @@ __webpack_require__.r(__webpack_exports__);
 var WorkoutStats = function WorkoutStats(_ref) {
   var data = _ref.data,
     styles = _ref.styles;
-  var order = data.sport === 'running' ? ['heartRate', 'cadenceRun', 'pace', 'altitude', 'temperature', 'time', 'other'] : data.sport === 'cycling' ? ['heartRate', 'cadence', 'power', 'speed', 'altitude', 'temperature', 'time', 'other'] : ['heartRate', 'speed', 'altitude', 'temperature', 'time', 'other'];
+  var order = data.sport === 'running' || data.sport === 'hiking' || data.sport === 'training' || data.sport === 'walking' ? ['heartRate', 'cadenceRun', 'pace', 'altitude', 'temperature', 'time', 'other'] : data.sport === 'cycling' ? ['heartRate', 'cadence', 'power', 'speed', 'altitude', 'temperature', 'time', 'other'] : ['heartRate', 'speed', 'altitude', 'temperature', 'time', 'other'];
   var stats = [];
   var _loop = function _loop() {
     var unit = _order[_i];
@@ -9741,7 +9768,7 @@ _API_utils__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_dependencies__.then ?
 function getDataForCharts(workoutData, smoothing) {
   if (!workoutData) return;
   var recordMesgs = workoutData.recordMesgs;
-  if (isNaN(recordMesgs.at(-1).heartRate) && isNaN(recordMesgs.at(-1).heartRate) && isNaN(recordMesgs.at(-1).distance) && isNaN(recordMesgs.at(-1).power) && isNaN(recordMesgs.at(-1).enhancedAltitude)) return;
+  if (isNaN(recordMesgs.at(-1).heartRate) && isNaN(recordMesgs.at(-1).heartRate) && isNaN(recordMesgs.at(-1).distance) && isNaN(recordMesgs.at(-1).power) && isNaN(recordMesgs.at(-1).enhancedAltitude) || !recordMesgs.at(-1).distance) return;
   var result = {};
   var polylinePoints = [];
   var powerCurveArray = [];
@@ -9775,8 +9802,8 @@ function getDataForCharts(workoutData, smoothing) {
   var heartRateMax = 0;
   var avgHeartRateSmoothing = 0;
 
-  // каденс для бега х2
-  var k = workoutData.sessionMesgs[0].sport === 'running' ? 2 : 1;
+  // каденс если шагаешь х2, если крутишь 1 к 1
+  var k = workoutData.sessionMesgs[0].sport === 'running' || workoutData.sessionMesgs[0].sport === 'training' || workoutData.sessionMesgs[0].sport === 'walking' || workoutData.sessionMesgs[0].sport === 'hiking' ? 2 : 1;
   var cadenceAvg = 0;
   if (workoutData.sessionMesgs[0].avgCadence) {
     cadenceAvg = Math.round(workoutData.sessionMesgs[0].avgCadence) * k;
@@ -9832,7 +9859,7 @@ function getDataForCharts(workoutData, smoothing) {
     if (recordMesgs[i].enhancedSpeed) {
       pace = (0,_API_functionsDate_Values__WEBPACK_IMPORTED_MODULE_0__.convertPaceInMinute)(recordMesgs[i].enhancedSpeed);
     } // получаем мин/км
-    if (isNaN(pace) || pace > 12 || pace < 1.5) pace = paceAvg; // отсеиваем брак в данных
+    if (isNaN(pace) || pace > (workoutData.sessionMesgs[0].sport === 'running' ? 15 : 60) || pace < 1.5) pace = paceAvg; // отсеиваем брак в данных
     avgPaceSmoothing += pace;
     if (i > 0) {
       var stepTime = (recordMesgs[i].timestamp - recordMesgs[i - 1].timestamp) / 1000; // получаем время в секундах между соседними элементами массива
@@ -10142,7 +10169,7 @@ var ListItem = function ListItem(_ref) {
     styles: _styles_modules__WEBPACK_IMPORTED_MODULE_5__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: _styles_modules__WEBPACK_IMPORTED_MODULE_5__["default"].label
-  }, _config_config__WEBPACK_IMPORTED_MODULE_1__.dict.sports[data.sport][_config_config__WEBPACK_IMPORTED_MODULE_1__.userLang])), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_BlockMetricContainer__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, _config_config__WEBPACK_IMPORTED_MODULE_1__.dict.sports.hasOwnProperty(data.sport) ? _config_config__WEBPACK_IMPORTED_MODULE_1__.dict.sports[data.sport][_config_config__WEBPACK_IMPORTED_MODULE_1__.userLang] : _config_config__WEBPACK_IMPORTED_MODULE_1__.dict.sports.other[_config_config__WEBPACK_IMPORTED_MODULE_1__.userLang])), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_BlockMetricContainer__WEBPACK_IMPORTED_MODULE_3__["default"], {
     data: data
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     key: Math.random()
@@ -10691,6 +10718,18 @@ var dict = {
     swimming: {
       ru: 'Плавание',
       en: 'Swimming'
+    },
+    hiking: {
+      ru: 'Поход',
+      en: 'Hiking'
+    },
+    training: {
+      ru: 'Кардио',
+      en: 'Cardio'
+    },
+    other: {
+      ru: 'Тренировка',
+      en: 'Training'
     }
   },
   title: {
@@ -11056,13 +11095,15 @@ var chartsConfig = {
     plotLinesText: 'avgSpeed',
     plotLinesTextValue: 'kmph',
     lineColor: '#11a9ed',
+    themeColor: '#11a9ed',
     reversed: false
   },
   pace: {
     title: 'pace',
     plotLinesText: 'avgPace',
     plotLinesTextValue: 'pace',
-    lineColor: '#11a9ed',
+    lineColor: 'white',
+    themeColor: '#11a9ed',
     reversed: true
   },
   power: {
@@ -11070,6 +11111,7 @@ var chartsConfig = {
     plotLinesText: 'avgPower',
     plotLinesTextValue: 'w',
     lineColor: '#6bc531',
+    themeColor: '#6bc531',
     reversed: false
   },
   heartRate: {
@@ -11077,6 +11119,7 @@ var chartsConfig = {
     plotLinesText: 'avgHeartRate',
     plotLinesTextValue: 'bpm',
     lineColor: '#ff0035',
+    themeColor: '#ff0035',
     reversed: false
   },
   cadence: {
@@ -11085,6 +11128,7 @@ var chartsConfig = {
     plotLinesTextValue: 'cadenceCycling',
     plotLinesTextValueRunning: 'cadenceRun',
     lineColor: '#c74cb1',
+    themeColor: '#c74cb1',
     reversed: false
   },
   altitude: {
@@ -11092,12 +11136,14 @@ var chartsConfig = {
     plotLinesText: 'avgAltitude',
     plotLinesTextValue: 'm',
     lineColor: '#750bc4',
+    themeColor: '#750bc4',
     reversed: false
   },
   powerCurve: {
     title: 'powerCurve',
     plotLinesTextValue: 'w',
     lineColor: '#02afaf',
+    themeColor: '#02afaf',
     reversed: false,
     formatter: function formatter(x, y) {
       if (x < 60) return "".concat(x).concat(dict.units.s[userLang], "<br>").concat(y, " ").concat(dict.units.w[userLang]);else {
@@ -11145,6 +11191,7 @@ var chartsConfig = {
     // plotLinesText: '',
     plotLinesTextValue: 'w',
     lineColor: 'rgb(90,90,90)',
+    themeColor: 'rgb(90,90,90)',
     reversed: false
   }
 };

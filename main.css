@@ -1685,6 +1685,10 @@ body {
   margin: 0 auto;
 }
 
+.pace .highcharts-plot-border {
+  fill: #11a9ed;
+}
+
 .appLoader {
   margin: auto;
   padding: 0;
