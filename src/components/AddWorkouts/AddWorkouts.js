@@ -4,14 +4,17 @@ import AppContext from "../../context/AppContext.js";
 import styles from './styles.module.scss'
 import FilesList from "./components/FilesList";
 import {dict, userLang} from "../../config/config";
+import {useDispatch} from "react-redux";
+import {getWorkouts} from "../../actions/workouts";
 
 
 export default function AddWorkouts() {
-  const {setRandom} = useContext(AppContext)
+  // const {setRandom} = useContext(AppContext)
   const [upLoadedFiles, setUpLoadedFiles] = useState([]);
   const [validatedFiles, setValidatedFiles] = useState(null);
   const [drag, setDrag] = useState(false);
   const inputHiddenRef = useRef()
+  const dispatch = useDispatch()
 
   function dragStartHandler(e) {
     e.preventDefault();
@@ -45,8 +48,8 @@ export default function AddWorkouts() {
   }
 
   useEffect(() => {
-    return upLoadedFiles?.length === validatedFiles?.validate?.length
-      ? () => setRandom(Math.random()) : () => {};
+    if(upLoadedFiles?.length === validatedFiles?.validate?.length)
+      dispatch(getWorkouts())
   }, [upLoadedFiles])
 
   return (

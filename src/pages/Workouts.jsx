@@ -1,26 +1,20 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {WorkoutsList} from "../components/WorkoutsList/WorkoutsList.js";
-import AppContext from "../context/AppContext.js";
 import AppLoader from "../components/Loaders/AppLoader.jsx";
+import {useSelector} from "react-redux";
 
 const Workouts = () => {
-  const {loading, error, workouts} = useContext(AppContext);
+  const workouts = useSelector(state => state.workouts.workouts)
+  const loader = useSelector(state => state.app.loader)
 
-  if (loading) {
+  if (loader || !workouts) {
     return <AppLoader/>;
   }
-  else if (error) {
-    console.error(error)
-    return <div>Ошибка: {error.message}</div>;
-  }
-  else if (workouts) {
-    return (
-      <>
-        <WorkoutsList/>
-      </>
-    );
-  }
-
+  else return (
+    <>
+      <WorkoutsList/>
+    </>
+  );
 };
 
 export default Workouts;

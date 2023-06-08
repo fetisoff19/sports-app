@@ -4,32 +4,51 @@ import {dict, userLang} from "../../config/config";
 import styles from './styles.module.scss'
 import Question from "../UI/svgComponents/Question";
 import {deleteWorkout} from "../../API/db";
+import {useDispatch, useSelector} from "react-redux";
+import {setFunnyMarkers, setLanguage, setSmoothing} from "../../reducers/settingsReducer";
+import {deleteAllWorkouts} from "../../actions/workouts";
 
 const Settings = () => {
-  const {settings, setSettings, workouts, setRandom} = useContext(AppContext);
   const [clickButtonDeleteAll, setClickButtonDeleteAll] = useState(false)
-  const [smoothing, setSmoothing] = useState(settings.smoothing);
-  const [funnyMarkers, setFunnyMarkers] = useState(Boolean(settings.funnyMarkers));
-  const [language, setLanguage] = useState(settings.language);
 
-  function handleChange() {
-    if(language !== settings.language
-      || smoothing !== settings.smoothing
-      || funnyMarkers !== settings.funnyMarkers){
-      setSettings(prev => ({...prev,
-        language: language || prev.language,
-        smoothing: smoothing || prev.smoothing,
-        funnyMarkers: funnyMarkers}));
-      language && localStorage.setItem('language', language.toString());
-      smoothing && localStorage.setItem('smoothing', smoothing.toString());
-      localStorage.setItem('funnyMarkers', funnyMarkers.toString());
-    }
+  const dispatch = useDispatch()
+  const workouts = useSelector(state => state.workouts.workouts)
+  const language = useSelector(state => state.settings.language)
+  const smoothing = useSelector(state => state.settings.smoothing)
+  const funnyMarkers = useSelector(state => state.settings.funnyMarkers)
+
+  const [lang, setLang] = useState(language);
+  const [smooth, setSmooth] = useState(smoothing);
+  const [funnyMarks, setFunnyMarks] = useState(funnyMarkers);
+  const [stylesActive, setStylesActive] = useState(false);
+
+
+  function setLanguageHandler(e){
+    setLang(e.target.value);
+    setStylesActive(true);
   }
 
-  async function deleteAll(){
-    for (const workout of workouts) {
-      await deleteWorkout(workout.id);
-    }
+  function setSmoothingHandler(e){
+    setSmooth(e.target.value);
+    setStylesActive(true);
+  }
+
+  function setFunnyMarkersHandler(){
+    setFunnyMarks(prev => !prev);
+    setStylesActive(true);
+  }
+
+  function handleChange() {
+    dispatch(setLanguage(lang));
+    dispatch(setSmoothing(smooth));
+    dispatch(setFunnyMarkers(funnyMarks));
+    setStylesActive(false);
+    // setRandom(Math.random());
+  }
+
+   function deleteAll(){
+      dispatch(deleteAllWorkouts(workouts))
+      setClickButtonDeleteAll(false);
   }
 
   return (
@@ -42,9 +61,7 @@ const Settings = () => {
           <h3>{dict.title.deleteAllWorkouts[userLang]}</h3>
           <div>
             <button
-              onClick={() =>
-                deleteAll()
-                  .then(() => setRandom(Math.random()))}
+              onClick={deleteAll}
               className={styles.active}>
               {dict.title.yes[userLang]}
             </button>
@@ -63,8 +80,8 @@ const Settings = () => {
             <div>
               <label htmlFor="smoothing">{dict.title.smoothing[userLang]}</label>
               <select
-                defaultValue={settings?.smoothing || '8'} name="smoothing" id="smoothing"
-                onChange={(e) => setSmoothing(e.target.value)}>
+                defaultValue={smooth} name="smoothing" id="smoothing"
+                onChange={setSmoothingHandler}>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="4">4</option>
@@ -84,8 +101,8 @@ const Settings = () => {
                 {dict.title.funnyMarkers[userLang]}
               <input
                 type="checkbox" id="markers" name="markers"
-                checked={funnyMarkers}
-                onChange={() => setFunnyMarkers(prev => !prev)}/>
+                checked={funnyMarks}
+                onChange={setFunnyMarkersHandler}/>
               <span className={styles.customInput}></span>
               </label>
                 <div className={styles.info}/>
@@ -93,9 +110,9 @@ const Settings = () => {
             <div>
               <label htmlFor="language">{dict.title.appLanguage[userLang]}</label>
               <select
-                defaultValue={settings?.language}
+                defaultValue={language}
                 name="language" id="language"
-                onChange={(e) => setLanguage(e.target.value)}>
+                onChange={setLanguageHandler}>
                 <option value='en'>English</option>
                 <option value='ru'>Русский</option>
               </select>
@@ -105,18 +122,16 @@ const Settings = () => {
               <button
                 onClick={handleChange}
                 value={dict.title.save[userLang]}
-                className={(language !== settings.language
-                  || smoothing !== settings.smoothing
-                  || funnyMarkers !== settings.funnyMarkers) ? styles.active : null}>
+                className={stylesActive ? styles.active : ''}>
                 {dict.title.save[userLang]}
               </button>
               <div className={styles.info}/>
             </div>
             <div>
               <button
-                className={workouts.length ? styles.active : null}
-                onClick={() =>
-                  workouts.length ? setClickButtonDeleteAll(true) : null}>
+                className={workouts?.length ? styles.active : null}
+                onClick={() => workouts?.length ? setClickButtonDeleteAll(true) : null}
+              >
                 {dict.title.deleteAll[userLang]}
               </button>
               <div className={styles.info}/>

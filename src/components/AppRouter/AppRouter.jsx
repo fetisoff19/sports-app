@@ -1,21 +1,19 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Route, Routes} from "react-router-dom";
 import {privateRoutes, publicRoutes} from "../../router";
-import AppContext from "../../context/AppContext.js";
-import AppLoader from "../Loaders/AppLoader.jsx";
-import Main from "../Main/Main.jsx";
+import PrivateMain from "../MainPages/PrivateMain.jsx";
 import {Navigate} from "react-router";
+import {useSelector} from "react-redux";
+import PublicMain from "../MainPages/PublicMain.jsx";
 
 const AppRouter = () => {
-  const {auth, loading,} = useContext(AppContext);
+  const isAuth = useSelector(state => state.user.isAuth)
 
   return (
-    loading
-    ? <AppLoader/>
-    : auth
+    isAuth
     ? (
       <Routes>
-        <Route path={'/'} element={<Main/>}>
+        <Route path={'/'} element={<PrivateMain/>}>
           {privateRoutes.map(route =>
             <Route
               path={route?.path}
@@ -28,7 +26,7 @@ const AppRouter = () => {
     )
     : (
       <Routes>
-        <Route path={'/'} element={<Main/>}>
+        <Route path={'/'} element={<PublicMain/>}>
           {publicRoutes.map(route =>
             <Route
               path={route.path}

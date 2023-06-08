@@ -1,18 +1,16 @@
-import React, {useContext, useEffect, useMemo, useState} from 'react';
-import AppContext from "../../context/AppContext.js";
+import React, {useMemo, useState} from 'react';
 import ListItem from "./Components/ListItem.js";
 import FilterBar from "./Components/FilterBar";
 import styles from './styles.modules.scss'
 import Titles from "./Components/Titles";
 import {dict, userLang} from "../../config/config";
 import NoWorkouts from "../NoWorkouts/NoWorkouts";
+import {useSelector} from "react-redux";
 
 const fields = ['id', 'sport', 'timestamp', 'name',  'totalDistance', 'totalTimerTime', 'enhancedAvgSpeed', 'totalAscent', 'avgHeartRate', ' '];
 
 export function WorkoutsList() {
-  const {workouts, setRandom} = useContext(AppContext)
   const [order, setOrder] = useState(true);
-  const [changed, setChanged] = useState(false);
   const [status, setStatus] = useState(fields.map(() => {return {active: false}}));
   const chooseItem = (id) => {
     const newArr = status.map((item, i) =>
@@ -20,6 +18,8 @@ export function WorkoutsList() {
     );
     setStatus(newArr);
   };
+
+  const workouts = useSelector(state => state.workouts.workouts)
 
   const data = useMemo(() => {
     let result = [];
@@ -62,15 +62,6 @@ export function WorkoutsList() {
     sort(item);
     chooseItem(index)
   }
-
-  useEffect(() => {
-    return data?.length !== trainings?.length
-      ? () => setChanged(true) : () => {};
-  },[trainings])
-
-  useEffect(() => {
-    return changed ? () => setRandom(Math.random()) : () => {};
-  },[changed])
 
   let list = sortedData
     .map((item, index) =>

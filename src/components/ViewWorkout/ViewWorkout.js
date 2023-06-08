@@ -1,11 +1,8 @@
-import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
-import useDB from "../../hooks/useDB";
-import {db} from "../../API/db.js";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import Maps from "../Maps/Maps";
 import RefreshValuesFromCharts from "./components/RefreshValuesFromCharts";
 import {
   addPolylinePowerCurve,
-  getDataForPowerCurveAllTime,
   getIndex,
   handleKeyboardDown,
   resetZoom,
@@ -13,7 +10,6 @@ import {
 } from "./functions/functions";
 import Highcharts from 'highcharts';
 import Charts from "../HighCharts/HighCharts";
-import AppContext from "../../context/AppContext.js";
 import ShiftWorkoutButton from "./components/NextWorkout.js";
 import {getDataForCharts} from "./functions/getDataForCharts";
 import NameSportDate from "./components/NameSportDate";
@@ -29,11 +25,12 @@ import Pushpin1 from "../UI/svgComponents/Pushpin1.js";
 import Pushpin2 from "../UI/svgComponents/Pushpin2";
 import PageNotFound from "../../pages/PageNotFound";
 import Error from "../../pages/Error";
+import {useDispatch, useSelector} from "react-redux";
+import {getOneWorkout} from "../../actions/workouts";
 
 let order = ['speed', 'pace', 'power', 'heartRate', 'cadence', 'altitude'];
 
 const ViewWorkout = () => {
-  const {settings} = useContext(AppContext);
   const [status, setStatus] = useState(false);
   const [zooming, setZooming] = useState(false);
   const [index, setIndex] = useState(null);
@@ -44,29 +41,36 @@ const ViewWorkout = () => {
   const btnResetZoomRef = useRef();
   const params = useParams();
   const id = +params.id;
-  const [data, loading, error] = useDB(getWorkout, id);
   const [chartsIsLoaded, setChartsIsLoaded] = useState(false);
   const [writing, setWriting] = useState(false);
 
-  async function getWorkout(){
-      let result = await db.get('workoutsData', id);
-      let wt = await db.get('workouts', id)
-      wt.powerCurve ? await getDataForPowerCurveAllTime(wt.powerCurve)
-        .then(r => {
-          wt.powerCurveAllTime = r[0];
-          wt.powerCurveAllTimeMap = r[1];
-        }) : null;
-      return result || wt ? {...result, workout: wt} : null;
-  }
+  const dispatch = useDispatch()
+  const smoothing = useSelector(state => state.settings.smoothing)
+  const funnyMarkers = useSelector(state => state.settings.funnyMarkers)
+
+  const workout = useSelector(state => state.workouts.workout);
+  const workouts = useSelector(state => state.workouts.workouts)
+  const loader = useSelector(state => state.app.loader)
+  const error = useSelector(state => state.app.error)
+
+
+  useEffect(() => {
+    dispatch(getOneWorkout(id))
+    chartsIsLoaded ? setChartsIsLoaded(false) : null;
+    zooming ? setZooming(false) : null;
+    status ? setStatus(false) : null;
+    index ? setIndex(null) : null;
+    writing ? setWriting(false) : null;
+  }, [id])
 
   let preparedData = useMemo(() =>
-    getDataForCharts(data, settings.smoothing || 8), [data]);
+   workout ? getDataForCharts(workout, +smoothing) : null, [workout]);
 
   let charts = useMemo(() => preparedData ?
     setCharts(preparedData, order, setZooming, setChartsIsLoaded)
-    : null, [data]);
+    : null, [workout]);
   let chartsNames = useMemo(() => charts ?
-    charts.map(item => item.key) : null, [data]);
+    charts.map(item => item.key) : null, [workout]);
 
   let powerCurve = useMemo(() =>
     (preparedData && preparedData.charts.powerCurve ?
@@ -103,7 +107,7 @@ const ViewWorkout = () => {
           <div
             className={styles.resetZoom}
             ref={btnResetZoomRef.current}
-            hidden={!zooming || !data}
+            hidden={!zooming || !workout}
             onClick={() => {
               resetZoom();
               setZooming(false);
@@ -114,7 +118,7 @@ const ViewWorkout = () => {
           <div className={styles.info}>
             <span className={styles.tooltip}>
               {dict.title.info1[userLang]
-                + settings.smoothing
+                + smoothing
                 + dict.title.info2[userLang]}
             </span>
             <Info className={styles}
@@ -161,9 +165,9 @@ const ViewWorkout = () => {
           markerEnd={true}
           index={index}
           button={mapsButton}
-          funnyMarkers={settings.funnyMarkers}
+          funnyMarkers={funnyMarkers}
         />
-      </div> : null, [data, index, stickyMaps, polylinePowerCurve]);
+      </div> : null, [workout, index, stickyMaps, polylinePowerCurve]);
 
   const onKeyDown = useCallback((e) => !writing ?
     handleKeyboardDown(e, setZooming) : null, [writing])
@@ -202,19 +206,8 @@ const ViewWorkout = () => {
         : null)
   }, [chartsIsLoaded]);
 
-  useEffect(() => {
-    // временное решение пока не пойму как полностью размонтировать элемент
-    if(loading){
-      chartsIsLoaded ? setChartsIsLoaded(false) : null
-      zooming ? setZooming(false) : null;
-      status ? setStatus(false) : null;
-      index ? setIndex(null) : null;
-      writing ? setWriting(false) : null;
-    }
-  }, [loading])
-
   ////////////////////////////////
-  if (loading) {
+  if (loader || !workouts) {
     return <AppLoader/>;
   }
   else
@@ -224,7 +217,7 @@ const ViewWorkout = () => {
       <Error error={error}/>
     )
   }
-  else if(data)
+  else if(workout)
   {
     return (
         <div className={styles.page}>
@@ -236,15 +229,15 @@ const ViewWorkout = () => {
             <div className={styles.mapsNameStats}>
               <div className={styles.dateSportName}>
                 <NameSportDate styles={styles}
-                  data={data.workout} key={id + 'name'} setState={setWriting}/>
+                  data={workout.workout} key={id + 'name'} setState={setWriting}/>
               </div>
-              <MainWorkoutStats data={data.workout} styles={styles}/>
+              <MainWorkoutStats data={workout.workout} styles={styles}/>
               {maps}
               <h1>{dict.title.stats[userLang]}</h1>
               <WorkoutStats styles={styles}
-                data={data.sessionMesgs[0]} key={id + 'stats'}/>
+                data={workout.sessionMesgs[0]} key={id + 'stats'}/>
               <h1>{dict.title.notes[userLang]}</h1>
-              <TextArea id={id} text={data?.workout?.note}
+              <TextArea id={id} text={workout?.workout?.note}
                 styles={styles} setState={setWriting}/>
             </div>
           </div>

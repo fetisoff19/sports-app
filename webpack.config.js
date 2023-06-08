@@ -43,7 +43,7 @@ module.exports = {
     assetModuleFilename: 'assets/[hash][ext][query]',
     clean: true,
     filename: 'bundle.js',  // добавил
-    // publicPath: '/',        //
+    publicPath: '/',        //
   },
   experiments: {
     topLevelAwait: true

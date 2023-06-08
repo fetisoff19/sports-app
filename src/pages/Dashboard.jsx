@@ -1,24 +1,19 @@
-import React, {useContext} from 'react';
-import AppContext from "../context/AppContext.js";
+import React from 'react';
 import DashboardContent from "../components/DashboardContent/DashboardContent.js";
 import AppLoader from "../components/Loaders/AppLoader.jsx";
+import {useSelector} from "react-redux";
 
 
 const Dashboard = () => {
-  const {loading, error, workouts} = useContext(AppContext);
+  const workouts = useSelector(state => state.workouts.workouts)
+  const loader = useSelector(state => state.app.loader)
 
-  if (loading) {
+  if (loader || !workouts) {
     return <AppLoader/>;
   }
-  else if (error) {
-    console.error(error)
-    return <div>Ошибка: {error.message}</div>;
-  }
-  else if (workouts) {
-    return (
-      <DashboardContent/>
-    );
-  }
+  else return (
+    <DashboardContent/>
+  );
 };
 
 export default Dashboard;

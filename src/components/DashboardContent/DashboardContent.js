@@ -6,10 +6,10 @@ import useScroll from "../../hooks/useScroll";
 import styles from './styles.module.scss'
 import AppLoader from "../Loaders/AppLoader";
 import NoWorkouts from "../NoWorkouts/NoWorkouts";
+import {useSelector} from "react-redux";
 
 
 const DashboardContent = () => {
-  const {workouts} = useContext(AppContext);
   const [trainings, setTrainings] = useState([])
   const [page, setPage] = useState(0);
   const limit = 3;
@@ -17,6 +17,7 @@ const DashboardContent = () => {
   const childRef = useRef();
   const intersected = useScroll(parentRef, childRef, () => fetchWorkouts(page, limit));
 
+  const workouts = useSelector(state => state.workouts.workouts)
 
   // имитация запроса на сервер
   function fetchWorkouts(page, limit) {

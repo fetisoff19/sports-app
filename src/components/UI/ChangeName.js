@@ -1,24 +1,20 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {Link, useLocation} from "react-router-dom";
-import {db} from "../../API/db";
-import AppContext from "../../context/AppContext";
 import Edit from "./svgComponents/Edit";
 import Ok from "./svgComponents/Ok";
 import Close from "./svgComponents/Close";
+import {useDispatch} from "react-redux";
+import {changeWorkout} from "../../actions/workouts";
 
 const ChangeName = ({data, isLink, styles, setState}) => {
-  const {setRandom} = useContext(AppContext);
+  const dispatch = useDispatch()
   const [disabled, setDisabled] = useState(true);
   const [value, setValue] = useState(data.name);
   const router = useLocation();
 
   async function saveName() {
     if(value && value !== data.name)
-    await db.get('workouts', data.id).then(r => {
-      r.dateEdit = new Date;
-      r.name = value;
-      db.put('workouts', r).then(() => setRandom(Math.random()))
-    })
+    dispatch(changeWorkout(data.id, 'name', value))
   }
 
   const handleChange = e => setValue(e.target.value);

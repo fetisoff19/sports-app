@@ -6,9 +6,12 @@ import ChangeName from "../../UI/ChangeName";
 import styles from '../styles.modules'
 import Delete from "../../UI/svgComponents/Delete";
 import SportIcon from "../../UI/SportIcon.js";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteOneWorkout} from "../../../actions/workouts";
 
 
 const ListItem = ({data, setTrainings, setSortedData, index, i}) => {
+  const dispatch = useDispatch()
   return (
     <li className={styles.listItem}>
       <div className={styles.xsBlock + ' ' +  styles.unit}  key={data.id}>
@@ -36,13 +39,11 @@ const ListItem = ({data, setTrainings, setSortedData, index, i}) => {
       <div key={Math.random()} >
       <div className={styles.xsBlock}
         onClick={() => {
-            deleteWorkout(+data.id)
-              .then(() => {
-                setTrainings(prev => [...prev.slice(0, index),
-                  ...prev.slice(index + 1)]);
-                setSortedData(prev => [...prev.slice(0, i),
-                  ...prev.slice(i + 1)]);
-              })
+          dispatch(deleteOneWorkout(+data.id))
+            setTrainings(prev => [...prev.slice(0, index),
+              ...prev.slice(index + 1)]);
+            setSortedData(prev => [...prev.slice(0, i),
+              ...prev.slice(i + 1)]);
           }}>
         <Delete className={styles.delete} />
       </div>

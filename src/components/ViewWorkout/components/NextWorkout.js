@@ -1,12 +1,12 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
-import AppContext from "../../../context/AppContext.js";
 import Next from "../../UI/svgComponents/Next.js";
 import Previous from "../../UI/svgComponents/Previous.js";
+import {useSelector} from "react-redux";
 
 // dir ? => : <=
 const NextWorkout = ({dir, id, styles, loaded}) => {
-  const {workouts} = useContext(AppContext);
+  const workouts = useSelector(state => state.workouts.workouts)
   let i = workouts?.findIndex(item =>
     item.id === id)
   let active = true;

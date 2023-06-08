@@ -2,10 +2,12 @@ import React, {useContext, useEffect, useState} from 'react';
 import {db, setIndexedDbUsageInfo} from "../../API/db.js";
 import AppContext from "../../context/AppContext.js";
 import {dict, userLang} from "../../config/config";
+import {useSelector} from "react-redux";
 
 const Footer = () => {
   const [state, setState] = useState([])
-  const {loading, random} = useContext(AppContext)
+  // const loader = useSelector(state => state.app.loader)
+  const workouts = useSelector(state => state.workouts.workouts)
 
   useEffect(() => {
       async function getData() {
@@ -14,12 +16,12 @@ const Footer = () => {
       }
       getData()
     }
-  ,[random]);
+  ,[workouts]);
 
   return (
     <footer>
       <div>
-        {loading && state ?
+        {!(workouts || state) ?
           dict.title.loading[userLang]
           : (dict.title.footer1[userLang] + state[0]
           + dict.title.footer2[userLang] + (state[1] ? state[1]

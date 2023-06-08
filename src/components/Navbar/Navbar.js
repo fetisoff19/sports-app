@@ -2,13 +2,21 @@ import React, {useContext} from 'react';
 import {NavLink} from "react-router-dom";
 import AppContext from "../../context/AppContext.js";
 import {dict, userLang} from "../../config/config";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../../reducers/userReducer";
 
 const Navbar = () => {
-  const {auth, setAuth} = useContext(AppContext);
-  const logout = () => {
-    setAuth(false);
-    localStorage.removeItem('auth');
+  // const {auth, setAuth} = useContext(AppContext);
+  const dispatch = useDispatch()
+  const isAuth = useSelector(state => state.user.isAuth)
+  const language = useSelector(state => state.settings.language)
+
+  const logoutHandlerClick = () => {
+    dispatch(logout())
+    // setAuth(false);
+    // localStorage.removeItem('auth');
   }
+
   return (
     <header>
       <nav>
@@ -18,24 +26,24 @@ const Navbar = () => {
           className={({ isActive, isPending }) =>
           isPending ? "pending" : isActive ? "active" : ""}
         >
-          {dict.title.dashBoard[userLang]}
+          {dict.title.dashBoard[language]}
         </NavLink>
         <NavLink to={'workouts'} className={({ isActive, isPending }) =>
           isPending ? "pending" : isActive ? "active" : ""}
         >
-          {dict.title.activities[userLang]}
+          {dict.title.activities[language]}
         </NavLink>
         <NavLink to={'add'}  className={({ isActive, isPending }) =>
           isPending ? "pending" : isActive ? "active" : ""
-        }>{dict.title.add[userLang]}</NavLink>
+        }>{dict.title.add[language]}</NavLink>
         <NavLink to={'settings'}  className={({ isActive, isPending }) =>
           isPending ? "pending" : isActive ? "active" : ""
-        }>{dict.title.settings[userLang]}</NavLink>
+        }>{dict.title.settings[language]}</NavLink>
         <NavLink to={'about'}  className={({ isActive, isPending }) =>
           isPending ? "pending" : isActive ? "active" : ""
-        }>{dict.title.about[userLang]}</NavLink>
+        }>{dict.title.about[language]}</NavLink>
       </nav>
-      {auth ? <a className={'out'} onClick={logout}>{dict.title.out[userLang]}</a> : null}
+      {isAuth ? <a className={'out'} onClick={logoutHandlerClick}>{dict.title.out[language]}</a> : null}
     </header>
   );
 };

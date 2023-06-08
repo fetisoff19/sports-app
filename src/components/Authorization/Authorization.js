@@ -2,14 +2,17 @@ import React, {useContext} from 'react';
 import AppContext from "../../context/AppContext";
 import {dict, userLang} from "../../config/config";
 import styles from './styles.module.scss'
+import {setUser} from "../../reducers/userReducer";
+import {useDispatch} from "react-redux";
 
 const Authorization = () => {
-  const {setAuth} = useContext(AppContext);
+  // const {setAuth} = useContext(AppContext);
+  const dispatch = useDispatch()
 
   const login = e => {
+    dispatch(setUser({name: 'user'}))
     e.preventDefault()
-    setAuth(true);
-    localStorage.setItem('auth', 'true')
+    // setAuth(true);
   }
 
   return (

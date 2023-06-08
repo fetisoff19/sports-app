@@ -14,7 +14,6 @@ export function getDataForCharts(workoutData, smoothing) {
   let result = {};
   let polylinePoints = [];
   let powerCurveArray = [];
-
   let timeBetweenRecords = Math.round((workoutData.sessionMesgs[0].totalTimerTime / recordMesgs.length))
   smoothing = Math.ceil(smoothing / timeBetweenRecords);
 
