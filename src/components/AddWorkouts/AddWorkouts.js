@@ -4,8 +4,8 @@ import AppContext from "../../context/AppContext.js";
 import styles from './styles.module.scss'
 import FilesList from "./components/FilesList";
 import {dict, userLang} from "../../config/config";
-import {useDispatch} from "react-redux";
-import {getWorkouts} from "../../actions/workouts";
+import {useDispatch, useSelector} from "react-redux";
+import {getWorkouts, uploadFile} from "../../redux/actions/workouts";
 
 
 export default function AddWorkouts() {
@@ -15,6 +15,7 @@ export default function AddWorkouts() {
   const [drag, setDrag] = useState(false);
   const inputHiddenRef = useRef()
   const dispatch = useDispatch()
+
 
   function dragStartHandler(e) {
     e.preventDefault();
@@ -47,9 +48,17 @@ export default function AddWorkouts() {
       : null
   }
 
+  function uploadValidatedFiles(){
+    addFiles(validatedFiles?.validate, setUpLoadedFiles);
+    console.log(validatedFiles?.validate, upLoadedFiles)
+    validatedFiles?.validate.forEach(file => dispatch(uploadFile(file)));
+  }
+
   useEffect(() => {
-    if(upLoadedFiles?.length === validatedFiles?.validate?.length)
+    if(upLoadedFiles?.length === validatedFiles?.validate?.length) {
+
       dispatch(getWorkouts())
+    }
   }, [upLoadedFiles])
 
   return (
@@ -77,7 +86,7 @@ export default function AddWorkouts() {
 
         <button
           className={validatedFiles?.validate?.length ? styles.active : null}
-          onClick={() => addFiles(validatedFiles?.validate, setUpLoadedFiles)}>
+          onClick={uploadValidatedFiles}>
           {dict.title.download[userLang]}
         </button>
     </div>

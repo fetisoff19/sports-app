@@ -3,7 +3,7 @@ import {NavLink} from "react-router-dom";
 import AppContext from "../../context/AppContext.js";
 import {dict, userLang} from "../../config/config";
 import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../reducers/userReducer";
+import {logout} from "../../redux/reducers/userReducer";
 
 const Navbar = () => {
   // const {auth, setAuth} = useContext(AppContext);
@@ -43,7 +43,17 @@ const Navbar = () => {
           isPending ? "pending" : isActive ? "active" : ""
         }>{dict.title.about[language]}</NavLink>
       </nav>
-      {isAuth ? <a className={'out'} onClick={logoutHandlerClick}>{dict.title.out[language]}</a> : null}
+      {isAuth
+        ? <a className={'out'} onClick={logoutHandlerClick}>{dict.title.out[language]}</a>
+        : <>
+            <NavLink to={'registration'} className={({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? "active" : ""
+            }>{'Регистрация'}</NavLink>
+            <NavLink to={'login'} className={({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? "active" : ""
+            }>{'Войти'}</NavLink>
+        </>
+      }
     </header>
   );
 };

@@ -1,11 +1,49 @@
-import {hideLoader, setError, showLoader} from "../reducers/appReducer";
-import {db, deleteWorkout} from "../API/db";
+import {hideLoader, setError, showLoader} from "../reducers/appReducer.js";
+import {db, deleteWorkout} from "../../API/db.js";
 import {
+  addWorkout,
   changeWorkoutAction,
   deleteWorkoutAction, setOneWorkout,
   setWorkouts
-} from "../reducers/workoutsReducer";
-import {getDataForPowerCurveAllTime} from "../components/ViewWorkout/functions/functions";
+} from "../reducers/workoutsReducer.js";
+import {getDataForPowerCurveAllTime} from "../../components/ViewWorkout/functions/functions.js";
+import axios from "axios";
+import {API_URL} from "../../config/config";
+
+export function uploadFile(file) {
+  return async dispatch => {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      // if (dirId) {
+      //   formData.append('parent', dirId)
+      // }
+      const uploadFile = {name: file.name, progress: 0, id: Date.now()}
+      // dispatch(showUploader())
+      // dispatch(addUploadFile(uploadFile))
+      const response = await axios.post(`${API_URL}api/files/upload`, formData, {
+        headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+        onUploadProgress: progressEvent => {
+          let totalLength = progressEvent.event.lengthComputable
+            ? progressEvent.total
+            : progressEvent.event.target.getResponseHeader('content-length')
+            || progressEvent.event.target.getResponseHeader('x-decompressed-content-length');
+          if (totalLength) {
+            uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
+            // dispatch(changeUploadFile(uploadFile))
+            console.log(uploadFile.progress)
+          }
+        }
+      });
+      dispatch(addWorkout(response.data))
+      console.log(response.data)
+    } catch (e) {
+      console.log(e?.response?.data?.message)
+      alert(e?.response?.data?.message)
+    }
+  }
+}
+
 
 export function getWorkouts() {
   console.log('getWorkouts')

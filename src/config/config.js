@@ -1,6 +1,7 @@
 import {convertDistance, convertPace, convertSpeed, doubleValue, getHourMinSec} from "../API/functionsDate&Values";
 import React from "react";
 
+export const API_URL = `http://localhost:5000/`
 export let userLang = 'ru';
 export const changeLanguage = l => l ? userLang = l : null;
 

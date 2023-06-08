@@ -26,7 +26,7 @@ import Pushpin2 from "../UI/svgComponents/Pushpin2";
 import PageNotFound from "../../pages/PageNotFound";
 import Error from "../../pages/Error";
 import {useDispatch, useSelector} from "react-redux";
-import {getOneWorkout} from "../../actions/workouts";
+import {getOneWorkout} from "../../redux/actions/workouts";
 
 let order = ['speed', 'pace', 'power', 'heartRate', 'cadence', 'altitude'];
 
@@ -88,6 +88,7 @@ const ViewWorkout = () => {
       mouseOut={() => setPolylinePowerCurve([])}
       xAxis={{...chartsConfig.powerCurve.options.xAxis,
         ...{max: preparedData.charts.powerCurve.data.at(-1)[0]}}}
+      animation={true}
     />
     : null),[preparedData]);
 

@@ -7,7 +7,7 @@ import styles from '../styles.modules'
 import Delete from "../../UI/svgComponents/Delete";
 import SportIcon from "../../UI/SportIcon.js";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteOneWorkout} from "../../../actions/workouts";
+import {deleteOneWorkout} from "../../../redux/actions/workouts";
 
 
 const ListItem = ({data, setTrainings, setSortedData, index, i}) => {

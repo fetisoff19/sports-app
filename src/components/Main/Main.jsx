@@ -3,19 +3,22 @@ import Navbar from "../Navbar/Navbar.js";
 import Footer from "../Footer/Footer.js";
 import {Outlet} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getWorkouts} from "../../actions/workouts";
+import {getWorkouts} from "../../redux/actions/workouts";
 import Error from "../../pages/Error";
 
 
-const PrivateMain = () => {
+const Main = () => {
   const dispatch = useDispatch()
-  const workouts = useSelector(state => state.workouts.workouts)
-  const loader = useSelector(state => state.app.loader)
+  const isAuth = useSelector(state => state.user.isAuth)
+  // const workouts = useSelector(state => state.workouts.workouts)
+  // const loader = useSelector(state => state.app.loader)
   const error = useSelector(state => state.app.error)
 
   useEffect(() => {
+    isAuth ?
     dispatch(getWorkouts())
-  }, [])
+      : null
+  }, [isAuth])
 
   return (
     <>
@@ -29,4 +32,4 @@ const PrivateMain = () => {
   );
 };
 
-export default PrivateMain;
+export default Main;

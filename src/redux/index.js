@@ -1,8 +1,8 @@
-import userReducer from "./userReducer";
-import settingsSlice from "./settingsReducer"
-import appReducer from "./appReducer";
+import userReducer from "./reducers/userReducer.js";
+import settingsSlice from "./reducers/settingsReducer.js"
+import appReducer from "./reducers/appReducer.js";
 import {configureStore} from "@reduxjs/toolkit";
-import workoutsSlice from './workoutsReducer'
+import workoutsSlice from './reducers/workoutsReducer.js'
 
 const rootReducer = {
   user: userReducer,

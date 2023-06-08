@@ -1,4 +1,4 @@
-import {changeLanguage} from "../config/config";
+import {changeLanguage} from "../../config/config.js";
 import {createSlice} from "@reduxjs/toolkit";
 
 const settingsSlice = createSlice({

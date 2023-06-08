@@ -5,8 +5,8 @@ import styles from './styles.module.scss'
 import Question from "../UI/svgComponents/Question";
 import {deleteWorkout} from "../../API/db";
 import {useDispatch, useSelector} from "react-redux";
-import {setFunnyMarkers, setLanguage, setSmoothing} from "../../reducers/settingsReducer";
-import {deleteAllWorkouts} from "../../actions/workouts";
+import {setFunnyMarkers, setLanguage, setSmoothing} from "../../redux/reducers/settingsReducer";
+import {deleteAllWorkouts} from "../../redux/actions/workouts";
 
 const Settings = () => {
   const [clickButtonDeleteAll, setClickButtonDeleteAll] = useState(false)

@@ -13,15 +13,18 @@ import {createSlice} from "@reduxjs/toolkit";
     deleteWorkoutAction(state, action){
       state.workouts.filter(workout => workout.id !== action.payload)
     },
+    addWorkout(state, action) {
+      state.workouts = [...state.workouts, action.payload];
+    },
     changeWorkoutAction(state, action){
       state.workouts.map(workout =>
         workout.id === action.payload.id ? action.payload : workout)
     },
-      setOneWorkout(state, action) {
+    setOneWorkout(state, action) {
       state.workout = action.payload;
     },
   }
 })
 
 export default workoutsSlice.reducer;
-export const {setWorkouts, deleteWorkoutAction, changeWorkoutAction, setOneWorkout} = workoutsSlice.actions;
+export const {setWorkouts, deleteWorkoutAction, changeWorkoutAction, setOneWorkout, addWorkout} = workoutsSlice.actions;

@@ -17,6 +17,8 @@ const Charts = props => {
     }
   },[])
 
+  const animation = props.animation || false;
+
   const options = {
     series: [{
       data: props.data.data,
@@ -190,16 +192,16 @@ const Charts = props => {
           // lineWidth: 1,
           // lineColor: 'black' // inherit from series
         },
-        allowPointSelect: false,
+        allowPointSelect: animation,
         states: {
           hover: {
-            enabled: false
+            enabled: animation
           },
           inactive: {
-            enabled: false
+            enabled: animation
           },
           select: {
-            enabled: false
+            enabled: animation
           }
         },
       },

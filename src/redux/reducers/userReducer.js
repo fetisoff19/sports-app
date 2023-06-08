@@ -13,6 +13,7 @@ const userSlice = createSlice({
       state.isAuth = true;
     },
     logout(state){
+      localStorage.removeItem('token')
       localStorage.removeItem('auth');
       state.currentUser = {};
       state.isAuth = false;

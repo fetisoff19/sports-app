@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {dict, userLang} from "../../config/config";
 import Ok from "./svgComponents/Ok";
 import Close from "./svgComponents/Close";
-import {changeWorkout} from "../../actions/workouts";
+import {changeWorkout} from "../../redux/actions/workouts";
 import {useDispatch} from "react-redux";
 
 const TextArea = ({text, id, styles, setState}) => {

@@ -1,10 +1,9 @@
 import React from 'react';
 import {Route, Routes} from "react-router-dom";
 import {privateRoutes, publicRoutes} from "../../router";
-import PrivateMain from "../MainPages/PrivateMain.jsx";
+import Main from "../Main/Main.jsx";
 import {Navigate} from "react-router";
 import {useSelector} from "react-redux";
-import PublicMain from "../MainPages/PublicMain.jsx";
 
 const AppRouter = () => {
   const isAuth = useSelector(state => state.user.isAuth)
@@ -13,7 +12,7 @@ const AppRouter = () => {
     isAuth
     ? (
       <Routes>
-        <Route path={'/'} element={<PrivateMain/>}>
+        <Route path={'/'} element={<Main/>}>
           {privateRoutes.map(route =>
             <Route
               path={route?.path}
@@ -26,7 +25,7 @@ const AppRouter = () => {
     )
     : (
       <Routes>
-        <Route path={'/'} element={<PublicMain/>}>
+        <Route path={'/'} element={<Main/>}>
           {publicRoutes.map(route =>
             <Route
               path={route.path}
