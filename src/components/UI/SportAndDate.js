@@ -7,7 +7,7 @@ const SportAndDate = ({data, className}) => {
         {(dict.sports.hasOwnProperty(data.sport)
             ? dict.sports[data.sport][userLang]
             : dict.sports.other[userLang]) + ', '
-          + (data.startTime.toLocaleString() || '')}
+          + (data.timestamp.toLocaleString() || '')}
     </div>
   );
 };

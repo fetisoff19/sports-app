@@ -3,8 +3,9 @@ import Navbar from "../Navbar/Navbar.js";
 import Footer from "../Footer/Footer.js";
 import {Outlet} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getWorkouts} from "../../redux/actions/workouts";
+import {getFiles, getWorkouts} from "../../redux/actions/workouts";
 import Error from "../../pages/Error";
+import {setFiles} from "../../redux/reducers/userReducer";
 
 
 const Main = () => {
@@ -15,9 +16,10 @@ const Main = () => {
   const error = useSelector(state => state.app.error)
 
   useEffect(() => {
-    isAuth ?
-    dispatch(getWorkouts())
-      : null
+    if (isAuth) {
+      // dispatch(getWorkouts())
+      dispatch(getFiles())
+    }
   }, [isAuth])
 
   return (

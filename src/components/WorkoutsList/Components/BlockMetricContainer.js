@@ -9,6 +9,7 @@ const cyclingOrder = ['totalDistance', 'totalTimerTime',  'enhancedAvgSpeed', 't
 
 const BlockMetricContainer = ({data}) => {
   const block = baseOrder.map((item, index) => {
+    // console.log(data)
     return (
       <div key={index} className={styles.mBlock} >
         <span className={styles.unit}>

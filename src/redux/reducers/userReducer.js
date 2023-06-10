@@ -4,7 +4,8 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     currentUser: {},
-    isAuth: localStorage.getItem('auth')
+    isAuth: localStorage.getItem('auth'),
+    files: [],
   },
   reducers: {
     setUser(state, action) {
@@ -18,8 +19,11 @@ const userSlice = createSlice({
       state.currentUser = {};
       state.isAuth = false;
     },
+    setFiles(state, action){
+      state.files = action.payload;
+    },
   }
 })
 
 export default userSlice.reducer;
-export const {setUser, logout} = userSlice.actions;
+export const {setUser, logout, setFiles} = userSlice.actions;

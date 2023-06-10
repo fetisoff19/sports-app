@@ -1,6 +1,5 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {addFiles, validateFiles} from "../../API/utils.js";
-import AppContext from "../../context/AppContext.js";
 import styles from './styles.module.scss'
 import FilesList from "./components/FilesList";
 import {dict, userLang} from "../../config/config";
@@ -9,13 +8,14 @@ import {getWorkouts, uploadFile} from "../../redux/actions/workouts";
 
 
 export default function AddWorkouts() {
-  // const {setRandom} = useContext(AppContext)
   const [upLoadedFiles, setUpLoadedFiles] = useState([]);
   const [validatedFiles, setValidatedFiles] = useState(null);
   const [drag, setDrag] = useState(false);
   const inputHiddenRef = useRef()
   const dispatch = useDispatch()
+  // const files = useSelector(state => state.user.files)
 
+  // let dirWorkoutsData = files?.find(file => file.name === 'workoutsData')?._id
 
   function dragStartHandler(e) {
     e.preventDefault();
@@ -50,16 +50,16 @@ export default function AddWorkouts() {
 
   function uploadValidatedFiles(){
     addFiles(validatedFiles?.validate, setUpLoadedFiles);
-    console.log(validatedFiles?.validate, upLoadedFiles)
-    validatedFiles?.validate.forEach(file => dispatch(uploadFile(file)));
+    validatedFiles?.validate.forEach(file =>
+      dispatch(uploadFile(file)));
   }
 
-  useEffect(() => {
-    if(upLoadedFiles?.length === validatedFiles?.validate?.length) {
-
-      dispatch(getWorkouts())
-    }
-  }, [upLoadedFiles])
+  // useEffect(() => {
+  //   if(upLoadedFiles?.length === validatedFiles?.validate?.length) {
+  //
+  //     dispatch(getWorkouts())
+  //   }
+  // }, [upLoadedFiles])
 
   return (
     <div className={'content ' + styles?.content}>

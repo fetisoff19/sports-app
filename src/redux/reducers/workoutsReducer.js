@@ -8,13 +8,17 @@ import {createSlice} from "@reduxjs/toolkit";
   },
   reducers: {
     setWorkouts(state, action) {
-      state.workouts = action.payload;
+      state.workouts = action.payload.map(workout => {
+        workout.timestamp = new Date(workout.timestamp)
+        return workout;
+      }).sort((a, b) => b.timestamp - a.timestamp);
     },
     deleteWorkoutAction(state, action){
       state.workouts.filter(workout => workout.id !== action.payload)
     },
     addWorkout(state, action) {
-      state.workouts = [...state.workouts, action.payload];
+      action.payload.timestamp = new Date(action.payload.timestamp)
+      state.workouts = [...state.workouts, action.payload].sort((a, b) => b.timestamp - a.timestamp);
     },
     changeWorkoutAction(state, action){
       state.workouts.map(workout =>

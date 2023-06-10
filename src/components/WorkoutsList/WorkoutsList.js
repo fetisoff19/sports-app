@@ -20,7 +20,6 @@ export function WorkoutsList() {
   };
 
   const workouts = useSelector(state => state.workouts.workouts)
-
   const data = useMemo(() => {
     let result = [];
     workouts.forEach(workout => {

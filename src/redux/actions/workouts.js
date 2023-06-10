@@ -9,15 +9,16 @@ import {
 import {getDataForPowerCurveAllTime} from "../../components/ViewWorkout/functions/functions.js";
 import axios from "axios";
 import {API_URL} from "../../config/config";
+import {setDir, setFiles} from "../reducers/userReducer";
 
-export function uploadFile(file) {
+export function uploadFile(file, dirId) {
   return async dispatch => {
     try {
       const formData = new FormData()
       formData.append('file', file)
-      // if (dirId) {
-      //   formData.append('parent', dirId)
-      // }
+      if (dirId) {
+        formData.append('parent', dirId)
+      }
       const uploadFile = {name: file.name, progress: 0, id: Date.now()}
       // dispatch(showUploader())
       // dispatch(addUploadFile(uploadFile))
@@ -31,7 +32,7 @@ export function uploadFile(file) {
           if (totalLength) {
             uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
             // dispatch(changeUploadFile(uploadFile))
-            console.log(uploadFile.progress)
+            // console.log(uploadFile.progress)
           }
         }
       });
@@ -44,6 +45,37 @@ export function uploadFile(file) {
   }
 }
 
+export function getFiles(dirId, sort) {
+  return async dispatch => {
+    try {
+      console.log('getFiles')
+      dispatch(showLoader())
+      let url = `${API_URL}api/files`
+      if (dirId) {
+        url = `${API_URL}api/files?parent=${dirId}`
+      }
+      if (sort) {
+        url = `${API_URL}api/files?sort=${sort}`
+      }
+      if (dirId && sort) {
+        url = `${API_URL}api/files?parent=${dirId}&sort=${sort}`
+      }
+      const response = await axios.get(url, {
+        headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+      });
+      // dispatch(setFiles(response.data))
+      dispatch(setWorkouts(response.data.filter(file => file.type === "fit")))
+      // const workouts = response.data.filter(file => file.path === 'workouts.txt')
+      // workouts = workouts ?
+      // dispatch(setWorkouts(response.data.filter(file => file.path === 'workouts.txt')))
+    } catch (e) {
+      console.log(e?.response?.data?.message)
+      alert(e?.response?.data?.message)
+    } finally {
+      dispatch(hideLoader())
+    }
+  }
+}
 
 export function getWorkouts() {
   console.log('getWorkouts')
