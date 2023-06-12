@@ -21,16 +21,15 @@ const DashboardContent = () => {
 
   // имитация запроса на сервер
   function fetchWorkouts(page, limit) {
-    setTimeout(() => {
-      if(workouts.length === trainings.length) return childRef.current.hidden = true;
-      setTrainings(prev => [...prev, ...workouts.slice(page * limit, (page + 1) * limit)]);
-      setPage(prev => prev + 1);
-    }, 200)
+    if(workouts.length === trainings.length) return childRef.current.hidden = true;
+    setTrainings(prev => [...prev, ...workouts.slice(page * limit, (page + 1) * limit)]);
+    setPage(prev => prev + 1);
   }
 
   return (
     <div ref={parentRef} className={styles.page}>
-      {workouts.length ?
+      {workouts.length
+        ?
         <div className={styles.container}>
         <div>
           <div className={styles.stats}>
@@ -41,7 +40,9 @@ const DashboardContent = () => {
           {trainings.map((item, index) => <Workout key={index} data={item}/>)}
           <div ref={childRef}></div>
           {workouts.length !== trainings.length
-            ? <div className={styles.loader}><AppLoader/></div>
+            ? <div className={styles.loader}>
+                <AppLoader/>
+              </div>
             : null}
         </div>
       </div>

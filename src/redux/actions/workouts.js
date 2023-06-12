@@ -1,4 +1,4 @@
-import {hideLoader, setError, showLoader} from "../reducers/appReducer.js";
+import {hideLoader, hideSmallLoader, setError, showLoader, showSmallLoader} from "../reducers/appReducer.js";
 import {db, deleteWorkout} from "../../API/db.js";
 import {
   addWorkout,
@@ -6,12 +6,11 @@ import {
   deleteWorkoutAction, setOneWorkout,
   setWorkouts
 } from "../reducers/workoutsReducer.js";
-import {getDataForPowerCurveAllTime} from "../../components/ViewWorkout/functions/functions.js";
 import axios from "axios";
 import {API_URL} from "../../config/config";
-import {setDir, setFiles} from "../reducers/userReducer";
+import {parseFit} from "../../API/utils";
 
-export function uploadFile(file, dirId) {
+export function uploadFile(file, setState, dirId) {
   return async dispatch => {
     try {
       const formData = new FormData()
@@ -20,7 +19,6 @@ export function uploadFile(file, dirId) {
         formData.append('parent', dirId)
       }
       const uploadFile = {name: file.name, progress: 0, id: Date.now()}
-      // dispatch(showUploader())
       // dispatch(addUploadFile(uploadFile))
       const response = await axios.post(`${API_URL}api/files/upload`, formData, {
         headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
@@ -36,8 +34,10 @@ export function uploadFile(file, dirId) {
           }
         }
       });
+
       dispatch(addWorkout(response.data))
-      console.log(response.data)
+      setState(prev => prev + 1)
+      // console.log(response.data)
     } catch (e) {
       console.log(e?.response?.data?.message)
       alert(e?.response?.data?.message)
@@ -70,23 +70,53 @@ export function getFiles(dirId, sort) {
       // dispatch(setWorkouts(response.data.filter(file => file.path === 'workouts.txt')))
     } catch (e) {
       console.log(e?.response?.data?.message)
-      alert(e?.response?.data?.message)
+      // alert(e?.response?.data?.message)
     } finally {
       dispatch(hideLoader())
     }
   }
 }
 
-export function getWorkouts() {
-  console.log('getWorkouts')
+export function getOneFile(_id){
   return async dispatch => {
     try {
+      console.time('getOneFile')
       dispatch(showLoader())
-      setTimeout(() => {
-        getData()
-          .then((r) => dispatch(setWorkouts(r || []))
-        )
-      },0)
+      const response = await fetch(`${API_URL}api/files/download?id=${_id}`,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      if (response.status === 200) {
+        const blob = await response.blob()
+        const parseFile = await parseFit(blob)
+        dispatch(setOneWorkout(parseFile))
+      }
+
+    } catch (e) {
+      console.log(e?.response?.data?.message)
+      alert(e?.response?.data?.message)
+    } finally {
+      dispatch(hideLoader())
+      console.timeEnd('getOneFile')
+    }
+  }
+}
+
+export function deleteOneWorkout(_id) {
+  console.log('deleteOneWorkout')
+  return async dispatch => {
+    try {
+      dispatch(showLoader());
+      const response = await axios.delete(`${API_URL}api/files?id=${_id}`,{
+        headers:{
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      if (response.status === 200){
+        dispatch(deleteWorkoutAction(_id))
+      }
+      return response.statusText
     } catch (e) {
       console.log(e)
       dispatch(setError(e))
@@ -95,14 +125,49 @@ export function getWorkouts() {
     }
   }
 }
+
+
+
+// export function getWorkouts() {
+//   console.log('getWorkouts')
+//   return async dispatch => {
+//     try {
+//       dispatch(showLoader())
+//       setTimeout(() => {
+//         getData()
+//           .then((r) => dispatch(setWorkouts(r || []))
+//         )
+//       },0)
+//     } catch (e) {
+//       console.log(e)
+//       dispatch(setError(e))
+//     } finally {
+//       dispatch(hideLoader())
+//     }
+//   }
+// }
 
 export function deleteAllWorkouts(workouts) {
   console.log('deleteAllWorkouts')
   return async dispatch => {
     try {
-      dispatch(showLoader())
-      deleteAll(workouts)
-        .then(() => dispatch(setWorkouts([])))
+      let counter = workouts.length
+      dispatch(showLoader());
+
+      for (const workout of workouts) {
+        const response = await axios.delete(`${API_URL}api/files?id=${workout._id}`,{
+          headers:{
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+        if (response.status === 200){
+          counter--
+        }
+      }
+      if(counter === 0){
+        dispatch(setWorkouts([]))
+        return 'OK'
+      }
     } catch (e) {
       console.log(e)
       dispatch(setError(e))
@@ -112,78 +177,52 @@ export function deleteAllWorkouts(workouts) {
   }
 }
 
-export function deleteOneWorkout(id) {
-  console.log('deleteOneWorkout')
+
+export function editWorkout(id, field, text) {
   return async dispatch => {
     try {
-      dispatch(showLoader());
-      deleteWorkout(+id)
-       .then(() => dispatch(deleteWorkoutAction(id)))
+      dispatch(showSmallLoader(id));
+      const response = await axios.post(`${API_URL}api/files/edit`, {
+        id,
+        field,
+        text
+      },{
+        headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+      });
+      if(response.status === 200)
+        dispatch(changeWorkoutAction(response.data.workout))
     } catch (e) {
       console.log(e)
       dispatch(setError(e))
     } finally {
-      dispatch(hideLoader())
+      dispatch(hideSmallLoader(id))
     }
   }
 }
 
-export function changeWorkout(id, field, value) {
-  console.log('changeWorkout')
-  return async dispatch => {
-    try {
-      dispatch(showLoader());
-      await db.get('workouts', id).then(r => {
-        r.dateEdit = new Date;
-        r[field]= value;
-        db.put('workouts', r)
-        dispatch(changeWorkoutAction(r));})
-    } catch (e) {
-      console.log(e)
-      dispatch(setError(e))
-    } finally {
-      dispatch(hideLoader())
-    }
-  }
-}
+// export function getOneWorkout(id) {
+//   console.log('getOneWorkout')
+//   return async dispatch => {
+//     try {
+//       dispatch(showLoader());
+//
+//       await getDataForWorkout(id).then(r =>
+//         dispatch(setOneWorkout(r)))
+//
+//     } catch (e) {
+//       console.log(e)
+//       dispatch(setError(e))
+//     } finally {
+//       dispatch(hideLoader())
+//     }
+//   }
+// }
 
-export function getOneWorkout(id) {
-  console.log('getWorkout')
-  return async dispatch => {
-    try {
-      dispatch(showLoader());
-      await getDataForWorkout(id).then(r =>
-        dispatch(setOneWorkout(r)))
-    } catch (e) {
-      console.log(e)
-      dispatch(setError(e))
-    } finally {
-      dispatch(hideLoader())
-    }
-  }
-}
+// async function getData() {
+//   return await db.getAll('workouts')
+//     .then(r => r.sort((a, b) => b.timestamp - a.timestamp))
+// }
 
-async function getData() {
-  return await db.getAll('workouts')
-    .then(r => r.sort((a, b) => b.timestamp - a.timestamp))
-}
-
-async function deleteAll(workouts) {
-  for await(const workout of workouts) {
-    await deleteWorkout(workout.id);
-  }
-}
-
-async function getDataForWorkout(id){
-  let result = await db.get('workoutsData', id);
-  let wt = await db.get('workouts', id)
-  wt.powerCurve ? await getDataForPowerCurveAllTime(wt.powerCurve)
-    .then(r => {
-      wt.powerCurveAllTime = r[0];
-      wt.powerCurveAllTimeMap = r[1];
-    }) : null;
-  return result || wt ? {...result, workout: wt} : null;
-}
 
 
 

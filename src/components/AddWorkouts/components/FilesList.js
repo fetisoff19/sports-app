@@ -8,20 +8,20 @@ const FilesList = ({validatedFiles, setValidatedFiles, upLoadedFiles, styles}) =
     <>
       {validatedFiles ?
         <div className={styles.files}>
-          {validatedFiles?.validate.map((item, index) =>
+          {validatedFiles?.map((item, index) =>
             <ValidateFile
               key={index} index={index} name={item.name}
               className={styles?.validateFiles + ' ' + styles?.file}
               validatedFiles={validatedFiles} setState={setValidatedFiles}
               upLoadedFiles={upLoadedFiles}/>)}
-          {validatedFiles?.duplicate.map((item, index) =>
-            <DuplicateFile
-              data={item} key={index}
-              className={styles?.duplicateFiles + ' ' + styles?.file}/>)}
-          {validatedFiles?.nonValidate.map((item, index) =>
-            <NonValidateFile
-              key={index} name={item}
-              className={styles?.nonValidateFiles + ' ' + styles?.file}/>)}
+          {/*{validatedFiles?.duplicate.map((item, index) =>*/}
+          {/*  <DuplicateFile*/}
+          {/*    data={item} key={index}*/}
+          {/*    className={styles?.duplicateFiles + ' ' + styles?.file}/>)}*/}
+          {/*{validatedFiles?.nonValidate.map((item, index) =>*/}
+          {/*  <NonValidateFile*/}
+          {/*    key={index} name={item}*/}
+          {/*    className={styles?.nonValidateFiles + ' ' + styles?.file}/>)}*/}
         </div>
         : null}
     </>

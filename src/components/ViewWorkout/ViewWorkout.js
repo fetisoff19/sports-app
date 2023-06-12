@@ -26,7 +26,7 @@ import Pushpin2 from "../UI/svgComponents/Pushpin2";
 import PageNotFound from "../../pages/PageNotFound";
 import Error from "../../pages/Error";
 import {useDispatch, useSelector} from "react-redux";
-import {getOneWorkout} from "../../redux/actions/workouts";
+import {getOneFile, getOneWorkout} from "../../redux/actions/workouts";
 
 let order = ['speed', 'pace', 'power', 'heartRate', 'cadence', 'altitude'];
 
@@ -40,7 +40,7 @@ const ViewWorkout = () => {
   const mapsRef = useRef();
   const btnResetZoomRef = useRef();
   const params = useParams();
-  const id = +params.id;
+  const _id = params.id;
   const [chartsIsLoaded, setChartsIsLoaded] = useState(false);
   const [writing, setWriting] = useState(false);
 
@@ -48,29 +48,30 @@ const ViewWorkout = () => {
   const smoothing = useSelector(state => state.settings.smoothing)
   const funnyMarkers = useSelector(state => state.settings.funnyMarkers)
 
-  const workout = useSelector(state => state.workouts.workout);
-  const workouts = useSelector(state => state.workouts.workouts)
-  const loader = useSelector(state => state.app.loader)
+  const workoutFitFile = useSelector(state => state.workouts.workout);
+  const workout = useSelector(state =>
+    state?.workouts?.workouts?.find(workout => workout._id === _id))
+  const loader = useSelector(state => state.app.appLoader)
   const error = useSelector(state => state.app.error)
 
 
   useEffect(() => {
-    dispatch(getOneWorkout(id))
+    _id ? dispatch(getOneFile(_id)) : null;
     chartsIsLoaded ? setChartsIsLoaded(false) : null;
     zooming ? setZooming(false) : null;
     status ? setStatus(false) : null;
     index ? setIndex(null) : null;
     writing ? setWriting(false) : null;
-  }, [id])
+  }, [_id])
 
   let preparedData = useMemo(() =>
-   workout ? getDataForCharts(workout, +smoothing) : null, [workout]);
+   workoutFitFile ? getDataForCharts(workoutFitFile, +smoothing) : null, [workoutFitFile]);
 
   let charts = useMemo(() => preparedData ?
     setCharts(preparedData, order, setZooming, setChartsIsLoaded)
-    : null, [workout]);
+    : null, [workoutFitFile]);
   let chartsNames = useMemo(() => charts ?
-    charts.map(item => item.key) : null, [workout]);
+    charts.map(item => item.key) : null, [workoutFitFile]);
 
   let powerCurve = useMemo(() =>
     (preparedData && preparedData.charts.powerCurve ?
@@ -108,7 +109,7 @@ const ViewWorkout = () => {
           <div
             className={styles.resetZoom}
             ref={btnResetZoomRef.current}
-            hidden={!zooming || !workout}
+            hidden={!zooming || !workoutFitFile}
             onClick={() => {
               resetZoom();
               setZooming(false);
@@ -151,7 +152,7 @@ const ViewWorkout = () => {
       <div
         ref={mapsRef.current}
         className={(stickyMaps ? 'viewWorkoutMaps' : null) + ' ' + styles.maps}
-        key={id + 'maps'}>
+        key={_id + 'maps'}>
         <Maps
           style={{height: 300, width: 500}}
           maxZoom={19}
@@ -168,7 +169,7 @@ const ViewWorkout = () => {
           button={mapsButton}
           funnyMarkers={funnyMarkers}
         />
-      </div> : null, [workout, index, stickyMaps, polylinePowerCurve]);
+      </div> : null, [workoutFitFile, index, stickyMaps, polylinePowerCurve]);
 
   const onKeyDown = useCallback((e) => !writing ?
     handleKeyboardDown(e, setZooming) : null, [writing])
@@ -208,7 +209,7 @@ const ViewWorkout = () => {
   }, [chartsIsLoaded]);
 
   ////////////////////////////////
-  if (loader || !workouts) {
+  if (loader || !workoutFitFile) {
     return <AppLoader/>;
   }
   else
@@ -218,33 +219,33 @@ const ViewWorkout = () => {
       <Error error={error}/>
     )
   }
-  else if(workout)
+  else if(workoutFitFile)
   {
     return (
         <div className={styles.page}>
           <ShiftWorkoutButton styles={styles}
              loaded={chartsContainer ? chartsIsLoaded : true}
-            dir={0} id={id} key={id + '0'} />
+            dir={0} _id={_id} key={_id + '0'} />
           <div className={styles.container}>
             {chartsContainer}
             <div className={styles.mapsNameStats}>
               <div className={styles.dateSportName}>
                 <NameSportDate styles={styles}
-                  data={workout.workout} key={id + 'name'} setState={setWriting}/>
+                  data={workout} key={_id + 'name'} setState={setWriting}/>
               </div>
-              <MainWorkoutStats data={workout.workout} styles={styles}/>
+              <MainWorkoutStats data={workout} styles={styles}/>
               {maps}
               <h1>{dict.title.stats[userLang]}</h1>
               <WorkoutStats styles={styles}
-                data={workout.sessionMesgs[0]} key={id + 'stats'}/>
+                data={workout} key={_id + 'stats'}/>
               <h1>{dict.title.notes[userLang]}</h1>
-              <TextArea id={id} text={workout?.workout?.note}
+              <TextArea _id={_id} text={workout?.note}
                 styles={styles} setState={setWriting}/>
             </div>
           </div>
           <ShiftWorkoutButton styles={styles}
             loaded={chartsContainer ? chartsIsLoaded : true}
-            dir={1} id={id} key={id + '1'} />
+            dir={1} _id={_id} key={_id + '1'} />
         </div>
     )
   }

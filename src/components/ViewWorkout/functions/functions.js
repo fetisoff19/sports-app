@@ -192,14 +192,14 @@ export function addPolylinePowerCurve(point, data, setState){
 }
 
 export async function getDataForPowerCurveAllTime(workoutPowerCurve){
-  let workouts = await db.getAll('workouts');
-  let powerCurveMap = getPointForPowerCurve(workouts);
-  let powerCurveArray = [];
-  powerCurveMap.forEach((value, key, map) => {
-    if (workoutPowerCurve.get(key))
-      powerCurveArray.push([key, value.value]);
-  })
-  return [powerCurveArray, powerCurveMap]
+  // let workouts = await db.getAll('workouts');
+  // let powerCurveMap = getPointForPowerCurve(workouts);
+  // let powerCurveArray = [];
+  // powerCurveMap.forEach((value, key, map) => {
+  //   if (workoutPowerCurve.get(key))
+  //     powerCurveArray.push([key, value.value]);
+  // })
+  // return [powerCurveArray, powerCurveMap]
 }
 
 export function getPointForPowerCurve(allWorkouts){

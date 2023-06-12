@@ -14,15 +14,19 @@ import {createSlice} from "@reduxjs/toolkit";
       }).sort((a, b) => b.timestamp - a.timestamp);
     },
     deleteWorkoutAction(state, action){
-      state.workouts.filter(workout => workout.id !== action.payload)
+      state.workouts = state.workouts.filter(workout => workout._id !== action.payload)
     },
     addWorkout(state, action) {
       action.payload.timestamp = new Date(action.payload.timestamp)
       state.workouts = [...state.workouts, action.payload].sort((a, b) => b.timestamp - a.timestamp);
     },
     changeWorkoutAction(state, action){
-      state.workouts.map(workout =>
-        workout.id === action.payload.id ? action.payload : workout)
+      state.workouts = state.workouts.map(workout => {
+       if(workout._id === action.payload._id){
+         action.payload.timestamp = new Date(action.payload.timestamp)
+         return action.payload
+       } else return workout
+      })
     },
     setOneWorkout(state, action) {
       state.workout = action.payload;

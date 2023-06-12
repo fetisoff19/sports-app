@@ -167,7 +167,7 @@ export function getDataForCharts(workoutData, smoothing) {
     return
   };
 
-  if (workoutData.workout.powerCurve) {
+  if (workoutData?.workout?.powerCurve) {
     workoutData.workout.powerCurve.forEach((value, key) =>
       powerCurveArray.push([key, value.value])
     )
@@ -213,15 +213,15 @@ export function getDataForCharts(workoutData, smoothing) {
       powerCurve: powerCurveArray.length && {
         data: powerCurveArray,
       },
-      powerCurveAllTime: workoutData.workout.powerCurveAllTime && {
-        data: workoutData.workout.powerCurveAllTime,
-      },
+      powerCurveAllTime: workoutData?.workout?.powerCurveAllTime && {
+        data: workoutData?.workout?.powerCurveAllTime,
+      } || null,
     },
     step: stepTimeArray,
     smoothing: smoothing,
     polylinePoints: polylinePoints,
-    powerCurve: workoutData.workout.powerCurve || null,
-    powerCurveAllTimeMap: workoutData.workout.powerCurveAllTimeMap || null,
+    powerCurve: workoutData?.workout?.powerCurve || null,
+    powerCurveAllTimeMap: workoutData?.workout?.powerCurveAllTimeMap || null,
     sport: workoutData.sessionMesgs[0].sport || null,
   }
   return result

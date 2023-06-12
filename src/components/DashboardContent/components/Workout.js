@@ -11,7 +11,7 @@ import TextArea from "../../UI/TextArea";
 
 const Workout = ({data}) => {
 
-  let indexes = {
+  let fields = {
     totalDistance: {
       formatter: convertDistance,
       unit: 'km',
@@ -20,20 +20,20 @@ const Workout = ({data}) => {
       formatter: Math.round,
       unit: 'm',
     },
-    totalElapsedTime: {
+    totalTimerTime: {
       formatter: getHourMinSec,
       unit: null,
     },
   };
 
-  let block = ['totalDistance', 'totalElapsedTime', 'totalAscent',]
+  let block = ['totalDistance', 'totalTimerTime', 'totalAscent',]
     .map(item => {
       return (
         data[item] ?
         (<div key={item} className={styles.indicator}>
           <div className={styles.unit}>
-            {indexes[item].formatter(data[item]) + ' '
-              + (indexes[item].unit ? dict.units[indexes[item].unit][userLang] : '')}
+            {fields[item].formatter(data[item]) + ' '
+              + (fields[item].unit ? dict.units[fields[item].unit][userLang] : '')}
           </div>
           <div className={styles.label}>
             {dict.fields[item][userLang]}
@@ -51,7 +51,7 @@ const Workout = ({data}) => {
         <WorkoutName className={styles.name} data={data}/>
         <div className={styles.indicators}>{block}</div>
         <div className={styles.aboutWorkout}>
-          <TextArea text={data.note} id={data.id} styles={styles}/>
+          <TextArea text={data.note} _id={data._id} styles={styles}/>
         </div>
         {/*Статистика: персональные рекорды...*/}
       </div>

@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 
 const Dashboard = () => {
   const workouts = useSelector(state => state.workouts.workouts)
-  const loader = useSelector(state => state.app.loader)
+  const loader = useSelector(state => state.app.appLoader)
 
   if (loader || !workouts) {
     return <AppLoader/>;

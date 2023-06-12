@@ -3,19 +3,23 @@ import {Link, useLocation} from "react-router-dom";
 import Edit from "./svgComponents/Edit";
 import Ok from "./svgComponents/Ok";
 import Close from "./svgComponents/Close";
-import {useDispatch} from "react-redux";
-import {changeWorkout} from "../../redux/actions/workouts";
+import {useDispatch, useSelector} from "react-redux";
+import {editWorkout} from "../../redux/actions/workouts";
+import AppLoader from "../Loaders/AppLoader";
 
 const ChangeName = ({data, isLink, styles, setState}) => {
   const dispatch = useDispatch()
   const [disabled, setDisabled] = useState(true);
-  const [value, setValue] = useState(data.name);
+  const [value, setValue] = useState(data.workoutName);
   const router = useLocation();
+  const smallLoader = useSelector(state => state.app.smallLoader);
+  const smallLoaderId = useSelector(state => state.app.smallLoaderId);
 
   async function saveName() {
-    if(value && value !== data.name)
-    dispatch(changeWorkout(data.id, 'name', value))
+    if(value && value !== data.workoutName)
+    dispatch(editWorkout(data._id, 'workoutName', value))
   }
+
 
   const handleChange = e => setValue(e.target.value);
   const handleFocus = e => e.target.select();
@@ -24,9 +28,9 @@ const ChangeName = ({data, isLink, styles, setState}) => {
     className={disabled ? (styles?.input + ' ' +  styles?.read) : (styles?.input + ' ' +  styles?.edit)}
     disabled={disabled}
     type="text"
-    id={data?.id + 'input'}
+    id={data?._id + 'input'}
     value={value}
-    size={value.toString().length || 1}
+    size={value?.toString().length || 1}
     autoFocus={true}
     onChange={handleChange}
     onFocus={(e) => {
@@ -40,7 +44,7 @@ const ChangeName = ({data, isLink, styles, setState}) => {
       <div className={styles?.changeName}>
         {disabled
           ?
-          <Link to={router.pathname + `/${data.id}`}>
+          <Link to={router.pathname + `/${data._id}`}>
             {input}
           </Link>
           : input
@@ -64,6 +68,7 @@ const ChangeName = ({data, isLink, styles, setState}) => {
           }}>
           <Close className={styles.close} fill={'grey'} height={'20px'} width={'20px'}/>
         </div>
+        {smallLoader && smallLoaderId === data._id && <AppLoader height={'20'} width={'20'}/>}
       </div>
   )
     :
@@ -89,6 +94,7 @@ const ChangeName = ({data, isLink, styles, setState}) => {
           }}>
           <Close className={styles?.close} height={'20px'} width={'20px'}/>
         </div>
+        {smallLoader && smallLoaderId === data._id && <AppLoader height={'20'} width={'20'}/>}
       </div>
     )
 };

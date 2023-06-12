@@ -2,14 +2,17 @@ import React, {useEffect, useRef, useState} from 'react';
 import {dict, userLang} from "../../config/config";
 import Ok from "./svgComponents/Ok";
 import Close from "./svgComponents/Close";
-import {changeWorkout} from "../../redux/actions/workouts";
-import {useDispatch} from "react-redux";
+import {editWorkout} from "../../redux/actions/workouts";
+import {useDispatch, useSelector} from "react-redux";
+import AppLoader from "../Loaders/AppLoader";
 
-const TextArea = ({text, id, styles, setState}) => {
+const TextArea = ({text, _id, styles, setState}) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState(text || dict.title.placeholderNote[userLang]);
   const [showButtons, setShowButtons] = useState(false);
   const ref = useRef(null);
+  const smallLoader = useSelector(state => state.app.smallLoader);
+  const smallLoaderId = useSelector(state => state.app.smallLoaderId);
 
   useEffect(() => autoGrow(ref.current), [value])
 
@@ -19,7 +22,7 @@ const TextArea = ({text, id, styles, setState}) => {
 
     function saveNote() {
     if(value && value !== text && value !== dict.title.placeholderNote[userLang])
-      dispatch(changeWorkout(id, 'note', value))
+      dispatch(editWorkout(_id, 'note', value))
       setShowButtons(false)
   }
 
@@ -30,7 +33,7 @@ const TextArea = ({text, id, styles, setState}) => {
   return (
     <div className={styles?.note}>
       <textarea
-        ref={ref} id={'about' + id}
+        ref={ref} id={'about' + _id}
         minLength="10" maxLength="300"
         // placeholder={value}
         value={value}
@@ -59,6 +62,7 @@ const TextArea = ({text, id, styles, setState}) => {
             <Close fill={'grey'} height={'20px'} width={'20px'}/>
           </div>
         </div>}
+      {smallLoader && smallLoaderId === _id && <AppLoader height={'20'} width={'20'}/>}
     </div>
   );
 };

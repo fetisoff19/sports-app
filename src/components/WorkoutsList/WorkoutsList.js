@@ -7,7 +7,7 @@ import {dict, userLang} from "../../config/config";
 import NoWorkouts from "../NoWorkouts/NoWorkouts";
 import {useSelector} from "react-redux";
 
-const fields = ['id', 'sport', 'timestamp', 'name',  'totalDistance', 'totalTimerTime', 'enhancedAvgSpeed', 'totalAscent', 'avgHeartRate', ' '];
+const fields = ['_id', 'sport', 'timestamp', 'workoutName',  'totalDistance', 'totalTimerTime', 'enhancedAvgSpeed', 'totalAscent', 'avgHeartRate', ' '];
 
 export function WorkoutsList() {
   const [order, setOrder] = useState(true);
@@ -75,7 +75,7 @@ export function WorkoutsList() {
       <div className={styles.up}>
         <h1>{dict.title.activities[userLang]}</h1>
         <FilterBar data={data} filterSport={filterSport}/>
-        <Titles status={status} f={handleTitleClick}/>
+        <Titles status={status} func={handleTitleClick}/>
       </div>
       <div className={styles.down}>
         <ul>{list}</ul>

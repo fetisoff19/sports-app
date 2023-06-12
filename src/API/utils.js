@@ -1,6 +1,6 @@
 import { Decoder, Stream, Profile, Utils } from '@garmin-fit/sdk';
 import {copyKeyInObj} from "./makeWorkout";
-import {addWorkout, db} from "./db.js";
+import {addWorkout} from "./db.js";
 import {logPlugin} from "@babel/preset-env/lib/debug";
 import { openDB } from 'idb/with-async-ittr';
 

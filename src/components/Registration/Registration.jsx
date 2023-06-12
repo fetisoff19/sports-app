@@ -10,7 +10,6 @@ const Registration = () => {
   const [request, setRequest] = useState(null)
 
 
-
   return (
     <div className='authorization'>
       <div className="authorization__header">Регистрация</div>

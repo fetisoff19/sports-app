@@ -7,7 +7,7 @@ const MainWorkoutStats = ({data, styles}) => {
   const block = order.map((item, index) => data[item]
     ? (<div key={index}>
         <span className={styles.mainStatsUnit}>
-          {configMainStats[item]?.uniqueSport === data.sport
+          {configMainStats[item]?.uniqueSport?.includes(data.sport)
             ? (configMainStats[item].uniqueFormatter(data[item]) + ' '
               + (configMainStats[item].uniqueUnit ? dict.units[configMainStats[item].uniqueUnit][userLang] : ''))
               : (configMainStats[item].formatter(data[item]) + ' '
@@ -16,7 +16,7 @@ const MainWorkoutStats = ({data, styles}) => {
           }
         </span>
         <span className={styles.mainStatsLabel}>
-          {configMainStats[item]?.uniqueSport === data.sport
+          {configMainStats[item]?.uniqueSport?.includes(data.sport)
             ? dict.fields[configMainStats[item].uniqueLabel][userLang]
             : dict.fields[configMainStats[item].label][userLang]}
         </span>

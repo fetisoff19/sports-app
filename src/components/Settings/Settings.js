@@ -7,6 +7,7 @@ import {deleteWorkout} from "../../API/db";
 import {useDispatch, useSelector} from "react-redux";
 import {setFunnyMarkers, setLanguage, setSmoothing} from "../../redux/reducers/settingsReducer";
 import {deleteAllWorkouts} from "../../redux/actions/workouts";
+import AppLoader from "../Loaders/AppLoader";
 
 const Settings = () => {
   const [clickButtonDeleteAll, setClickButtonDeleteAll] = useState(false)
@@ -16,6 +17,7 @@ const Settings = () => {
   const language = useSelector(state => state.settings.language)
   const smoothing = useSelector(state => state.settings.smoothing)
   const funnyMarkers = useSelector(state => state.settings.funnyMarkers)
+  const loader = useSelector(state => state.app.appLoader)
 
   const [lang, setLang] = useState(language);
   const [smooth, setSmooth] = useState(smoothing);
@@ -47,11 +49,18 @@ const Settings = () => {
   }
 
    function deleteAll(){
-      dispatch(deleteAllWorkouts(workouts))
-      setClickButtonDeleteAll(false);
+     dispatch(deleteAllWorkouts(workouts))
+     setClickButtonDeleteAll(false)
+       // .then((r) => r === 'OK' ? setClickButtonDeleteAll(false) : null);
   }
 
-  return (
+
+  if(loader){
+    return (
+      <div style={{display: "flex", justifyContent: "center", alignItems:"center", height: '100%'} }>
+        <AppLoader/>
+      </div>)
+  } else return (
     <div className={styles.page}>
       <div
         className={clickButtonDeleteAll

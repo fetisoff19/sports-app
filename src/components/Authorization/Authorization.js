@@ -12,10 +12,11 @@ const Authorization = () => {
   const [request, setRequest] = useState(null)
 
   const dispatch = useDispatch()
-  const fakeLogin = e => {
-    dispatch(setUser({name: 'user'}))
-    e.preventDefault()
-  }
+
+  // const fakeLogin = e => {
+  //   dispatch(setUser({name: 'user'}))
+  //   e.preventDefault()
+  // }
 
   return (
     <>
@@ -25,30 +26,30 @@ const Authorization = () => {
         <Input value={email} setValue={setEmail} type="text" placeholder="Введите email..."/>
         <Input value={password} setValue={setPassword} type="password" placeholder="Введите пароль..."/>
         <button className="authorization__btn" onClick={() => dispatch(login(email, password, setRequest))}>Войти</button>      </div>
-      <div className={'content ' + styles.page}>
-        <h1>{dict.title.fakeAuth[userLang]}</h1>
-        <div>
-          <form onSubmit={fakeLogin}>
-            <div>
-              <div>
-                <label htmlFor="login">{dict.title.login[userLang]}</label>
-                <input id={'login'} type={'text'} placeholder={dict.title.enterLogin[userLang]}/>
-              </div>
-            </div>
-            <div>
-              <div>
-                <label htmlFor="password">{dict.title.password[userLang]}</label>
-                <input id={'password'} type={'password'} placeholder={dict.title.enterPassword[userLang]}/>
-              </div>
-            </div>
-            <div>
-              <div className={styles.button}>
-                <button>{dict.title.signIn[userLang]}</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+    {/*  <div className={'content ' + styles.page}>*/}
+    {/*    <h1>{dict.title.fakeAuth[userLang]}</h1>*/}
+    {/*    <div>*/}
+    {/*      <form onSubmit={fakeLogin}>*/}
+    {/*        <div>*/}
+    {/*          <div>*/}
+    {/*            <label htmlFor="login">{dict.title.login[userLang]}</label>*/}
+    {/*            <input id={'login'} type={'text'} placeholder={dict.title.enterLogin[userLang]}/>*/}
+    {/*          </div>*/}
+    {/*        </div>*/}
+    {/*        <div>*/}
+    {/*          <div>*/}
+    {/*            <label htmlFor="password">{dict.title.password[userLang]}</label>*/}
+    {/*            <input id={'password'} type={'password'} placeholder={dict.title.enterPassword[userLang]}/>*/}
+    {/*          </div>*/}
+    {/*        </div>*/}
+    {/*        <div>*/}
+    {/*          <div className={styles.button}>*/}
+    {/*            <button>{dict.title.signIn[userLang]}</button>*/}
+    {/*          </div>*/}
+    {/*        </div>*/}
+    {/*      </form>*/}
+    {/*    </div>*/}
+    {/*  </div>*/}
     </>
 
 

@@ -4,13 +4,14 @@ import styles from './styles.module.scss'
 import FilesList from "./components/FilesList";
 import {dict, userLang} from "../../config/config";
 import {useDispatch, useSelector} from "react-redux";
-import {getWorkouts, uploadFile} from "../../redux/actions/workouts";
+import {uploadFile} from "../../redux/actions/workouts";
 
 
 export default function AddWorkouts() {
   const [upLoadedFiles, setUpLoadedFiles] = useState([]);
-  const [validatedFiles, setValidatedFiles] = useState(null);
+  const [validatedFiles, setValidatedFiles] = useState([]);
   const [drag, setDrag] = useState(false);
+  const [count, setCount] = useState(0)
   const inputHiddenRef = useRef()
   const dispatch = useDispatch()
   // const files = useSelector(state => state.user.files)
@@ -30,9 +31,10 @@ export default function AddWorkouts() {
   function onDropHandler(e) {
     e.preventDefault();
     let files = [...e.dataTransfer.files];
+    setValidatedFiles(files)
     //валидация файлов
-    validateFiles(files)
-      .then(result => setValidatedFiles(result))
+    // validateFiles(files)
+    //   .then(result => setValidatedFiles(result))
     setDrag(false);
   }
 
@@ -42,16 +44,25 @@ export default function AddWorkouts() {
 
   function handleChange(e) {
     let files = [...e.target.files];
-    files.length ?
-      validateFiles(files)
-        .then(result => setValidatedFiles(result))
+    files.length
+      ? setValidatedFiles(files)
       : null
+    // let files = [...e.target.files];
+    // files.length ?
+    //   validateFiles(files)
+    //     .then(result => setValidatedFiles(result))
+    //   : null
   }
 
   function uploadValidatedFiles(){
-    addFiles(validatedFiles?.validate, setUpLoadedFiles);
-    validatedFiles?.validate.forEach(file =>
-      dispatch(uploadFile(file)));
+    console.log(validatedFiles)
+    if (validatedFiles?.length) {
+      validatedFiles?.forEach(file =>
+        dispatch(uploadFile(file, setCount)))
+    }
+    // addFiles(validatedFiles?.validate, setUpLoadedFiles);
+    // validatedFiles?.validate.forEach(file =>
+    //   dispatch(uploadFile(file)));
   }
 
   // useEffect(() => {
@@ -64,6 +75,7 @@ export default function AddWorkouts() {
   return (
     <div className={'content ' + styles?.content}>
       <h1>{dict.title.addWorkouts[userLang]}</h1>
+        <div>{'Count: ' + count}</div>
         <div className={drag ? (styles.drop + ' ' + styles.dropArea) : styles.drop}
           onDragStart={e => dragStartHandler(e)}
           onDragLeave={e => dragLeaveHandler(e)}
@@ -85,7 +97,7 @@ export default function AddWorkouts() {
         </div>
 
         <button
-          className={validatedFiles?.validate?.length ? styles.active : null}
+          className={validatedFiles?.length ? styles.active : null}
           onClick={uploadValidatedFiles}>
           {dict.title.download[userLang]}
         </button>

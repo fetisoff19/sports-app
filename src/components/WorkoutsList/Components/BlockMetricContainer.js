@@ -13,7 +13,7 @@ const BlockMetricContainer = ({data}) => {
     return (
       <div key={index} className={styles.mBlock} >
         <span className={styles.unit}>
-          {configMainStats[item].uniqueSport === data.sport ?
+          {configMainStats[item]?.uniqueSport?.includes(data.sport) ?
             data[item]
               ? configMainStats[item].uniqueFormatter(data[item]) + ' '
               + (configMainStats[item].unit ? dict.units[configMainStats[item].uniqueUnit][userLang] : '')
@@ -25,7 +25,7 @@ const BlockMetricContainer = ({data}) => {
             : '--'}
         </span>
         <span className={styles.label}>
-          {configMainStats[item].uniqueSport === data.sport ? dict.fields[configMainStats[item].uniqueLabel][userLang] : dict.fields[configMainStats[item].label][userLang]}
+          {configMainStats[item]?.uniqueSport?.includes(data.sport) ? dict.fields[configMainStats[item].uniqueLabel][userLang] : dict.fields[configMainStats[item].label][userLang]}
         </span>
       </div>
     );

@@ -1,25 +1,25 @@
 import {openDB} from 'idb';
-export const db = await initDb();
+// const db = await initDb();
 
-async function initDb() {
-  return new Promise(async (resolve, reject) => {
-    if ('indexedDB' in window) {
-      resolve(await openDB('sportsApp', 1, {
-        upgrade(db) {
-          if (!db.objectStoreNames.contains('workouts')) {
-            const workoutsOS = db.createObjectStore('workouts', {keyPath: 'id', autoIncrement: true});
-          }
-          if (!db.objectStoreNames.contains('workoutsData')) {
-            const workoutsDataOS = db.createObjectStore('workoutsData', {keyPath: 'id_workouts'});
-            workoutsDataOS.createIndex('sha256', 'sha256', {unique: true});
-          }
-        }
-      }));
-    } else {
-      reject('This browser doesn\'t support IndexedDB.');
-    }
-  });
-}
+// async function initDb() {
+//   return new Promise(async (resolve, reject) => {
+//     if ('indexedDB' in window) {
+//       resolve(await openDB('sportsApp', 1, {
+//         upgrade(db) {
+//           if (!db.objectStoreNames.contains('workouts')) {
+//             const workoutsOS = db.createObjectStore('workouts', {keyPath: 'id', autoIncrement: true});
+//           }
+//           if (!db.objectStoreNames.contains('workoutsData')) {
+//             const workoutsDataOS = db.createObjectStore('workoutsData', {keyPath: 'id_workouts'});
+//             workoutsDataOS.createIndex('sha256', 'sha256', {unique: true});
+//           }
+//         }
+//       }));
+//     } else {
+//       reject('This browser doesn\'t support IndexedDB.');
+//     }
+//   });
+// }
 
 
 
@@ -60,8 +60,8 @@ export async function deleteWorkout(id) {
 }
 
 //ф-я отображения размера локального хранилища
-export async function setIndexedDbUsageInfo() {
- return await navigator.storage.estimate()
-   .then(result => [Math.round(result.usageDetails.indexedDB / (10 ** 6)),
-     Math.round((result.usageDetails.indexedDB / (10 ** 6))/ ((result.quota) / (10 ** 6)) * 100)])
-}
+// export async function setIndexedDbUsageInfo() {
+//  return await navigator.storage.estimate()
+//    .then(result => [Math.round(result.usageDetails.indexedDB / (10 ** 6)),
+//      Math.round((result.usageDetails.indexedDB / (10 ** 6))/ ((result.quota) / (10 ** 6)) * 100)])
+// }

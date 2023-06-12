@@ -5,16 +5,16 @@ import Previous from "../../UI/svgComponents/Previous.js";
 import {useSelector} from "react-redux";
 
 // dir ? => : <=
-const NextWorkout = ({dir, id, styles, loaded}) => {
+const NextWorkout = ({dir, _id, styles, loaded}) => {
   const workouts = useSelector(state => state.workouts.workouts)
   let i = workouts?.findIndex(item =>
-    item.id === id)
+    item._id === _id)
   let active = true;
   dir && i === workouts?.length - 1
     ? active = false : dir ? i++ : null;
   !dir && i === 0
     ? active = false : !dir ? i-- : null;
-  i = i >= 0 && workouts ? workouts[i].id : id
+  i = i >= 0 && workouts ? workouts[i]._id : _id
   if (workouts) {
     return (
         <div className={styles?.nextWorkout}>

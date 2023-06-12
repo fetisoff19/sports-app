@@ -16,6 +16,8 @@ export let privateRoutes = [
   {path: 'about', element: About},
   {path: 'settings', element: SettingsPage},
   {path: '/sports-app', navigate: true,},
+  {path: '/login', navigate: true,},
+  {path: '/registration', navigate: true,},
   {path: "*", element: PageNotFound},
 ];
 
