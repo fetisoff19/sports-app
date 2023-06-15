@@ -5,20 +5,29 @@ import {createSlice} from "@reduxjs/toolkit";
   initialState: {
     workouts: null,
     workout: null,
+    uploadedFiles: [],
+    chosenSport: 'all',
+    chosenField: 'timestamp',
+    direction: 1,
   },
   reducers: {
     setWorkouts(state, action) {
       state.workouts = action.payload.map(workout => {
         workout.timestamp = new Date(workout.timestamp)
+        workout.startTime = new Date(workout.startTime)
         return workout;
-      }).sort((a, b) => b.timestamp - a.timestamp);
+      })
     },
     deleteWorkoutAction(state, action){
       state.workouts = state.workouts.filter(workout => workout._id !== action.payload)
     },
     addWorkout(state, action) {
-      action.payload.timestamp = new Date(action.payload.timestamp)
-      state.workouts = [...state.workouts, action.payload].sort((a, b) => b.timestamp - a.timestamp);
+      state.uploadedFiles = [...state.uploadedFiles, action.payload]
+      // action.payload.timestamp = new Date(action.payload.timestamp)
+      // state.workouts = [...state.workouts, action.payload].sort((a, b) => b.timestamp - a.timestamp);
+    },
+    resetStateUploadedFiles(state){
+      state.uploadedFiles = [];
     },
     changeWorkoutAction(state, action){
       state.workouts = state.workouts.map(workout => {
@@ -31,8 +40,28 @@ import {createSlice} from "@reduxjs/toolkit";
     setOneWorkout(state, action) {
       state.workout = action.payload;
     },
+    setChosenSport(state, action){
+      state.chosenSport = action.payload
+    },
+    setChosenField(state, action){
+      state.chosenField = action.payload
+    },
+    setDirection(state){
+      state.direction = state.direction > 0 ? 0 : 1
+    }
+
   }
 })
 
 export default workoutsSlice.reducer;
-export const {setWorkouts, deleteWorkoutAction, changeWorkoutAction, setOneWorkout, addWorkout} = workoutsSlice.actions;
+export const {
+  setWorkouts,
+  deleteWorkoutAction,
+  changeWorkoutAction,
+  setOneWorkout,
+  addWorkout,
+  resetStateUploadedFiles,
+  setChosenSport,
+  setChosenField,
+  setDirection
+} = workoutsSlice.actions;

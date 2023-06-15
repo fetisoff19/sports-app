@@ -19,4 +19,5 @@ export default function useScroll(parentRef, childRef, callback,) {
 
     return () => observer.current.unobserve(childRef.current)
   }, [callback])
+
 };

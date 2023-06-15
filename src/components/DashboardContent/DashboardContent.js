@@ -1,5 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
-import AppContext from "../../context/AppContext.js";
+import React, {useRef, useState} from 'react';
 import StartStats from "./components/StartStats";
 import Workout from "./components/Workout";
 import useScroll from "../../hooks/useScroll";

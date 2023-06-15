@@ -26,7 +26,7 @@ import Pushpin2 from "../UI/svgComponents/Pushpin2";
 import PageNotFound from "../../pages/PageNotFound";
 import Error from "../../pages/Error";
 import {useDispatch, useSelector} from "react-redux";
-import {getOneFile, getOneWorkout} from "../../redux/actions/workouts";
+import {getOneFile} from "../../redux/actions/workouts";
 
 let order = ['speed', 'pace', 'power', 'heartRate', 'cadence', 'altitude'];
 
@@ -45,15 +45,13 @@ const ViewWorkout = () => {
   const [writing, setWriting] = useState(false);
 
   const dispatch = useDispatch()
-  const smoothing = useSelector(state => state.settings.smoothing)
-  const funnyMarkers = useSelector(state => state.settings.funnyMarkers)
-
-  const workoutFitFile = useSelector(state => state.workouts.workout);
-  const workout = useSelector(state =>
-    state?.workouts?.workouts?.find(workout => workout._id === _id))
   const loader = useSelector(state => state.app.appLoader)
   const error = useSelector(state => state.app.error)
-
+  const smoothing = useSelector(state => state.settings.smoothing)
+  const funnyMarkers = useSelector(state => state.settings.funnyMarkers)
+  const workout = useSelector(state =>
+    state?.workouts?.workouts?.find(workout => workout._id === _id))
+  const workoutFitFile = useSelector(state => state.workouts.workout);
 
   useEffect(() => {
     _id ? dispatch(getOneFile(_id)) : null;
@@ -64,19 +62,29 @@ const ViewWorkout = () => {
     writing ? setWriting(false) : null;
   }, [_id])
 
+  // console.log(  _id,
+  // chartsIsLoaded,
+  // zooming,
+  // status,
+  // index,
+  // writing,)
+
+  let powerCurve = useMemo(() => workout?.powerCurve['1'] ? new Map(Object.entries(workout?.powerCurve)) : null, [workout])
+
   let preparedData = useMemo(() =>
-   workoutFitFile ? getDataForCharts(workoutFitFile, +smoothing) : null, [workoutFitFile]);
+   workoutFitFile && workout ? getDataForCharts(workoutFitFile, +smoothing, powerCurve) : null, [workoutFitFile, workout]);
 
   let charts = useMemo(() => preparedData ?
     setCharts(preparedData, order, setZooming, setChartsIsLoaded)
     : null, [workoutFitFile]);
+
   let chartsNames = useMemo(() => charts ?
     charts.map(item => item.key) : null, [workoutFitFile]);
 
-  let powerCurve = useMemo(() =>
-    (preparedData && preparedData.charts.powerCurve ?
+  let powerCurveChart = useMemo(() =>
+    (preparedData && preparedData.charts?.powerCurve ?
     <Charts
-      key={id + 'charts'}
+      key={_id + 'charts'}
       data={preparedData.charts.powerCurve}
       data2={preparedData.charts.powerCurveAllTime}
       name={'powerCurve'}
@@ -137,7 +145,7 @@ const ViewWorkout = () => {
       >
         {charts}
       </div>
-      {powerCurve}
+      {powerCurveChart}
     </div>)
     : null;
 
@@ -179,7 +187,7 @@ const ViewWorkout = () => {
   useEffect(() => {
     document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.removeEventListener('keydown',onKeyDown);
+      document.removeEventListener('keydown', onKeyDown);
     }
   },  [writing]);
 
@@ -195,17 +203,6 @@ const ViewWorkout = () => {
         }
       }
     }
-  }, [chartsIsLoaded]);
-
-  useEffect(() => {
-    if(chartsIsLoaded && powerCurve)
-    Highcharts.charts.forEach((chart) =>
-      chart.series[0].name === 'powerCurve' ?
-        chart.xAxis[0].setExtremes(chart.xAxis[0].min,
-          chart.xAxis[0].max < 1200 ? chart.xAxis[0].max
-            : chart.xAxis[0].max < 5600 ? 1200
-              :chart.xAxis[0].max < 10800 ? 4800 : 7200)
-        : null)
   }, [chartsIsLoaded]);
 
   ////////////////////////////////

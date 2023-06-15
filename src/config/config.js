@@ -262,8 +262,8 @@ export let statsFields = {
     fields: [
       'totalTimerTime',
       'totalElapsedTime',
-      'timestamp',
       'startTime',
+      'timestamp',
     ],
     formatter: getHourMinSec,
     unit: null,

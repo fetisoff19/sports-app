@@ -20,9 +20,12 @@ const ChangeName = ({data, isLink, styles, setState}) => {
     dispatch(editWorkout(data._id, 'workoutName', value))
   }
 
-
+  // console.log(data.workoutName, value)
   const handleChange = e => setValue(e.target.value);
   const handleFocus = e => e.target.select();
+
+  const valueLength = value?.toString().length || 1
+  const inputSize = valueLength > 18 ? 18 : valueLength
 
   const input = (<input
     className={disabled ? (styles?.input + ' ' +  styles?.read) : (styles?.input + ' ' +  styles?.edit)}
@@ -30,7 +33,7 @@ const ChangeName = ({data, isLink, styles, setState}) => {
     type="text"
     id={data?._id + 'input'}
     value={value}
-    size={value?.toString().length || 1}
+    size={inputSize}
     autoFocus={true}
     onChange={handleChange}
     onFocus={(e) => {
@@ -64,7 +67,7 @@ const ChangeName = ({data, isLink, styles, setState}) => {
           hidden={disabled}
           onClick={() => {
             setDisabled(true);
-            setValue(data.name);
+            setValue(data.workoutName);
           }}>
           <Close className={styles.close} fill={'grey'} height={'20px'} width={'20px'}/>
         </div>
@@ -90,7 +93,7 @@ const ChangeName = ({data, isLink, styles, setState}) => {
           hidden={disabled}
           onClick={() => {
             setDisabled(true);
-            setValue(data.name);
+            setValue(data.workoutName);
           }}>
           <Close className={styles?.close} height={'20px'} width={'20px'}/>
         </div>

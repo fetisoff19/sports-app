@@ -5,7 +5,6 @@ const userSlice = createSlice({
   initialState: {
     currentUser: {},
     isAuth: !!localStorage.getItem('token'),
-    // files: [],
   },
   reducers: {
     setUser(state, action) {
@@ -17,9 +16,6 @@ const userSlice = createSlice({
       state.currentUser = {};
       state.isAuth = false;
     },
-    // setFiles(state, action){
-    //   state.files = action.payload;
-    // },
   }
 })
 

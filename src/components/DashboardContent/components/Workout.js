@@ -16,17 +16,17 @@ const Workout = ({data}) => {
       formatter: convertDistance,
       unit: 'km',
     },
+    totalElapsedTime: {
+      formatter: getHourMinSec,
+      unit: null,
+    },
     totalAscent: {
       formatter: Math.round,
       unit: 'm',
     },
-    totalTimerTime: {
-      formatter: getHourMinSec,
-      unit: null,
-    },
   };
 
-  let block = ['totalDistance', 'totalTimerTime', 'totalAscent',]
+  let block = ['totalDistance', 'totalElapsedTime', 'totalAscent',]
     .map(item => {
       return (
         data[item] ?
@@ -55,9 +55,9 @@ const Workout = ({data}) => {
         </div>
         {/*Статистика: персональные рекорды...*/}
       </div>
-      {data.polylinePoints
+      {data.polyline?.length
         ? <Maps
-          polylinePoints={data.polylinePoints}
+          polylinePoints={data.polyline}
           startZoom={13}
           maxZoom={19}
           style={{height: 200, width: 200}}

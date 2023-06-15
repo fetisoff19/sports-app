@@ -9,62 +9,67 @@ import {
 import axios from "axios";
 import {API_URL} from "../../config/config";
 import {parseFit} from "../../API/utils";
+import {logout} from "../reducers/userReducer";
 
-export function uploadFile(file, setState, dirId) {
+export function uploadFile(file) {
   return async dispatch => {
     try {
       const formData = new FormData()
       formData.append('file', file)
-      if (dirId) {
-        formData.append('parent', dirId)
-      }
-      const uploadFile = {name: file.name, progress: 0, id: Date.now()}
+      // const uploadFile = {name: file.name, progress: 0, id: Date.now()}
       // dispatch(addUploadFile(uploadFile))
       const response = await axios.post(`${API_URL}api/files/upload`, formData, {
         headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
-        onUploadProgress: progressEvent => {
-          let totalLength = progressEvent.event.lengthComputable
-            ? progressEvent.total
-            : progressEvent.event.target.getResponseHeader('content-length')
-            || progressEvent.event.target.getResponseHeader('x-decompressed-content-length');
-          if (totalLength) {
-            uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
+        // onUploadProgress: progressEvent => {
+        //   let totalLength = progressEvent.event.lengthComputable
+        //     ? progressEvent.total
+        //     : progressEvent.event.target.getResponseHeader('content-length')
+        //     || progressEvent.event.target.getResponseHeader('x-decompressed-content-length');
+        //   if (totalLength) {
+        //     uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
             // dispatch(changeUploadFile(uploadFile))
             // console.log(uploadFile.progress)
-          }
-        }
+        //   }
+        // }
       });
-
       dispatch(addWorkout(response.data))
-      setState(prev => prev + 1)
-      // console.log(response.data)
     } catch (e) {
-      console.log(e?.response?.data?.message)
-      alert(e?.response?.data?.message)
+      if(e.response.status === 400){
+        dispatch(addWorkout(e.response.data?.message))
+      }
+      else if(e.response.status === 500){
+        console.log("server error", e?.response)
+        dispatch(addWorkout("error"))
+      }
+      else {
+        dispatch(addWorkout("unknown error"))
+        console.log("unknown error", e.response)
+      }
     }
   }
 }
 
-export function getFiles(dirId, sort) {
+export function getFiles(sport, sort, direction) {
   return async dispatch => {
     try {
-      console.log('getFiles')
+      console.log('getFiles', sport, sort, direction)
       dispatch(showLoader())
       let url = `${API_URL}api/files`
-      if (dirId) {
-        url = `${API_URL}api/files?parent=${dirId}`
+      if (sport) {
+        url = `${API_URL}api/files?sport=${sport}`
       }
-      if (sort) {
-        url = `${API_URL}api/files?sort=${sort}`
+      if (direction && sort) {
+        url = `${API_URL}api/files?direction=${direction}&sort=${sort}`
       }
-      if (dirId && sort) {
-        url = `${API_URL}api/files?parent=${dirId}&sort=${sort}`
+      if (direction && sort && sport) {
+        url = `${API_URL}api/files?direction=${direction}&sort=${sort}&sport=${sport}`
       }
       const response = await axios.get(url, {
         headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
       });
       // dispatch(setFiles(response.data))
-      dispatch(setWorkouts(response.data.filter(file => file.type === "fit")))
+
+      dispatch(setWorkouts(response.data))
       // const workouts = response.data.filter(file => file.path === 'workouts.txt')
       // workouts = workouts ?
       // dispatch(setWorkouts(response.data.filter(file => file.path === 'workouts.txt')))
@@ -107,7 +112,7 @@ export function deleteOneWorkout(_id) {
   console.log('deleteOneWorkout')
   return async dispatch => {
     try {
-      dispatch(showLoader());
+      // dispatch(showSmallLoader());
       const response = await axios.delete(`${API_URL}api/files?id=${_id}`,{
         headers:{
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -121,51 +126,47 @@ export function deleteOneWorkout(_id) {
       console.log(e)
       dispatch(setError(e))
     } finally {
-      dispatch(hideLoader())
+      // dispatch(hideSmallLoader())
     }
   }
 }
 
 
-
-// export function getWorkouts() {
-//   console.log('getWorkouts')
-//   return async dispatch => {
-//     try {
-//       dispatch(showLoader())
-//       setTimeout(() => {
-//         getData()
-//           .then((r) => dispatch(setWorkouts(r || []))
-//         )
-//       },0)
-//     } catch (e) {
-//       console.log(e)
-//       dispatch(setError(e))
-//     } finally {
-//       dispatch(hideLoader())
-//     }
-//   }
-// }
-
-export function deleteAllWorkouts(workouts) {
+export function deleteAllWorkouts() {
   console.log('deleteAllWorkouts')
   return async dispatch => {
     try {
-      let counter = workouts.length
       dispatch(showLoader());
-
-      for (const workout of workouts) {
-        const response = await axios.delete(`${API_URL}api/files?id=${workout._id}`,{
-          headers:{
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        })
-        if (response.status === 200){
-          counter--
+      const response = await axios.delete(`${API_URL}api/files/all`,{
+        headers:{
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
-      }
-      if(counter === 0){
+      })
+      if(response.status === 200){
         dispatch(setWorkouts([]))
+        return 'OK'
+      }
+    } catch (e) {
+      console.log(e)
+      dispatch(setError(e))
+    } finally {
+      dispatch(hideLoader())
+    }
+  }
+}
+
+export function deleteUserFiles() {
+  console.log('deleteUserFiles')
+  return async dispatch => {
+    try {
+      dispatch(showLoader());
+      const response = await axios.delete(`${API_URL}api/files/user`,{
+        headers:{
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      if(response.status === 200){
+        dispatch(dispatch(logout()))
         return 'OK'
       }
     } catch (e) {
@@ -200,28 +201,6 @@ export function editWorkout(id, field, text) {
   }
 }
 
-// export function getOneWorkout(id) {
-//   console.log('getOneWorkout')
-//   return async dispatch => {
-//     try {
-//       dispatch(showLoader());
-//
-//       await getDataForWorkout(id).then(r =>
-//         dispatch(setOneWorkout(r)))
-//
-//     } catch (e) {
-//       console.log(e)
-//       dispatch(setError(e))
-//     } finally {
-//       dispatch(hideLoader())
-//     }
-//   }
-// }
-
-// async function getData() {
-//   return await db.getAll('workouts')
-//     .then(r => r.sort((a, b) => b.timestamp - a.timestamp))
-// }
 
 
 

@@ -185,7 +185,7 @@ export function resetZoom() {
 
 export function addPolylinePowerCurve(point, data, setState){
   if (!point) return [];
-  let firstIndex =  data.powerCurve.get(point.x).index;
+  let firstIndex =  data.powerCurve.get(point.x.toString()).index;
   let secondIndex = firstIndex + (point.x);
   if (secondIndex - firstIndex <= 2) secondIndex += 2;
   setState(data.polylinePoints.slice(firstIndex, secondIndex));

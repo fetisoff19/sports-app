@@ -1,12 +1,12 @@
 import React from 'react';
 import {dict, userLang} from "../../../config/config";
 
-const NonValidateFile = ({name, className}) => {
+const NonValidateFile = ({name, text, className}) => {
   return (
     <div className={className}>
       <div>{name}</div>
       <div>
-        <span>{dict.title.nonValidateFile[userLang]}</span>
+        <span>{text}</span>
       </div>
     </div>
   );

@@ -1,86 +1,31 @@
-import React, {useMemo, useState} from 'react';
-import ListItem from "./Components/ListItem.js";
+import React from 'react';
 import FilterBar from "./Components/FilterBar";
 import styles from './styles.modules.scss'
 import Titles from "./Components/Titles";
 import {dict, userLang} from "../../config/config";
-import NoWorkouts from "../NoWorkouts/NoWorkouts";
 import {useSelector} from "react-redux";
-
-const fields = ['_id', 'sport', 'timestamp', 'workoutName',  'totalDistance', 'totalTimerTime', 'enhancedAvgSpeed', 'totalAscent', 'avgHeartRate', ' '];
+import AppLoader from "../Loaders/AppLoader";
+import Workouts from "./Components/Workouts";
 
 export function WorkoutsList() {
-  const [order, setOrder] = useState(true);
-  const [status, setStatus] = useState(fields.map(() => {return {active: false}}));
-  const chooseItem = (id) => {
-    const newArr = status.map((item, i) =>
-      i === id ? {active: !item.active} : item
-    );
-    setStatus(newArr);
-  };
-
-  const workouts = useSelector(state => state.workouts.workouts)
-  const data = useMemo(() => {
-    let result = [];
-    workouts.forEach(workout => {
-      let obj = {};
-      fields.forEach(item => obj[item] =
-        workout[item] || null);
-      result.push(obj)
-    })
-    return result
-  }, [workouts]);
-
-  const [trainings, setTrainings] = useState(data)
-  const [sortedData, setSortedData] = useState(trainings);
-
-
-  function sort(key){
-    let newItems = sortedData.concat();
-
-    if(order) {
-      newItems = newItems.sort((a, b) => a[key] - b[key] )
-      setSortedData(newItems);
-      setOrder(prev => !prev)
-    }
-    if(!order) {
-      newItems = newItems.sort((a, b) => b[key] - a[key] )
-      setSortedData(newItems);
-      setOrder(prev => !prev)
-    }
-  }
-
-  function filterSport(sport) {
-    setStatus(fields.map(() => {return {active: false}}));
-    sport === 'all'
-      ? setSortedData(trainings)
-      : setSortedData(trainings.filter(item => item.sport === sport));
-  }
-
-  function handleTitleClick(item,index){
-    sort(item);
-    chooseItem(index)
-  }
-
-  let list = sortedData
-    .map((item, index) =>
-      <ListItem
-        key={index} i={index} data={item}
-        index={trainings.findIndex(elem => elem.id === item.id)}
-        setSortedData={setSortedData} setTrainings={setTrainings}/>)
+  const loader = useSelector(state => state.app.appLoader);
 
   return (
-    workouts.length ?
     <div className={styles.container}>
       <div className={styles.up}>
         <h1>{dict.title.activities[userLang]}</h1>
-        <FilterBar data={data} filterSport={filterSport}/>
-        <Titles status={status} func={handleTitleClick}/>
+        <FilterBar/>
+        <Titles/>
       </div>
-      <div className={styles.down}>
-        <ul>{list}</ul>
-      </div>
+      {loader
+        ? <AppLoader/>
+        : <div className={styles.down}>
+            <ul>
+              <Workouts/>
+            </ul>
+          </div>
+      }
     </div>
-    : <NoWorkouts/>
+
   )
 }

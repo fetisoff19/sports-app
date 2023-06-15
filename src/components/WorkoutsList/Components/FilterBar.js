@@ -1,18 +1,25 @@
-import React, {useState} from 'react';
+import React, {useMemo} from 'react';
 import SportIcon from "../../UI/SportIcon.js";
 import {dict, userLang} from "../../../config/config";
+import {useDispatch, useSelector} from "react-redux";
+import {getFiles} from "../../../redux/actions/workouts";
+import {setChosenSport} from "../../../redux/reducers/workoutsReducer";
 
-const FilterBar = ({data, filterSport}) => {
-  const sports = ['all',];
-  data.filter(item => sports.find(elem => elem === item.sport) ? null : sports.push(item.sport))
-  const [status, setStatus] = useState(sports.map((_, index) => {return {active: !index}}));
-  const chooseItem = (id) => {
-    const newArr = status.map((_, i) =>
-      i === id ? {active: true } : {active: false }
-    );
-    setStatus(newArr);
-  };
+const FilterBar = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user.currentUser);
+  const chosenSport = useSelector(state => state.workouts.chosenSport);
 
+  const sports = useMemo(() => {
+    const set = new Set().add('all');
+    user?.workouts?.forEach(workout => set.add(workout[1]))
+    return set;
+  }, [user]);
+
+  function handleClick(item) {
+    dispatch(setChosenSport(item))
+    dispatch(getFiles(item))
+  }
 
   return (
     <div style={{
@@ -20,11 +27,11 @@ const FilterBar = ({data, filterSport}) => {
       justifyContent: 'right',
       paddingBottom: 10,
     }}>
-      <div style={{  display: 'flex'}}>
-        {sports.map((item, index) =>
+      <div style={{display: 'flex'}}>
+        {[...sports].map(item =>
           <div style={{
-                 background: status[index].active ? 'green' : '',
-                 color: status[index].active ? 'white' : 'green',
+                 background: chosenSport === item ? 'green' : '',
+                 color: chosenSport === item ? 'white' : 'green',
                  fontSize: 16,
                  width: '70px',
                  height: '30px',
@@ -34,18 +41,15 @@ const FilterBar = ({data, filterSport}) => {
                  border: 'rgb(108, 108, 108) solid 1px',
                  borderRadius:  2,
                  cursor: 'pointer',}}
-               onClick={() => {
-                 filterSport(item);
-                 chooseItem(index);}}
-               key={index}>
+               onClick={() => handleClick(item)}
+               key={item}>
             {item === 'all'
             ? dict.title.all[userLang]
             : <SportIcon
               className={'icon'} height={'20px'} width={'20px'}
-              sport={item} fill={status[index].active ? '#F5F5F5FF' : 'green'}/>}
+              sport={item} fill={chosenSport === item ? '#F5F5F5FF' : 'green'}/>}
           </div>)}
       </div>
-
     </div>
   );
 };

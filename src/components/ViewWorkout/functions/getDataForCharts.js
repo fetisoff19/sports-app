@@ -1,7 +1,7 @@
 import {convertPaceInMinute, convertSpeed} from "../../../API/functionsDate&Values";
 import {garminLatLongToNormal} from "../../../API/utils";
 
-export function getDataForCharts(workoutData, smoothing) {
+export function getDataForCharts(workoutData, smoothing, powerCurve) {
   if (!workoutData) return;
   let recordMesgs = workoutData.recordMesgs;
   if ((isNaN(recordMesgs.at(-1).heartRate)
@@ -166,12 +166,10 @@ export function getDataForCharts(workoutData, smoothing) {
     console.log(step)
     return
   };
-
-  if (workoutData?.workout?.powerCurve) {
-    workoutData.workout.powerCurve.forEach((value, key) =>
-      powerCurveArray.push([key, value.value])
+  if (powerCurve) {
+    powerCurve.forEach((value, key) =>
+      powerCurveArray.push([+key, value.value])
     )
-
   };
 
   result = {
@@ -220,7 +218,7 @@ export function getDataForCharts(workoutData, smoothing) {
     step: stepTimeArray,
     smoothing: smoothing,
     polylinePoints: polylinePoints,
-    powerCurve: workoutData?.workout?.powerCurve || null,
+    powerCurve: powerCurve || null,
     powerCurveAllTimeMap: workoutData?.workout?.powerCurveAllTimeMap || null,
     sport: workoutData.sessionMesgs[0].sport || null,
   }

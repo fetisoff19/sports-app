@@ -6,7 +6,7 @@ import Question from "../UI/svgComponents/Question";
 import {deleteWorkout} from "../../API/db";
 import {useDispatch, useSelector} from "react-redux";
 import {setFunnyMarkers, setLanguage, setSmoothing} from "../../redux/reducers/settingsReducer";
-import {deleteAllWorkouts} from "../../redux/actions/workouts";
+import {deleteAllWorkouts, deleteUserFiles} from "../../redux/actions/workouts";
 import AppLoader from "../Loaders/AppLoader";
 
 const Settings = () => {
@@ -54,10 +54,16 @@ const Settings = () => {
        // .then((r) => r === 'OK' ? setClickButtonDeleteAll(false) : null);
   }
 
+  function deleteUser(){
+    dispatch(deleteUserFiles())
+    setClickButtonDeleteAll(false)
+    // .then((r) => r === 'OK' ? setClickButtonDeleteAll(false) : null);
+  }
+
 
   if(loader){
     return (
-      <div style={{display: "flex", justifyContent: "center", alignItems:"center", height: '100%'} }>
+      <div className={'content center'}>
         <AppLoader/>
       </div>)
   } else return (
@@ -142,6 +148,17 @@ const Settings = () => {
                 onClick={() => workouts?.length ? setClickButtonDeleteAll(true) : null}
               >
                 {dict.title.deleteAll[userLang]}
+              </button>
+              <div className={styles.info}/>
+            </div>
+            <div>
+              <button
+                // className={workouts?.length ? styles.active : null}
+                // onClick={() => workouts?.length ? setClickButtonDeleteAll(true) : null}
+                onClick={deleteUser}
+              >
+                Удалить юзера?
+                {/*{dict.title.deleteAll[userLang]}*/}
               </button>
               <div className={styles.info}/>
             </div>

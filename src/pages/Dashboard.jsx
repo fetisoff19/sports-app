@@ -9,7 +9,10 @@ const Dashboard = () => {
   const loader = useSelector(state => state.app.appLoader)
 
   if (loader || !workouts) {
-    return <AppLoader/>;
+    return (
+      <div className={'content center'}>
+        <AppLoader/>
+      </div>)
   }
   else return (
     <DashboardContent/>

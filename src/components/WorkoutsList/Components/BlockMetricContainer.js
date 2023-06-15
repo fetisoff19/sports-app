@@ -9,23 +9,28 @@ const cyclingOrder = ['totalDistance', 'totalTimerTime',  'enhancedAvgSpeed', 't
 
 const BlockMetricContainer = ({data}) => {
   const block = baseOrder.map((item, index) => {
-    // console.log(data)
     return (
       <div key={index} className={styles.mBlock} >
         <span className={styles.unit}>
           {configMainStats[item]?.uniqueSport?.includes(data.sport) ?
             data[item]
               ? configMainStats[item].uniqueFormatter(data[item]) + ' '
-              + (configMainStats[item].unit ? dict.units[configMainStats[item].uniqueUnit][userLang] : '')
+              + (configMainStats[item].unit
+                ? dict.units[configMainStats[item].uniqueUnit][userLang]
+                : '')
               : '--'
             :
             data[item]
             ? configMainStats[item].formatter(data[item]) + ' '
-            + (configMainStats[item].unit ? dict.units[configMainStats[item].unit][userLang] : '')
+            + (configMainStats[item].unit
+                ? dict.units[configMainStats[item].unit][userLang]
+                : '')
             : '--'}
         </span>
         <span className={styles.label}>
-          {configMainStats[item]?.uniqueSport?.includes(data.sport) ? dict.fields[configMainStats[item].uniqueLabel][userLang] : dict.fields[configMainStats[item].label][userLang]}
+          {configMainStats[item]?.uniqueSport?.includes(data.sport)
+            ? dict.fields[configMainStats[item].uniqueLabel][userLang]
+            : dict.fields[configMainStats[item].label][userLang]}
         </span>
       </div>
     );

@@ -12,7 +12,7 @@ import AppLoader from "../Loaders/AppLoader";
 const Main = () => {
   const dispatch = useDispatch()
   const isAuth = useSelector(state => state.user.isAuth)
-  const workouts = useSelector(state => state.workouts.workouts)
+  // const workouts = useSelector(state => state.workouts.workouts)
   const error = useSelector(state => state.app.error)
 
 
@@ -25,7 +25,7 @@ const Main = () => {
 
   useEffect(() => {
     if (isAuth) {
-      dispatch(getFiles())
+      dispatch(getFiles('all'))
     }
   }, [isAuth])
 
@@ -34,9 +34,7 @@ const Main = () => {
       <Navbar/>
       {error
       ? <Error error={error}/>
-      : (workouts || !isAuth)
-      ? <Outlet/>
-      : <div></div>}
+      : <Outlet/>}
       <Footer/>
     </>
   );

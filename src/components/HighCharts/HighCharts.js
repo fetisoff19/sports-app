@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import Exporting from 'highcharts/modules/exporting';
@@ -10,6 +10,14 @@ Exporting(Highcharts);
 const Charts = props => {
 
   useEffect(() => {
+    if(props.name === 'powerCurve')
+      Highcharts.charts.forEach((chart) =>
+        chart.series[0].name === 'powerCurve' ?
+          chart.xAxis[0].setExtremes(chart.xAxis[0].min,
+            chart.xAxis[0].max < 1200 ? chart.xAxis[0].max
+              : chart.xAxis[0].max < 5600 ? 1200
+                :chart.xAxis[0].max < 10800 ? 4800 : 7200)
+          : null)
     return () => {
       while (Highcharts.charts.length > 0) {
         Highcharts.charts.pop();
@@ -258,9 +266,8 @@ const Charts = props => {
     },
   }
   return (
-    <div key={new Date} className={props.name}>
+    <div key={Date.now()} className={props.name}>
       <HighchartsReact
-        key={new Date + 1}
         highcharts={Highcharts}
         options={options}
         allowChartUpdate={false}

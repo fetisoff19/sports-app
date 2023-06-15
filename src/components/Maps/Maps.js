@@ -13,6 +13,24 @@ import watermelon from './icons/watermelon.svg';
 import coffee from './icons/coffee.svg';
 import energyBottle from './icons/energyBottle.svg';
 
+function NewMarker({position, className, icon, iconSize, iconAnchor}) {
+  const newIcon = new Leaflet.Icon({
+    iconUrl: icon,
+    className: className,
+    iconSize: iconSize || [30, 30],
+    iconAnchor: iconAnchor || [15, 29]
+  });
+
+  return (
+    <Marker
+      position={position}
+      icon={newIcon}
+    >
+    </Marker>
+  );
+}
+
+
 const Maps = (props) => {
   const tileLayerRef = useRef(null);
   const containerRef = useRef(null);
@@ -21,7 +39,7 @@ const Maps = (props) => {
 
   let marketCoordinates = [];
   let i;
-  if (props.index) {
+  if (props?.index) {
     i = props.index * props.smoothing;
     i >= polylinePoints.length - 1 ? i = polylinePoints.length - 1 : i;
     i < 0 ? i = 0 : i;
@@ -80,20 +98,6 @@ const Maps = (props) => {
 
 export default Maps;
 
-function NewMarker({position, className, icon, iconSize, iconAnchor}) {
-  const newIcon = new Leaflet.Icon({
-    iconUrl: icon,
-    className: className,
-    iconSize: iconSize || [30, 30],
-    iconAnchor: iconAnchor || [15, 29]
-  });
 
-  return (
-    <Marker
-      position={position}
-      icon={newIcon}
-    >
-    </Marker>
-  );
-}
+
 
