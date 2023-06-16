@@ -6,9 +6,6 @@ import {createSlice} from "@reduxjs/toolkit";
     workouts: null,
     workout: null,
     uploadedFiles: [],
-    chosenSport: 'all',
-    chosenField: 'timestamp',
-    direction: 1,
   },
   reducers: {
     setWorkouts(state, action) {
@@ -18,7 +15,15 @@ import {createSlice} from "@reduxjs/toolkit";
         return workout;
       })
     },
-    deleteWorkoutAction(state, action){
+    addWorkouts(state, action) {
+      action.payload = action.payload.map(workout => {
+        workout.timestamp = new Date(workout.timestamp)
+        workout.startTime = new Date(workout.startTime)
+        return workout;
+      })
+      state.workouts = [...state.workouts, ...action.payload]
+    },
+    deleteWorkoutAction(state, action) {
       state.workouts = state.workouts.filter(workout => workout._id !== action.payload)
     },
     addWorkout(state, action) {
@@ -26,30 +31,20 @@ import {createSlice} from "@reduxjs/toolkit";
       // action.payload.timestamp = new Date(action.payload.timestamp)
       // state.workouts = [...state.workouts, action.payload].sort((a, b) => b.timestamp - a.timestamp);
     },
-    resetStateUploadedFiles(state){
+    resetStateUploadedFiles(state) {
       state.uploadedFiles = [];
     },
-    changeWorkoutAction(state, action){
+    changeWorkoutAction(state, action) {
       state.workouts = state.workouts.map(workout => {
-       if(workout._id === action.payload._id){
-         action.payload.timestamp = new Date(action.payload.timestamp)
-         return action.payload
-       } else return workout
+        if (workout._id === action.payload._id) {
+          action.payload.timestamp = new Date(action.payload.timestamp)
+          return action.payload
+        } else return workout
       })
     },
     setOneWorkout(state, action) {
       state.workout = action.payload;
     },
-    setChosenSport(state, action){
-      state.chosenSport = action.payload
-    },
-    setChosenField(state, action){
-      state.chosenField = action.payload
-    },
-    setDirection(state){
-      state.direction = state.direction > 0 ? 0 : 1
-    }
-
   }
 })
 
@@ -59,9 +54,7 @@ export const {
   deleteWorkoutAction,
   changeWorkoutAction,
   setOneWorkout,
+  addWorkouts,
   addWorkout,
   resetStateUploadedFiles,
-  setChosenSport,
-  setChosenField,
-  setDirection
 } = workoutsSlice.actions;

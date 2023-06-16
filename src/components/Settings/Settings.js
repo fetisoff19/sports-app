@@ -62,10 +62,7 @@ const Settings = () => {
 
 
   if(loader){
-    return (
-      <div className={'content center'}>
-        <AppLoader/>
-      </div>)
+    return <AppLoader/>
   } else return (
     <div className={styles.page}>
       <div

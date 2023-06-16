@@ -5,47 +5,59 @@ import useScroll from "../../hooks/useScroll";
 import styles from './styles.module.scss'
 import AppLoader from "../Loaders/AppLoader";
 import NoWorkouts from "../NoWorkouts/NoWorkouts";
-import {useSelector} from "react-redux";
-
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {getFiles} from "../../redux/actions/workouts";
+import ThreeDotsLoader from "../Loaders/ThreeDotsLoader";
 
 const DashboardContent = () => {
-  const [trainings, setTrainings] = useState([])
-  const [page, setPage] = useState(0);
-  const limit = 3;
+  const loader = useSelector(state => state.app.appLoader);
+  const workouts = useSelector(state => state.workouts.workouts);
+  const limit = 10;
+  const dispatch = useDispatch();
   const parentRef = useRef();
   const childRef = useRef();
-  const intersected = useScroll(parentRef, childRef, () => fetchWorkouts(page, limit));
+  const [page, setPage] = useState(1)
+  const fileLength = useSelector(state => state.workoutsList.fileLength);
+  const workoutsLength = useSelector(state => state.workouts.workouts?.length);
+  const stopObserved = workoutsLength === +fileLength;
 
-  const workouts = useSelector(state => state.workouts.workouts)
+  useScroll(parentRef, childRef, stopObserved, 1000, checkNextPage);
 
-  // имитация запроса на сервер
-  function fetchWorkouts(page, limit) {
-    if(workouts.length === trainings.length) return childRef.current.hidden = true;
-    setTrainings(prev => [...prev, ...workouts.slice(page * limit, (page + 1) * limit)]);
-    setPage(prev => prev + 1);
+  function checkNextPage(){
+    if(!stopObserved && !loader){
+      setPage(prev => prev + 1)
+    }
   }
+
+  useEffect(() => {
+    if(workouts?.length !== +fileLength)
+    dispatch(getFiles('all', 'timestamp', -1, page, limit))
+  }, [page, limit])
+
+  let list = workouts?.map(item =>
+    <Workout key={item.timestamp} data={item}/>);
+  let smallLoader = loader && page > 1
+    && <ThreeDotsLoader className={styles.smallLoader}/>
 
   return (
     <div ref={parentRef} className={styles.page}>
-      {workouts.length
-        ?
-        <div className={styles.container}>
-        <div>
-          <div className={styles.stats}>
-            <StartStats/>
-          </div>
-        </div>
-        <div>
-          {trainings.map((item, index) => <Workout key={index} data={item}/>)}
-          <div ref={childRef}></div>
-          {workouts.length !== trainings.length
-            ? <div className={styles.loader}>
-                <AppLoader/>
+      {loader && page === 1
+        ? <AppLoader/>
+        : workouts?.length
+        ? (<div className={styles.container}>
+            <div>
+              <div className={styles.stats}>
+                <StartStats/>
               </div>
-            : null}
-        </div>
-      </div>
-      : <NoWorkouts childRef={childRef}/> }
+            </div>
+            <div>
+              {list}
+              {smallLoader}
+            </div>
+          </div>)
+        : <NoWorkouts/>}
+        <div ref={childRef} className={'childRef'}/>
     </div>
   );
 };

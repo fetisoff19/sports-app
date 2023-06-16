@@ -15,7 +15,6 @@ const Main = () => {
   // const workouts = useSelector(state => state.workouts.workouts)
   const error = useSelector(state => state.app.error)
 
-
   // console.log(isAuth, localStorage.getItem('token'))
   useEffect(() => {
     localStorage.getItem('token')
@@ -23,18 +22,20 @@ const Main = () => {
       : null
   }, [])
 
-  useEffect(() => {
-    if (isAuth) {
-      dispatch(getFiles('all'))
-    }
-  }, [isAuth])
+  // useEffect(() => {
+  //   if (isAuth) {
+  //     dispatch(getFiles('all'))
+  //   }
+  // }, [isAuth])
 
   return (
     <>
       <Navbar/>
       {error
       ? <Error error={error}/>
-      : <Outlet/>}
+      : <div>
+          <Outlet/>
+        </div>}
       <Footer/>
     </>
   );

@@ -1,24 +1,22 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import SportIcon from "../../UI/SportIcon.js";
 import {dict, userLang} from "../../../config/config";
 import {useDispatch, useSelector} from "react-redux";
-import {getFiles} from "../../../redux/actions/workouts";
-import {setChosenSport} from "../../../redux/reducers/workoutsReducer";
+import {useEffect} from "react";
 
-const FilterBar = () => {
-  const dispatch = useDispatch();
-  const user = useSelector(state => state.user.currentUser);
-  const chosenSport = useSelector(state => state.workouts.chosenSport);
-
-  const sports = useMemo(() => {
-    const set = new Set().add('all');
-    user?.workouts?.forEach(workout => set.add(workout[1]))
-    return set;
-  }, [user]);
+const FilterBar = ({setSport, sport, setDirection, setChosenField, setPage}) => {
+  const sports = useSelector(state => state.workoutsList.sports);
 
   function handleClick(item) {
-    dispatch(setChosenSport(item))
-    dispatch(getFiles(item))
+    setPage(1)
+    setSport(item)
+    setDirection(-1)
+    setChosenField('timestamp')
+  }
+
+  function checkSport(item){
+    if(item === sport) return true
+    else return !sports.includes(sport) && item === 'all';
   }
 
   return (
@@ -28,10 +26,10 @@ const FilterBar = () => {
       paddingBottom: 10,
     }}>
       <div style={{display: 'flex'}}>
-        {[...sports].map(item =>
+        {sports.map(item =>
           <div style={{
-                 background: chosenSport === item ? 'green' : '',
-                 color: chosenSport === item ? 'white' : 'green',
+                 background: checkSport(item) ? 'green' : '',
+                 color: checkSport(item) ? 'white' : 'green',
                  fontSize: 16,
                  width: '70px',
                  height: '30px',
@@ -47,7 +45,7 @@ const FilterBar = () => {
             ? dict.title.all[userLang]
             : <SportIcon
               className={'icon'} height={'20px'} width={'20px'}
-              sport={item} fill={chosenSport === item ? '#F5F5F5FF' : 'green'}/>}
+              sport={item} fill={checkSport(item) ? '#F5F5F5FF' : 'green'}/>}
           </div>)}
       </div>
     </div>

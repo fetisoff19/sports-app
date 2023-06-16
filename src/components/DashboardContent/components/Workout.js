@@ -55,16 +55,20 @@ const Workout = ({data}) => {
         </div>
         {/*Статистика: персональные рекорды...*/}
       </div>
-      {data.polyline?.length
+      {
+        data.polyline?.length
         ? <Maps
-          polylinePoints={data.polyline}
-          startZoom={13}
-          maxZoom={19}
-          style={{height: 200, width: 200}}
-          polylineStyle={{color: 'green'}}
-          scrollWheelZoom={false}
-        />
-        : <div className={styles.plug}>{dict.title.indoorWorkout[userLang]}</div>}
+            polylinePoints={data.polyline}
+            startZoom={13}
+            maxZoom={19}
+            style={{height: 200, width: 200}}
+            polylineStyle={{color: 'green'}}
+            scrollWheelZoom={false}
+          />
+        : <div className={styles.plug}>
+            {dict.title.indoorWorkout[userLang]}
+          </div>
+      }
     </div>
   );
 };

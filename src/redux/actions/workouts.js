@@ -1,7 +1,7 @@
 import {hideLoader, hideSmallLoader, setError, showLoader, showSmallLoader} from "../reducers/appReducer.js";
 import {db, deleteWorkout} from "../../API/db.js";
 import {
-  addWorkout,
+  addWorkout, addWorkouts,
   changeWorkoutAction,
   deleteWorkoutAction, setOneWorkout,
   setWorkouts
@@ -10,6 +10,7 @@ import axios from "axios";
 import {API_URL} from "../../config/config";
 import {parseFit} from "../../API/utils";
 import {logout} from "../reducers/userReducer";
+import {addSport, removeSport, setFiles, setSports} from "../reducers/workoutsListReducer";
 
 export function uploadFile(file) {
   return async dispatch => {
@@ -33,43 +34,53 @@ export function uploadFile(file) {
         // }
       });
       dispatch(addWorkout(response.data))
+      dispatch(addSport(response.data.sport))
     } catch (e) {
-      if(e.response.status === 400){
+      if(e?.response?.status === 400){
         dispatch(addWorkout(e.response.data?.message))
       }
-      else if(e.response.status === 500){
+      else if(e?.response?.status === 500){
         console.log("server error", e?.response)
         dispatch(addWorkout("error"))
       }
       else {
         dispatch(addWorkout("unknown error"))
-        console.log("unknown error", e.response)
+        console.log("unknown error", e)
       }
     }
   }
 }
 
-export function getFiles(sport, sort, direction) {
+export function getFiles(sport, sort, direction, page, limit) {
   return async dispatch => {
     try {
-      console.log('getFiles', sport, sort, direction)
+      console.time('213123')
       dispatch(showLoader())
+      console.log(sport, sort, direction, page, limit)
       let url = `${API_URL}api/files`
+      let pageLimit = page && limit ? `&page=${page}&limit=${limit}` : ''
       if (sport) {
-        url = `${API_URL}api/files?sport=${sport}`
+        url = `${API_URL}api/files?sport=${sport}${pageLimit}`
       }
       if (direction && sort) {
-        url = `${API_URL}api/files?direction=${direction}&sort=${sort}`
+        url = `${API_URL}api/files?direction=${direction}&sort=${sort}${pageLimit}`
       }
       if (direction && sort && sport) {
-        url = `${API_URL}api/files?direction=${direction}&sort=${sort}&sport=${sport}`
+        url = `${API_URL}api/files?direction=${direction}&sort=${sort}&sport=${sport}${pageLimit}`
       }
       const response = await axios.get(url, {
         headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
       });
       // dispatch(setFiles(response.data))
-
-      dispatch(setWorkouts(response.data))
+      dispatch(setFiles(response.headers['file-length']))
+      if(page === 1){
+        console.log('set')
+        dispatch(setWorkouts(response.data))
+      } else {
+        console.log('add')
+        dispatch(addWorkouts(response.data))
+      }
+      console.timeEnd('213123')
       // const workouts = response.data.filter(file => file.path === 'workouts.txt')
       // workouts = workouts ?
       // dispatch(setWorkouts(response.data.filter(file => file.path === 'workouts.txt')))
@@ -96,6 +107,8 @@ export function getOneFile(_id){
         const blob = await response.blob()
         const parseFile = await parseFit(blob)
         dispatch(setOneWorkout(parseFile))
+        dispatch(addSport(parseFile.sport))
+
       }
 
     } catch (e) {
@@ -108,11 +121,11 @@ export function getOneFile(_id){
   }
 }
 
-export function deleteOneWorkout(_id) {
+export function deleteOneWorkout(_id, key) {
   console.log('deleteOneWorkout')
   return async dispatch => {
     try {
-      // dispatch(showSmallLoader());
+      dispatch(showSmallLoader(_id + key));
       const response = await axios.delete(`${API_URL}api/files?id=${_id}`,{
         headers:{
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -120,13 +133,14 @@ export function deleteOneWorkout(_id) {
       })
       if (response.status === 200){
         dispatch(deleteWorkoutAction(_id))
+        dispatch(removeSport(_id))
       }
       return response.statusText
     } catch (e) {
       console.log(e)
       dispatch(setError(e))
     } finally {
-      // dispatch(hideSmallLoader())
+      dispatch(hideSmallLoader())
     }
   }
 }
@@ -144,6 +158,7 @@ export function deleteAllWorkouts() {
       })
       if(response.status === 200){
         dispatch(setWorkouts([]))
+        dispatch(setSports([]))
         return 'OK'
       }
     } catch (e) {

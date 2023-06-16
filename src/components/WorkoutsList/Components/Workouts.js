@@ -1,19 +1,22 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 import ListItem from "./ListItem";
-import NoWorkouts from "../../NoWorkouts/NoWorkouts";
+import ThreeDotsLoader from "../../Loaders/ThreeDotsLoader";
 
-const Workouts = () => {
+const Workouts = ({page}) => {
   const workouts = useSelector(state => state.workouts.workouts);
   const user = useSelector(state => state.user.currentUser);
+  const loader = useSelector(state => state.app.appLoader);
 
   const list = user?.workouts?.length && workouts?.length
     ? workouts.map(item =>
-      <ListItem key={item.name} data={item}/>)
-    : <NoWorkouts/>
+      <ListItem key={Math.random()} data={item}/>)
+    : null
+
   return (
     <>
       {list}
+      {loader && page > 1 && <ThreeDotsLoader/>}
     </>
   );
 };

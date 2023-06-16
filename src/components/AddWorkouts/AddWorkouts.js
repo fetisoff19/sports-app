@@ -5,6 +5,7 @@ import {dict, userLang} from "../../config/config";
 import {useDispatch, useSelector} from "react-redux";
 import {getFiles, uploadFile} from "../../redux/actions/workouts";
 import {resetStateUploadedFiles} from "../../redux/reducers/workoutsReducer";
+import {auth} from "../../redux/actions/user";
 
 
 export default function AddWorkouts() {
@@ -60,7 +61,7 @@ export default function AddWorkouts() {
   useEffect(() => {
     if(uploadedFiles.length && files.length === uploadedFiles.length) {
       console.log('useEffect')
-      dispatch(getFiles('all'))
+      dispatch(auth())
     }
   })
 

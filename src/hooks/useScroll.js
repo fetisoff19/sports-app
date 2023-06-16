@@ -1,12 +1,13 @@
 import {useLayoutEffect, useRef} from "react";
 
-export default function useScroll(parentRef, childRef, callback,) {
+export default function useScroll(parentRef, childRef, stop, px, callback) {
   const observer = useRef();
 
   useLayoutEffect(() => {
+
     const options = {
       root: parentRef.current,
-      rootMargin: '0px',  //установить значение для опережающей загрузки
+      rootMargin: `${px}px`,  //установить значение для опережающей загрузки
       threshold: 0
     }
     observer.current = new IntersectionObserver(([target]) => {
@@ -15,9 +16,13 @@ export default function useScroll(parentRef, childRef, callback,) {
       }
     }, options)
 
+    if(stop) {
+      return () => observer.current.unobserve(childRef.current)
+    }
+
     observer.current.observe(childRef.current)
 
     return () => observer.current.unobserve(childRef.current)
-  }, [callback])
+  }, [callback, stop])
 
 };
