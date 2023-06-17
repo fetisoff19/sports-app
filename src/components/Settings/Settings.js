@@ -1,5 +1,4 @@
 import React, {useContext, useState} from 'react';
-import AppContext from "../../context/AppContext.js";
 import {dict, userLang} from "../../config/config";
 import styles from './styles.module.scss'
 import Question from "../UI/svgComponents/Question";

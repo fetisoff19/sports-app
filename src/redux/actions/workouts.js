@@ -1,5 +1,4 @@
 import {hideLoader, hideSmallLoader, setError, showLoader, showSmallLoader} from "../reducers/appReducer.js";
-import {db, deleteWorkout} from "../../API/db.js";
 import {
   addWorkout, addWorkouts,
   changeWorkoutAction,
@@ -51,27 +50,29 @@ export function uploadFile(file) {
   }
 }
 
-export function getFiles(sport, sort, direction, page, limit) {
+export function getFiles(sport, sort, direction, page, limit, search) {
   return async dispatch => {
     try {
-      console.time('213123')
+      let a = Math.random().toFixed(5)
+      console.time(a)
+
       dispatch(showLoader())
-      console.log(sport, sort, direction, page, limit)
       let url = `${API_URL}api/files`
-      let pageLimit = page && limit ? `&page=${page}&limit=${limit}` : ''
-      if (sport) {
-        url = `${API_URL}api/files?sport=${sport}${pageLimit}`
+
+      sport = sport ? `sport=${sport}&` : ''
+      sort = sort ? `sort=${sort}&` : ''
+      direction = direction ? `direction=${direction}&` : ''
+      let pageNum = page ? `page=${page}&` : ''
+      limit = limit ? `limit=${limit}&` : ''
+      search = search ? `search=${search}&` : ''
+
+      if(sport || sort || direction || pageNum || limit || search){
+        url = url + '?' + sport + sort + direction + pageNum + limit + search
       }
-      if (direction && sort) {
-        url = `${API_URL}api/files?direction=${direction}&sort=${sort}${pageLimit}`
-      }
-      if (direction && sort && sport) {
-        url = `${API_URL}api/files?direction=${direction}&sort=${sort}&sport=${sport}${pageLimit}`
-      }
+
       const response = await axios.get(url, {
         headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
       });
-      // dispatch(setFiles(response.data))
       dispatch(setFiles(response.headers['file-length']))
       if(page === 1){
         console.log('set')
@@ -80,13 +81,9 @@ export function getFiles(sport, sort, direction, page, limit) {
         console.log('add')
         dispatch(addWorkouts(response.data))
       }
-      console.timeEnd('213123')
-      // const workouts = response.data.filter(file => file.path === 'workouts.txt')
-      // workouts = workouts ?
-      // dispatch(setWorkouts(response.data.filter(file => file.path === 'workouts.txt')))
-    } catch (e) {
+      console.timeEnd(a)
+     } catch (e) {
       console.log(e?.response?.data?.message)
-      // alert(e?.response?.data?.message)
     } finally {
       dispatch(hideLoader())
     }

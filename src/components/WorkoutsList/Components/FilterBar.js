@@ -1,13 +1,46 @@
-import React from 'react';
+import React, {useState} from 'react';
 import SportIcon from "../../UI/SportIcon.js";
 import {dict, userLang} from "../../../config/config";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useSelector} from "react-redux";
+import styles from '../styles.modules.scss'
+import Input from "../../UI/Input";
+import AppLoader from "../../Loaders/AppLoader";
+import Close from "../../UI/svgComponents/Close";
+import X from "../../UI/svgComponents/X";
 
-const FilterBar = ({setSport, sport, setDirection, setChosenField, setPage}) => {
+
+const FilterBar = ({sport, setSport, setDirection, setChosenField, setPage, isSearch, setIsSearch}) => {
+  const [searchName, setSearchName] = useState('');
+  const [searchTimeout, setSearchTimeout] = useState(false);
   const sports = useSelector(state => state.workoutsList.sports);
+  const loader = useSelector(state => state.app.appLoader);
+  const fileLength = useSelector(state => state.workoutsList.fileLength);
+
+  function searchChangeHandler(value) {
+    setSearchName(value)
+    if (searchTimeout !== false) {
+      clearTimeout(searchTimeout)
+    }
+    if(searchName !== '') {
+      setPage(1)
+      setIsSearch(value)
+      setSearchTimeout(setTimeout((value) => {
+        setIsSearch(value)
+      }, 800,value))
+    } else {
+      setIsSearch('')
+    }
+  }
+
+  function stopSearch(){
+    setPage(1)
+    setIsSearch('')
+    setSearchName('')
+  }
 
   function handleClick(item) {
+    setIsSearch('')
+    setSearchName('')
     setPage(1)
     setSport(item)
     setDirection(-1)
@@ -20,25 +53,31 @@ const FilterBar = ({setSport, sport, setDirection, setChosenField, setPage}) => 
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'right',
-      paddingBottom: 10,
-    }}>
-      <div style={{display: 'flex'}}>
+    <div className={styles.filterBar}>
+      <div className={styles.inputResult}>
+        <div className={styles.searchInput}>
+          <Input
+            setValue={searchChangeHandler}
+            value={searchName}
+            id={'searchWorkoutName'}
+            type="text"
+            minLength="2"
+            classname={''}
+            placeholder={dict.title.searchWorkouts[userLang]}
+          />
+          {searchName && <div onClick={stopSearch}>
+            <X/>
+          </div>}
+        </div>
+        {isSearch && !loader &&
+          <span>
+          {dict.title.resultSearch1[userLang] + fileLength
+            + dict.title.resultSearch2[userLang] + isSearch}
+          </span>}
+      </div>
+      <div className={styles.sportsIcons}>
         {sports.map(item =>
-          <div style={{
-                 background: checkSport(item) ? 'green' : '',
-                 color: checkSport(item) ? 'white' : 'green',
-                 fontSize: 16,
-                 width: '70px',
-                 height: '30px',
-                 display: 'flex',
-                 justifyContent: "space-around",
-                 alignItems: 'center',
-                 border: 'rgb(108, 108, 108) solid 1px',
-                 borderRadius:  2,
-                 cursor: 'pointer',}}
+          <div className={checkSport(item) ? styles.check : ''}
                onClick={() => handleClick(item)}
                key={item}>
             {item === 'all'

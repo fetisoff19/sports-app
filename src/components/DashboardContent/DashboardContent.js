@@ -31,7 +31,6 @@ const DashboardContent = () => {
   }
 
   useEffect(() => {
-    if(workouts?.length !== +fileLength)
     dispatch(getFiles('all', 'timestamp', -1, page, limit))
   }, [page, limit])
 
@@ -48,7 +47,10 @@ const DashboardContent = () => {
         ? (<div className={styles.container}>
             <div>
               <div className={styles.stats}>
-                <StartStats/>
+                <StartStats text={''
+                  // '+ stopObserved ' + stopObserved + ' page ' + page + ' fileLength ' + fileLength + ' workoutsLength ' + workoutsLength + ' loader ' + loader
+
+                }/>
               </div>
             </div>
             <div>

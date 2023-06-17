@@ -15,7 +15,7 @@ export function WorkoutsList() {
 
   const loader = useSelector(state => state.app.appLoader);
   const userWorkouts = useSelector(state => state.workoutsList.userWorkouts);
-  const limit = 30;
+  const limit = 10;
   const dispatch = useDispatch();
   const parentRef = useRef();
   const childRef = useRef();
@@ -26,13 +26,18 @@ export function WorkoutsList() {
   const fileLength = useSelector(state => state.workoutsList.fileLength);
   const workoutsLength = useSelector(state => state.workouts.workouts?.length);
   const [check, setCheck] = useState(0)
-  let stopObserved = workoutsLength === +fileLength;
+  const [isSearch, setIsSearch] = useState('')
+  const [firstLoad, setFirstLoad] = useState(false)
+  let stopObserved = (workoutsLength === +fileLength);
 
-  useScroll(parentRef, childRef, stopObserved, 1000, checkNextPage);
+  useEffect(() => setFirstLoad(true),[])
+
+  useScroll(parentRef, childRef, stopObserved, 500, checkNextPage);
+
 
   useEffect(() => {
-    dispatch(getFiles(sport, chosenField, direction, page, limit))
-  }, [sport, chosenField, direction, page, limit])
+    dispatch(getFiles(sport, chosenField, direction, page, limit, isSearch))
+  }, [sport, chosenField, direction, page, limit, isSearch])
 
   function checkNextPage(){
     setCheck(prev => prev + 1)
@@ -41,7 +46,7 @@ export function WorkoutsList() {
     }
   }
 
-
+  console.log(workoutsLength, +fileLength, isSearch)
   let modal = (loader && page === 1 && +userWorkouts?.length) ? <div
     className={styles.modalBackground}/> : null
 
@@ -55,14 +60,18 @@ export function WorkoutsList() {
       {modal}
       <div className={styles.container} ref={parentRef}>
         {noWorkouts}
-        {loader && page === 1 && +fileLength === 0
+        {loader && page === 1 && +fileLength === 0 && !firstLoad
           ? <AppLoader/>
           : userWorkouts.length
             ? <div className={styles.up}>
               <h1>{dict.title.activities[userLang]
-                // + ' stopObserved ' + stopObserved + ' page ' + page + ' fileLength ' + fileLength + ' workoutsLength ' + workoutsLength + ' check ' + check + ' loader ' + loader
+                // + ' stopObserved ' + stopObserved + ' page ' + page + ' fileLength ' + fileLength + ' workoutsLength ' + workoutsLength + ' check '
+                // + check
+               // + ' loader ' + loader + ' isSearch ' + isSearch
               }</h1>
               <FilterBar
+                isSearch={isSearch}
+                setIsSearch={setIsSearch}
                 setPage={setPage}
                 sport={sport} setSport={setSport}
                 setDirection={setDirection}
@@ -79,8 +88,8 @@ export function WorkoutsList() {
           <ul>
             <Workouts page={page}/>
           </ul>
+          <div ref={childRef} className={'childRef'}></div>
         </div>
-        <div ref={childRef} className={'childRef'}></div>
       </div>
     </>
   )

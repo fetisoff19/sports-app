@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {NavLink} from "react-router-dom";
-import AppContext from "../../context/AppContext.js";
 import {dict, userLang} from "../../config/config";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../redux/reducers/userReducer";

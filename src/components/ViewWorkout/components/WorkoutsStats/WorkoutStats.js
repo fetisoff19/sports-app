@@ -5,16 +5,16 @@ const WorkoutStats = ({data, styles}) => {
 
 let order =
   data.sport === 'running' || data.sport === 'hiking'
-  || data.sport === 'training' || data.sport === 'walking'?
-  ['heartRate', 'cadenceRun', 'pace', 'altitude', 'temperature', 'time', 'other'] :
-  data.sport === 'cycling' ?
-  ['heartRate', 'cadence', 'power', 'speed', 'altitude', 'temperature', 'time', 'other'] :
-  ['heartRate', 'speed', 'altitude', 'temperature', 'time', 'other'];
+  || data.sport === 'training' || data.sport === 'walking'
+    ?  ['heartRate', 'cadenceRun', 'pace', 'altitude', 'temperature', 'time', 'other']
+    : data.sport === 'cycling'
+      ? ['heartRate', 'cadence', 'power', 'speed', 'altitude', 'temperature', 'time', 'other']
+      : ['heartRate', 'speed', 'altitude', 'temperature', 'time', 'other'];
 
   let stats = [];
   for (let unit of order) {
     let fields = statsFields[unit].fields.map(item =>
-      data[item] ?
+      data[item] &&
       (<div className={styles.statsBlock} key={item}>
         <div className={styles.statsUnit}>
           {(statsFields[unit].formatter ? statsFields[unit].formatter(data[item]) : data[item])
@@ -23,16 +23,15 @@ let order =
         </div>
         <div className={styles.statsLabel}>{dict.fields[item][userLang]}</div>
       </div>)
-        : null
     )
-
-    let block =
-      fields.reduce((a, b) => b ? 1 : 0)
-        ? (<div key={unit} >
-        <div className={styles.statsMainLabel}>{dict.fields[unit][userLang]}</div>
+    let block = fields.filter(a => a !== null).length
+      ? (<div key={unit}>
+        <div className={styles.statsMainLabel}>
+          {dict.fields[unit][userLang]}
+        </div>
         {fields}
-        </div>)
-        : null;
+          </div>)
+      : null;
     stats.push(block)
   }
 

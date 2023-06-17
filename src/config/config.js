@@ -168,6 +168,10 @@ export const dict = {
       en: 'Drop files here or'},
     add2: {ru: 'для выбора', en: 'to select'},
     browse: {ru: ' Обзор', en: 'Browse'},
+    searchWorkouts: {ru: 'Поиск занятий', en: 'Find workouts'},
+    resultSearch1: {ru: 'Найдено ', en: 'Found '},
+    resultSearch2: {ru: ' занятий по запросу ', en: ' activities for '},
+
   },
 
   month:{

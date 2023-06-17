@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 
-import AppContext from "../../context/AppContext.js";
 import {dict, userLang} from "../../config/config";
 import {useSelector} from "react-redux";
 
@@ -8,15 +7,6 @@ const Footer = () => {
   const [state, setState] = useState([])
   // const loader = useSelector(state => state.app.appLoader)
   const workouts = useSelector(state => state.workouts.workouts)
-
-  // useEffect(() => {
-  //     async function getData() {
-  //       await setIndexedDbUsageInfo()
-  //         .then(result => setState(result))
-  //     }
-  //     getData()
-  //   }
-  // ,[workouts]);
 
   return (
     <footer>
