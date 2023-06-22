@@ -10,7 +10,7 @@
     cursor: pointer;
     .label{
       font-size: 18px;
-      font-weight: 100;
+      font-weight: 300;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -24,6 +24,7 @@
         color: green;
       }
     }
+
     .files{
       width: 94%;
       margin: 0 3% 10px 3%;
@@ -33,7 +34,7 @@
       }
       .file {
         padding: 5px;
-        font-weight: 100;
+        font-weight: 300;
         width: calc(100% - 10px);
         display: flex;
         justify-content: space-between;

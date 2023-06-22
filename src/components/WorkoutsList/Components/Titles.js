@@ -3,20 +3,31 @@ import styles from "../styles.modules.scss";
 import {dict, userLang} from "../../../config/config";
 import Delete from "../../UI/svgComponents/Delete";
 import Other from "../../UI/svgComponents/Other";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
+import {useContext} from "react";
+import WorkoutsListContext from "../context/Context";
 
 
-const Titles = ({direction, setDirection, chosenField, setChosenField, setPage}) => {
+const Titles = () => {
+  const {
+    chosenField, setChosenField,
+    direction, setDirection,
+    setPage,
+  } = useContext(WorkoutsListContext);
+
   const userWorkouts = useSelector(state => state.workoutsList.userWorkouts);
+
   const fields = ['totalDistance', 'totalTimerTime', 'enhancedAvgSpeed', 'totalAscent', 'avgHeartRate'];
+  const labels = ['totalDistance', 'totalTimerTime', 'avgSpeed', 'totalAscent', 'avgHeartRate'];
+
   const up = ' \u25B4 ';
   const down = ' \u25BE ';
 
-  const blockMetric = fields.map(field =>
+  const blockMetric = fields.map((field, index) =>
     <div className={styles.mBlock + ' ' + styles.active}
          onClick={() => handleClick(field)}
          key={field} >
-      {dict.fields[field][userLang]}
+      {dict.fields[labels[index]][userLang]}
       <span className={styles.span}>
         {setMarker(field)}
       </span>

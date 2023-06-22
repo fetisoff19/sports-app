@@ -2,10 +2,11 @@ import {convertPaceInMinute, convertSpeed} from "../../../API/functionsDate&Valu
 import {garminLatLongToNormal} from "../../../API/utils";
 
 export function getDataForCharts(workoutData, smoothing, powerCurve) {
+  console.time(2)
   if (!workoutData) return;
   let recordMesgs = workoutData.recordMesgs;
   if ((isNaN(recordMesgs.at(-1).heartRate)
-    && isNaN(recordMesgs.at(-1).heartRate)
+    && isNaN(recordMesgs.at(-1).enhancedSpeed)
     && isNaN(recordMesgs.at(-1).distance)
     && isNaN(recordMesgs.at(-1).power)
     && isNaN(recordMesgs.at(-1).enhancedAltitude))
@@ -222,5 +223,6 @@ export function getDataForCharts(workoutData, smoothing, powerCurve) {
     powerCurveAllTimeMap: workoutData?.workout?.powerCurveAllTimeMap || null,
     sport: workoutData.sessionMesgs[0].sport || null,
   }
+  console.timeEnd(2)
   return result
 }

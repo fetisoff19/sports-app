@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import StartStats from "./components/StartStats";
 import Workout from "./components/Workout";
 import useScroll from "../../hooks/useScroll";
-import styles from './styles.module.scss'
+import styles from './styles.module.scss';
 import AppLoader from "../Loaders/AppLoader";
 import NoWorkouts from "../NoWorkouts/NoWorkouts";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,7 +13,7 @@ import ThreeDotsLoader from "../Loaders/ThreeDotsLoader";
 const DashboardContent = () => {
   const loader = useSelector(state => state.app.appLoader);
   const workouts = useSelector(state => state.workouts.workouts);
-  const limit = 10;
+  const limit = 6;
   const dispatch = useDispatch();
   const parentRef = useRef();
   const childRef = useRef();
@@ -35,7 +35,7 @@ const DashboardContent = () => {
   }, [page, limit])
 
   let list = workouts?.map(item =>
-    <Workout key={item.timestamp} data={item}/>);
+    <Workout key={item._id} data={item}/>);
   let smallLoader = loader && page > 1
     && <ThreeDotsLoader className={styles.smallLoader}/>
 
@@ -49,7 +49,6 @@ const DashboardContent = () => {
               <div className={styles.stats}>
                 <StartStats text={''
                   // '+ stopObserved ' + stopObserved + ' page ' + page + ' fileLength ' + fileLength + ' workoutsLength ' + workoutsLength + ' loader ' + loader
-
                 }/>
               </div>
             </div>

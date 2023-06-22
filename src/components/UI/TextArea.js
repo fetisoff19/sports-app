@@ -52,17 +52,18 @@ const TextArea = ({text, _id, styles, setState}) => {
       {showButtons &&
         <div className={styles?.buttons}>
           <div className={styles?.ok} onClick={saveNote}>
-            <Ok fill={'grey'} height={'20px'} width={'20px'}/>
+            <Ok fill={'grey'}/>
           </div>
           <div className={styles?.close} onClick={() => {
             setShowButtons(false)
             setValue(text || dict.title.placeholderNote[userLang]);
             ref.current.value = text || dict.title.placeholderNote[userLang]}}
           >
-            <Close fill={'grey'} height={'20px'} width={'20px'}/>
+            <Close fill={'grey'}/>
           </div>
         </div>}
-      {smallLoader && smallLoaderId === _id && <AppLoader height={'20'} width={'20'}/>}
+      {smallLoader && smallLoaderId === _id
+        && <AppLoader height={'20'} width={'20'}/>}
     </div>
   );
 };

@@ -14,6 +14,10 @@
   position: sticky;
   top: 20px;
   width: 380px;
+  white-space: pre-wrap;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 2px;
   //max-height: 80vh;
   ///*margin-top: 20px;*/
   padding: 30px;
@@ -41,14 +45,14 @@
 .plug{
   height: 200px;
   width: 200px;
-  /*background: rgb(238, 238, 238);*/
   display: flex;
+  box-sizing: border-box;
   justify-content: center;
   align-items: center;
   border: 1px solid #e5e5e5;
   border-radius: 2px;
   font-style: italic;
-
+  font-weight: 300;
 }
 
 .icon{
@@ -66,13 +70,13 @@
     /*align-items: start;*/
     gap: 10px;
     textarea{
-      font: 14px/22px 'Open Sans',  sans-serif;
+      font: 14px/22px Main,  sans-serif;
       border: 1px solid #ffffff;
       border-radius: 2px;
       resize: none;
       overflow: hidden;
       width: 350px;
-      font-weight: 100;
+      font-weight: 300;
       outline: none;
       margin-left: -2px;
 
@@ -87,6 +91,7 @@
     }
     .buttons{
       display: flex;
+      padding-top: 5px;
       gap: 5px;
       .ok:hover{
         cursor: pointer;
@@ -141,7 +146,7 @@
     font-size: 22px;
   }
   .label{
-    font-weight: 100;
+    font-weight: 300;
     font-size: 14px;
   }
 }

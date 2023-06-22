@@ -23,16 +23,15 @@ const ListItem = ({data}) => {
   let smallLoader = useSelector(state => state.app.smallLoader);
   let smallLoaderId = useSelector(state => state.app.smallLoaderId);
 
-
   return (
     <li className={styles.listItem}>
       <SportIcon className={'icon ' + styles.icon} sport={data.sport} fill={'green'}/>
       <div className={styles.sBlock}  key={data._id + 'timestamp'} >
         <span className={styles.unit}>
-          {data.timestamp.getDate() + ' ' + dict.month[data.timestamp.getMonth()][userLang]}
+          {new Date(data?.timestamp).getDate() + ' ' + dict.month[new Date(data?.timestamp).getMonth()][userLang]}
         </span>
         <span className={styles.label}>
-          {data.timestamp.getFullYear()}
+          {new Date(data?.timestamp).getFullYear()}
         </span>
       </div>
       <div className={styles.lBlock} key={data.workoutName}>

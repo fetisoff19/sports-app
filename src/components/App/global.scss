@@ -1,9 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,800;1,900&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;500;600;700&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,800;1,900&display=swap');
 @import-normalize;
+@font-face {
+  font-family: Logo;
+  src: url("./fonts/Poppins-BlackItalic");
+  font-style: italic;
+  font-weight: bold;
+}
+@font-face {
+  font-family: Main;
+  src: url("./fonts/OpenSans-Light");
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: Main;
+  src: url("./fonts/OpenSans-LightItalic");
+  font-style: italic;
+  font-weight: 300;
+}
+@font-face {
+  font-family: Main;
+  src: url("./fonts/OpenSans-Regular");
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: Main;
+  src: url("./fonts/OpenSans-Medium");
+  font-style: normal;
+  font-weight: 500;
+}
+@font-face {
+  font-family: Main;
+  src: url("./fonts/OpenSans-SemiBold");
+  font-style: normal;
+  font-weight: 600;
+}
+@font-face {
+  font-family: Main;
+  src: url("./fonts/OpenSans-Bold");
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: Main;
+  src: url("./fonts/OpenSans-ExtraBold");
+  font-style: normal;
+  font-weight: 800;
+}
+
 
 body {
-  font: 14px/22px 'Open Sans',  sans-serif;
+  font: 14px/22px Main, sans-serif;
   width: 100%;
   height: 100vh;
   padding: 0;
@@ -55,7 +105,7 @@ header{
   nav a{
     height: calc(100% - 3px);
   }
-  nav{
+  nav, div{
     display: flex;
     align-items: center;
     .active{
@@ -63,9 +113,10 @@ header{
     }
     .logo{
       color: green;
-      font-family: 'Poppins', sans-serif;
+      //font-family: 'Poppins', sans-serif;
+      font-family: Logo, sans-serif;
       font-style: italic;
-      font-weight: 900;
+      font-weight: bold;
       font-size: 26px;
       text-decoration: none;
       border: none;
@@ -112,11 +163,12 @@ header{
     letter-spacing: 1px;
     font-size: 18px;
     line-height: 150%;
-    font-weight: 100;
+    font-weight: 300;
     white-space: pre-wrap
   }
   a{
     font-style: italic;
+    letter-spacing: 1.5px;
   }
 }
 

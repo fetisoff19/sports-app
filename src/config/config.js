@@ -1,4 +1,11 @@
-import {convertDistance, convertPace, convertSpeed, doubleValue, getHourMinSec} from "../API/functionsDate&Values";
+import {
+  convertDistance,
+  convertPace,
+  convertPaceInMinute,
+  convertSpeed, convertSpeedToPace,
+  doubleValue,
+  getHourMinSec
+} from "../API/functionsDate&Values";
 import React from "react";
 
 export const API_URL = `http://localhost:5000/`
@@ -171,6 +178,8 @@ export const dict = {
     searchWorkouts: {ru: 'Поиск занятий', en: 'Find workouts'},
     resultSearch1: {ru: 'Найдено ', en: 'Found '},
     resultSearch2: {ru: ' занятий по запросу ', en: ' activities for '},
+    registration: {ru: 'Регистрация', en: 'Registration'},
+    auth: {ru: 'Авторизация', en: 'Authorization'}
 
   },
 
@@ -199,10 +208,10 @@ export const configMainStats = {
   },
   totalTimerTime: {
     formatter: getHourMinSec,
-    label: 'totalElapsedTime',
+    label: 'totalTimerTime',
   },
   enhancedAvgSpeed: {
-    formatter: convertSpeed,
+    formatter: x => convertSpeed(x).toString().replace('.', ','),
     uniqueFormatter: convertPace,
     unit: 'kmph',
     uniqueUnit: 'pace',
@@ -212,17 +221,18 @@ export const configMainStats = {
     uniqueLabel: 'avgPace',
   },
   totalAscent: {
-    formatter: Math.round,
     unit: 'm',
     label: 'totalAscent',
   },
   avgHeartRate: {
-    formatter: Math.round,
     unit: 'bpm',
     label: 'avgHeartRate',
   },
+  maxHeartRate: {
+    unit: 'bpm',
+    label: 'maxHeartRate',
+  },
   avgPower: {
-    formatter: Math.round,
     unit: 'w',
     label: 'avgPower',
   },
@@ -234,7 +244,6 @@ export let statsFields = {
       'maxHeartRate',
       'avgHeartRate',
     ],
-    formatter: Math.round,
     unit: 'bpm',
   },
   speed: {
@@ -242,7 +251,7 @@ export let statsFields = {
       'maxSpeed',
       'avgSpeed',
     ],
-    formatter: convertSpeed,
+    formatter: x => convertSpeed(x).toString().replace('.', ','),
     unit: 'kmph',
   },
   pace: {
@@ -250,8 +259,8 @@ export let statsFields = {
       'enhancedMaxSpeed',
       'enhancedAvgSpeed',
     ],
-    formatter: convertPace,
     unit: 'pace',
+    formatter: convertPace,
   },
   power: {
     fields: [
@@ -259,7 +268,6 @@ export let statsFields = {
       'normalizedPower',
       'avgPower',
     ],
-    formatter: Math.round,
     unit: 'w',
   },
   time: {
@@ -277,7 +285,6 @@ export let statsFields = {
       'maxCadence',
       'avgCadence',
     ],
-    formatter: doubleValue,
     unit: 'cadenceRun',
   },
   cadence: {
@@ -285,7 +292,6 @@ export let statsFields = {
       'maxCadence',
       'avgCadence',
     ],
-    formatter: Math.round,
     unit: 'cadenceCycling',
   },
   altitude: {
@@ -295,7 +301,6 @@ export let statsFields = {
       'maxAltitude',
       'minAltitude',
     ],
-    formatter: Math.round,
     unit: 'm',
   },
   temperature: {
@@ -303,7 +308,6 @@ export let statsFields = {
       'maxTemperature',
       'avgTemperature',
     ],
-    formatter: Math.round,
     unit: 'degreeCelsius',
   },
   other: {
@@ -312,7 +316,6 @@ export let statsFields = {
       'trainingStressScore',
       'totalCalories',
     ],
-    formatter: null,
     unit: null,
   }
 }

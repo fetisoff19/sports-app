@@ -6,8 +6,8 @@
     border-radius: 3px;
     padding: 5px 15px;
     //cursor: not-allowed;
-    font: 14px/22px 'Open Sans',  sans-serif;
-    font-weight: 100;
+    font: 14px/22px Main,  sans-serif;
+    font-weight: 300;
     background-color: grey;
     color: white;
   }
@@ -108,7 +108,7 @@
     justify-content: center;
     align-items: center;
     h3{
-      font-weight: 100;
+      font-weight: 300;
       margin: 0;
       padding: 0 0 15px 0;
     }
@@ -127,7 +127,6 @@
         background: #ce0303;
       }
     }
-
   }
 }
 
@@ -145,19 +144,19 @@
       align-items: center;
       gap: 10px;
       font-size: 14px;
-      font-weight: 100;
+      font-weight: 300;
       select{
         cursor: pointer;
-        font: 14px/22px 'Open Sans',  sans-serif;
-        font-weight: 100;
+        font: 14px/22px Main,  sans-serif;
+        font-weight: 300;
         padding: 5px;
         border: 1px #e5e5e5 solid;
         border-radius: 3px;
         outline: 0;
 
         option{
-          font: 14px/22px 'Open Sans',  sans-serif;
-          font-weight: 100;
+          font: 14px/22px Main,  sans-serif;
+          font-weight: 300;
           padding: 5px;
         }
       }
@@ -175,7 +174,7 @@
         .tooltip {
           white-space: pre-wrap;
           padding: 10px;
-          font-weight: 100;
+          font-weight: 300;
           position: absolute;
           width: 250px;
           border-radius: 2px;

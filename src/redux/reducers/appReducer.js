@@ -6,6 +6,7 @@ const appSlice = createSlice({
     appLoader: false,
     smallLoader: false,
     smallLoaderId: null,
+    cursorWait: false,
     error: null
   },
   reducers: {
@@ -26,8 +27,14 @@ const appSlice = createSlice({
       state.smallLoaderId = '';
       state.smallLoader = false;
     },
+    cursorWaitOn(state) {
+      state.cursorWait = true;
+    },
+    cursorWaitOff(state) {
+      state.cursorWait = false;
+    },
   }
 })
 
 export default appSlice.reducer;
-export const {showLoader, hideLoader, setError, showSmallLoader, hideSmallLoader} = appSlice.actions;
+export const {showLoader, hideLoader, setError, showSmallLoader, hideSmallLoader, cursorWaitOn, cursorWaitOff} = appSlice.actions;

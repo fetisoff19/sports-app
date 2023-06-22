@@ -1,5 +1,15 @@
-import {hideLoader, hideSmallLoader, setError, showLoader, showSmallLoader} from "../reducers/appReducer.js";
 import {
+  cursorWaitOff,
+  cursorWaitOn,
+  hideLoader,
+  hideSmallLoader,
+  setError,
+  showLoader,
+  showSmallLoader
+} from "../reducers/appReducer.js";
+import {
+  addChartsData,
+  addPolyline, addPowerCurve,
   addWorkout, addWorkouts,
   changeWorkoutAction,
   deleteWorkoutAction, setOneWorkout,
@@ -46,17 +56,16 @@ export function uploadFile(file) {
         dispatch(addWorkout("unknown error"))
         console.log("unknown error", e)
       }
+    } finally {
     }
   }
 }
 
-export function getFiles(sport, sort, direction, page, limit, search) {
+export function getFiles(sport, sort, direction, page, limit, search, _id) {
   return async dispatch => {
     try {
-      let a = Math.random().toFixed(5)
-      console.time(a)
-
       dispatch(showLoader())
+
       let url = `${API_URL}api/files`
 
       sport = sport ? `sport=${sport}&` : ''
@@ -65,9 +74,10 @@ export function getFiles(sport, sort, direction, page, limit, search) {
       let pageNum = page ? `page=${page}&` : ''
       limit = limit ? `limit=${limit}&` : ''
       search = search ? `search=${search}&` : ''
+      _id = _id ? `id=${_id}` : ''
 
       if(sport || sort || direction || pageNum || limit || search){
-        url = url + '?' + sport + sort + direction + pageNum + limit + search
+        url = url + '?' + sport + sort + direction + pageNum + limit + search + _id
       }
 
       const response = await axios.get(url, {
@@ -75,13 +85,11 @@ export function getFiles(sport, sort, direction, page, limit, search) {
       });
       dispatch(setFiles(response.headers['file-length']))
       if(page === 1){
-        console.log('set')
         dispatch(setWorkouts(response.data))
       } else {
-        console.log('add')
         dispatch(addWorkouts(response.data))
       }
-      console.timeEnd(a)
+      // console.timeEnd(a)
      } catch (e) {
       console.log(e?.response?.data?.message)
     } finally {
@@ -90,10 +98,11 @@ export function getFiles(sport, sort, direction, page, limit, search) {
   }
 }
 
+
 export function getOneFile(_id){
   return async dispatch => {
     try {
-      console.time('getOneFile')
+      // console.time('getOneFile')
       dispatch(showLoader())
       const response = await fetch(`${API_URL}api/files/download?id=${_id}`,{
         headers: {
@@ -105,7 +114,6 @@ export function getOneFile(_id){
         const parseFile = await parseFit(blob)
         dispatch(setOneWorkout(parseFile))
         dispatch(addSport(parseFile.sport))
-
       }
 
     } catch (e) {
@@ -113,7 +121,53 @@ export function getOneFile(_id){
       alert(e?.response?.data?.message)
     } finally {
       dispatch(hideLoader())
-      console.timeEnd('getOneFile')
+      // console.timeEnd('getOneFile')
+    }
+  }
+}
+
+export function getPolyline(_id){
+  return async dispatch => {
+    try {
+        const response = await axios.get(`${API_URL}api/files/polyline?id=${_id}`,
+          {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+        });
+      dispatch(addPolyline(response.data))
+    } catch (e) {
+      console.log(e?.response?.data?.message)
+    } finally {
+    }
+  }
+}
+
+export function getChartsData(_id){
+  return async dispatch => {
+    try {
+      dispatch(showLoader());
+      const response = await axios.get(`${API_URL}api/files/chartsdata?id=${_id}`,
+        {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+        });
+      dispatch(addChartsData(response.data))
+    } catch (e) {
+      console.log(e?.response?.data?.message)
+    } finally {
+      dispatch(hideLoader())
+    }
+  }
+}
+
+export function getPowerCurve(_id){
+  return async dispatch => {
+    // dispatch(showLoader());
+    try {
+      const response = await axios.get(`${API_URL}api/files/powercurve?id=${_id}`,
+        {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
+        });
+      dispatch(addPowerCurve(response.data))
+    } catch (e) {
+      console.log(e?.response?.data?.message)
+    } finally {
+      // dispatch(hideLoader())
     }
   }
 }
@@ -128,6 +182,7 @@ export function deleteOneWorkout(_id, key) {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       })
+      console.log(response)
       if (response.status === 200){
         dispatch(deleteWorkoutAction(_id))
         dispatch(removeSport(_id))

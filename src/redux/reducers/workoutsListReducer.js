@@ -16,6 +16,7 @@ const workoutsListSlice = createSlice({
         state.sports = [...set]
       }
     },
+
     removeSport(state, action){
       state.userWorkouts = state.userWorkouts.filter(workout => workout[0] !== action.payload)
       let set = new Set(['all', ...state.userWorkouts.map(workout => workout[1])])

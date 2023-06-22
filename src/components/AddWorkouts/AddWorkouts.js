@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getFiles, uploadFile} from "../../redux/actions/workouts";
 import {resetStateUploadedFiles} from "../../redux/reducers/workoutsReducer";
 import {auth} from "../../redux/actions/user";
+import {cursorWaitOff, cursorWaitOn} from "../../redux/reducers/appReducer";
 
 
 export default function AddWorkouts() {
@@ -54,7 +55,7 @@ export default function AddWorkouts() {
   async function uploadValidatedFiles() {
     if (files?.length) {
       setButtonClick(true)
-      files.forEach(file =>  dispatch(uploadFile(file)))
+      files.forEach(file => dispatch(uploadFile(file)))
     }
   }
 

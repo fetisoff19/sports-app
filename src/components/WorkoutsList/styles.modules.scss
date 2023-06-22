@@ -62,8 +62,8 @@ ul {
         border: #e5e5e5 solid 2px;
         border-radius: 6px;
         font-size: 16px;
-        font-weight: 100;
-        font-family: 'Open Sans',  sans-serif;
+        font-weight: 300;
+        font-family: Main,  sans-serif;
       }
       input:focus{
         border-color: green;
@@ -87,7 +87,7 @@ ul {
       }
     }
     span{
-      font-weight: 100;
+      font-weight: 300;
     }
   }
 
@@ -128,10 +128,6 @@ ul {
   }
 }
 
-
-
-
-
 .titles {
   display: flex;
   justify-content: space-between;
@@ -142,14 +138,11 @@ ul {
   //margin: 0 0 10px;
   .active{
     cursor: pointer;
-
   }
   .active:hover{
     color: #016701;
   }
-
 }
-
 
 .listItem {
   display: flex;
@@ -223,8 +216,8 @@ ul {
   border-radius: 2px;
   background: transparent;
   font-size: 16px;
-  font-weight: 100;
-  font-family: 'Open Sans',  sans-serif;
+  font-weight: 300;
+  font-family: Main, sans-serif;
   margin-right: 5px;
 };
 
@@ -277,7 +270,7 @@ ul {
 
 .unit{
   font-size: 16px;
-  font-weight: 100;
+  font-weight: 300;
 }
 
 .span{

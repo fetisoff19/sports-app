@@ -5,8 +5,8 @@ const Next = ({height, width, fill, className}) => {
     <svg xmlns="http://www.w3.org/2000/svg"
          className={className}
          fill={fill || 'black'}
-         width={width || '32px'}
-         height={height || '32px'}
+         width={width || '40px'}
+         height={height || '40px'}
          viewBox="0 0 512 512">
       <g>
         <g>

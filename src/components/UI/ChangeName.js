@@ -28,7 +28,9 @@ const ChangeName = ({data, isLink, styles, setState}) => {
   const inputSize = valueLength > 18 ? 18 : valueLength
 
   const input = (<input
-    className={disabled ? (styles?.input + ' ' +  styles?.read) : (styles?.input + ' ' +  styles?.edit)}
+    className={disabled
+      ? (styles?.input + ' ' +  styles?.read)
+      : (styles?.input + ' ' +  styles?.edit)}
     disabled={disabled}
     type="text"
     id={data?._id + 'input'}
@@ -59,8 +61,8 @@ const ChangeName = ({data, isLink, styles, setState}) => {
             !disabled ? saveName() : null;
           }}
         >{disabled
-          ? <Edit className={styles.svg} fill={'grey'} height={'18px'} width={'18px'}/>
-          : <Ok className={styles.svg} fill={'grey'} height={'20px'} width={'20px'}/>}
+          ? <Edit className={styles.svg}/>
+          : <Ok className={styles.svg} fill={'grey'}/>}
         </div>
         <div
           className={!disabled ? styles?.button : ''}
@@ -69,9 +71,10 @@ const ChangeName = ({data, isLink, styles, setState}) => {
             setDisabled(true);
             setValue(data.workoutName);
           }}>
-          <Close className={styles.close} fill={'grey'} height={'20px'} width={'20px'}/>
+          <Close className={styles.close} fill={'grey'}/>
         </div>
-        {smallLoader && smallLoaderId === data._id && <AppLoader height={'20'} width={'20'}/>}
+        {smallLoader && smallLoaderId === data._id
+          && <AppLoader height={'20'} width={'20'}/>}
       </div>
   )
     :
@@ -85,8 +88,8 @@ const ChangeName = ({data, isLink, styles, setState}) => {
             !disabled ? saveName() : null;
           }}
         >{disabled
-          ? <Edit className={styles?.svg} height={'18px'} width={'18px'}/>
-          : <Ok className={styles?.svg} height={'20px'} width={'20px'}/>}
+          ? <Edit className={styles?.svg}/>
+          : <Ok className={styles?.svg}/>}
         </div>
         <div
           className={!disabled ? styles?.button : ''}
@@ -95,11 +98,12 @@ const ChangeName = ({data, isLink, styles, setState}) => {
             setDisabled(true);
             setValue(data.workoutName);
           }}>
-          <Close className={styles?.close} height={'20px'} width={'20px'}/>
+          <Close className={styles?.close}/>
         </div>
-        {smallLoader && smallLoaderId === data._id && <AppLoader height={'20'} width={'20'}/>}
+        {smallLoader && smallLoaderId === data._id
+          && <AppLoader height={'20'} width={'20'}/>}
       </div>
     )
 };
 
-export default ChangeName;
+export default React.memo(ChangeName);

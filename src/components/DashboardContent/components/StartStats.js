@@ -5,7 +5,7 @@ import {useSelector} from "react-redux";
 const StartStats = ({text}) => {
   // const workouts = useSelector(state => state.workouts.workouts)
   return (
-      <div style={{fontWeight: 100, fontStyle: 'italic', whiteSpace: "pre-wrap"}}>
+      <div>
         {dict.title.inDeveloping[userLang] + text}
       </div>
 

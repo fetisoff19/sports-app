@@ -14,7 +14,7 @@ const Main = () => {
   const isAuth = useSelector(state => state.user.isAuth)
   // const workouts = useSelector(state => state.workouts.workouts)
   const error = useSelector(state => state.app.error)
-
+  const cursorWait = useSelector(state => state.app.cursorWait)
   // console.log(isAuth, localStorage.getItem('token'))
   useEffect(() => {
     localStorage.getItem('token')
@@ -33,7 +33,7 @@ const Main = () => {
       <Navbar/>
       {error
       ? <Error error={error}/>
-      : <div>
+      : <div className={cursorWait ? 'loading' : ''}>
           <Outlet/>
         </div>}
       <Footer/>

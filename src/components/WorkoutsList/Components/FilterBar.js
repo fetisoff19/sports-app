@@ -1,20 +1,23 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import SportIcon from "../../UI/SportIcon.js";
 import {dict, userLang} from "../../../config/config";
 import {useSelector} from "react-redux";
 import styles from '../styles.modules.scss'
 import Input from "../../UI/Input";
-import AppLoader from "../../Loaders/AppLoader";
-import Close from "../../UI/svgComponents/Close";
 import X from "../../UI/svgComponents/X";
+import WorkoutsListContext from "../context/Context";
 
 
-const FilterBar = ({sport, setSport, setDirection, setChosenField, setPage, isSearch, setIsSearch}) => {
+const FilterBar = () => {
+  const {sport, setSport, setPage,
+    setDirection, setChosenField,
+    search, setSearch} = useContext(WorkoutsListContext);
   const [searchName, setSearchName] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(false);
   const sports = useSelector(state => state.workoutsList.sports);
   const loader = useSelector(state => state.app.appLoader);
   const fileLength = useSelector(state => state.workoutsList.fileLength);
+
 
   function searchChangeHandler(value) {
     setSearchName(value)
@@ -23,23 +26,23 @@ const FilterBar = ({sport, setSport, setDirection, setChosenField, setPage, isSe
     }
     if(searchName !== '') {
       setPage(1)
-      setIsSearch(value)
+      setSearch(value)
       setSearchTimeout(setTimeout((value) => {
-        setIsSearch(value)
+        setSearch(value)
       }, 800,value))
     } else {
-      setIsSearch('')
+      setSearch('')
     }
   }
 
   function stopSearch(){
     setPage(1)
-    setIsSearch('')
+    setSearch('')
     setSearchName('')
   }
 
   function handleClick(item) {
-    setIsSearch('')
+    setSearch('')
     setSearchName('')
     setPage(1)
     setSport(item)
@@ -69,10 +72,10 @@ const FilterBar = ({sport, setSport, setDirection, setChosenField, setPage, isSe
             <X/>
           </div>}
         </div>
-        {isSearch && !loader &&
+        {search && !loader &&
           <span>
           {dict.title.resultSearch1[userLang] + fileLength
-            + dict.title.resultSearch2[userLang] + isSearch}
+            + dict.title.resultSearch2[userLang] + search}
           </span>}
       </div>
       <div className={styles.sportsIcons}>

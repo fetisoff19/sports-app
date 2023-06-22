@@ -7,11 +7,13 @@ export function setCharts(data, order, setZooming,setLoaded) {
   if (data) {
     let result = []
     order.forEach(item => {
-      if (data.charts[item].avg && data.charts[item].avg > 0 && data.charts[item].data.length)
+
+      if (data.charts[item]?.avg && data.charts[item]?.data.length)
         result.push(
           <Charts
             sport={data.sport}
-            key={item}
+            key={Math.random()}
+            animation={false}
             step={data.step}
             name={item} data={data.charts[item]}
             // сводим к минимуму вероятность ошибки для работы customCrosshair и refreshValues
@@ -183,12 +185,16 @@ export function resetZoom() {
   );
 }
 
-export function addPolylinePowerCurve(point, data, setState){
-  if (!point) return [];
-  let firstIndex =  data.powerCurve.get(point.x.toString()).index;
-  let secondIndex = firstIndex + (point.x);
+export function addPolylinePowerCurve(point, powerCurve, polyline, setState, smoothing){
+  // console.log(point, powerCurve, polyline, smoothing)
+  if (!point || !powerCurve || !polyline || !smoothing) return [];
+
+  let firstIndex = Math.floor(powerCurve.points[point.x].index / smoothing) ;
+
+  let secondIndex = firstIndex + Math.ceil((point.x) / smoothing);
+  // console.log(firstIndex, secondIndex, polyline)
   if (secondIndex - firstIndex <= 2) secondIndex += 2;
-  setState(data.polylinePoints.slice(firstIndex, secondIndex));
+  setState(polyline.slice(firstIndex, secondIndex));
 }
 
 export async function getDataForPowerCurveAllTime(workoutPowerCurve){

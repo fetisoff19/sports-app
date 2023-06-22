@@ -1,7 +1,18 @@
 import React from 'react';
 import {ThreeDots} from "react-loader-spinner";
+import {useDispatch} from "react-redux";
+import {useEffect} from "@types/react";
+import {cursorWaitOff, cursorWaitOn} from "../../redux/reducers/appReducer";
 
 const AddWorkoutsLoader = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(cursorWaitOn())
+    return () => {
+      dispatch(cursorWaitOff())
+    }
+  }, []);
   return (
     <div className='container'>
       <ThreeDots

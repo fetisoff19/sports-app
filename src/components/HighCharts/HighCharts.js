@@ -7,10 +7,27 @@ import {dict, userLang, chartsConfig} from "../../config/config";
 
 Exporting(Highcharts);
 
-const Charts = props => {
+const Charts = ({name, data,
+
+
+                  addPolylinePowerCurve,
+
+                  selection,
+  setLoaded,
+                  xAxis,
+  exporting,
+  tooltip,
+                  mouseOver,
+                  mouseOut,
+                  style,
+                  name2,
+                  data2,
+                  credits,
+                  animation,
+                }) => {
 
   useEffect(() => {
-    if(props.name === 'powerCurve')
+    if(name === 'powerCurve')
       Highcharts.charts.forEach((chart) =>
         chart.series[0].name === 'powerCurve' ?
           chart.xAxis[0].setExtremes(chart.xAxis[0].min,
@@ -25,29 +42,35 @@ const Charts = props => {
     }
   },[])
 
-  const animation = props.animation || false;
+  let plotLinesText = `${chartsConfig[name].plotLinesText && dict.fields[chartsConfig[name].plotLinesText][userLang]} 
+    ${name === 'pace'
+      ? getMinSec(data.avg) 
+        : (data.avg ? data.avg.toString().replaceAll('.', ',') : '')} 
+    ${data.sport === 'running' && name === 'cadence'
+      ? dict.units[chartsConfig[name].plotLinesTextValueRunning][userLang]
+        : dict.units[chartsConfig[name].plotLinesTextValue][userLang]}`
 
   const options = {
     series: [{
-      data: props.data.data,
-      name: props.name,
-      color: chartsConfig[props.name].lineColor,
+      data: data.data,
+      name: name,
+      color: chartsConfig[name].lineColor,
       lineWidth: 1,
       marker: { radius: 1 },
       zIndex: 2,
       point: {
         events:{
-          mouseOver: props.addPolylinePowerCurve && props?.mouseOver ? function (){
-            props.addPolylinePowerCurve(this, ...props.mouseOver)
+          mouseOver: addPolylinePowerCurve && mouseOver ? function (){
+            addPolylinePowerCurve(this, ...mouseOver)
   } : null,
-          mouseOut: props?.mouseOut,
+          mouseOut: mouseOut || null,
         },
       },
     },
     {
-      data: props.data2?.data,
-      name: props.name2 && null,
-      color: props.data2 && chartsConfig[props.name2].lineColor,
+      data: data2?.data,
+      name: name2 && null,
+      color: data2 && chartsConfig[name2].lineColor,
       lineWidth: 1,
       zIndex: 1,
       marker: { radius: 1 },
@@ -57,31 +80,31 @@ const Charts = props => {
     accessibility: {
       enabled: false
     },
-    credits: props.credits || false,
+    credits: credits || false,
     chart: {
-      // backgroundColor: chartsConfig[props.name]?.reversed ? chartsConfig[props.name].lineColor : 'white',
+      // backgroundColor: chartsConfig[name]?.reversed ? chartsConfig[name].lineColor : 'white',
       margin: [40, 0, 20, 0],
       marginLeft: 0,
-      height: props.style.height,
-      width: props.style.width,
-        spacingTop: 0,
-        type: 'areaspline',
-        // styledMode: true,
-        zoomType: 'x',
-        resetZoomButton: {
+      height: style.height,
+      width: style.width,
+      spacingTop: 0,
+      type: 'areaspline',
+      // styledMode: true,
+      zoomType: 'x',
+      resetZoomButton: {
         position:
-        // props.data2
+        // data2
         //   ? {x: - 1, y: 0,} :
-        {x: 5000, y: 1000,},
+          {x: 5000, y: 1000,},
         // theme: {
-          // backgroundColor: chartsConfig[props.name]?.reversed ? chartsConfig[props.name].lineColor : 'white' ,
+          // backgroundColor: chartsConfig[name]?.reversed ? chartsConfig[name].lineColor : 'white' ,
           //   stroke: 'silver',
           //   states: {
           //   hover: {
-          //     fill: config[props.name].themeColor,
+          //     fill: config[name].themeColor,
           //       style: {
           //       display: 'none',
-          //         color: config[props.name].themeLightBG,
+          //         color: config[name].themeLightBG,
           //     }
           //   }
           // }
@@ -90,8 +113,8 @@ const Charts = props => {
       panning: true,
       panKey: 'shift',
       events: {
-        selection: props.selection || null,
-        load: props.setLoaded || null,
+        selection: selection || null,
+        load: setLoaded || null,
         // render: function() {
         //   let chart = this;
         //
@@ -125,19 +148,19 @@ const Charts = props => {
     },
     title: {
       enabled: false,
-      text: '&#9900' + ' ' + dict.fields[chartsConfig[props.name].title][userLang],
+      text: '&#9900' + ' ' + dict.fields[chartsConfig[name].title][userLang],
         align: 'left',
         x: - 10,
         y: 30,
         style: {
-        color: chartsConfig[props.name].themeColor,
+        color: chartsConfig[name].themeColor,
         fontSize: '1rem',
       },
     },
     legend: {
       enabled: false,
     },
-    xAxis: props.xAxis || {
+    xAxis: xAxis || {
       // opposite: true,
       tickWidth: 0,
       // minorTickPosition: 'inside',
@@ -150,14 +173,14 @@ const Charts = props => {
         y: 12,
       },
       min: 0,
-      max: props.data.data.at(-1)[0],
+      max: data.data.at(-1)[0],
     },
       yAxis: [{
     title: {
       enabled: false,
     },
         // gridZIndex: 2,
-    min: props.data.data.min || 0,
+    min: data?.min || 0,
     labels: {
       align: 'left',
       x: 0,
@@ -168,19 +191,14 @@ const Charts = props => {
         textShadow: 'white 0 0 10px',
       }
     },
-    reversed: chartsConfig[props.name]?.reversed,
+    reversed: chartsConfig[name]?.reversed,
     plotLines: [{
       color: '#383838',
       width: 1,
-      value: props.data.avg ? props.data.avg : null,
+      value: data.avg ? data.avg : null,
       dashStyle: 'shortdash',
       label: {
-        text: `${chartsConfig[props.name].plotLinesText && dict.fields[chartsConfig[props.name].plotLinesText][userLang]} 
-          ${props.name === 'pace'
-            ? getMinSec(props.data.avg) : props.data.avg} 
-          ${props.sport === 'running' && props.name === 'cadence' 
-            ? dict.units[chartsConfig[props.name].plotLinesTextValueRunning][userLang]
-            : dict.units[chartsConfig[props.name].plotLinesTextValue][userLang]}`,
+        text: plotLinesText,
         align: 'right',
         x: - 5,
         y: 15,
@@ -196,7 +214,7 @@ const Charts = props => {
     plotOptions: {
       series: {
         marker: {
-          fillColor: chartsConfig[props.name].themeColor,
+          fillColor: chartsConfig[name].themeColor,
           // lineWidth: 1,
           // lineColor: 'black' // inherit from series
         },
@@ -218,21 +236,21 @@ const Charts = props => {
     },
   },
     tooltip: {
-      enabled: props.tooltip || false,
-      formatter: chartsConfig[props.name].formatter ? function (){
-        // const date = this.color !== chartsConfig[props.name].lineColor
-        //   ? props.powerCurveAllTimeMap.get(this.x).timestamp.toLocaleDateString() : null
-        return chartsConfig[props.name].formatter(this.x, this.y)
-       //  const date = this.color !== chartsConfig[props.name].lineColor
-       //    ? props.powerCurveAllTimeMap.get(this.x).timestamp.toLocaleDateString() : null;
-       //  const id = this.color !== chartsConfig[props.name].lineColor
-       //    ? props.powerCurveAllTimeMap.get(this.x).id : null
+      enabled: tooltip || false,
+      formatter: chartsConfig[name].formatter ? function (){
+        // const date = this.color !== chartsConfig[name].lineColor
+        //   ? powerCurveAllTimeMap.get(this.x).timestamp.toLocaleDateString() : null
+        return chartsConfig[name].formatter(this.x, this.y)
+       //  const date = this.color !== chartsConfig[name].lineColor
+       //    ? powerCurveAllTimeMap.get(this.x).timestamp.toLocaleDateString() : null;
+       //  const id = this.color !== chartsConfig[name].lineColor
+       //    ? powerCurveAllTimeMap.get(this.x).id : null
        //
        //  return `<span>
-       //  {chartsConfig[props.name].formatter(this.x, this.y)}
+       //  {chartsConfig[name].formatter(this.x, this.y)}
        //  <a href={'/workouts/' + id}>{date}</a>
        // </span>`
-        // return (<span>{chartsConfig[props.name].formatter(this.x, this.y)}
+        // return (<span>{chartsConfig[name].formatter(this.x, this.y)}
         //   <Navigate to={'/workouts/' + id}>{date}</Navigate>
         // </span>)
       }  : null,
@@ -253,20 +271,20 @@ const Charts = props => {
       },
     },
     exporting: {
-      enabled: props.exporting || true,
+      enabled: exporting || true,
       // enabled: false,
       buttons: {
         contextButton: {
           symbolStrokeWidth: 2,
-          symbolStroke: chartsConfig[props.name].themeColor,
+          symbolStroke: chartsConfig[name].themeColor,
           symbol: 'menu',
-          symbolFill: chartsConfig[props.name].themeColor,
+          symbolFill: chartsConfig[name].themeColor,
         }
       },
     },
   }
   return (
-    <div key={Date.now()} className={props.name}>
+    <div key={Date.now()} className={name}>
       <HighchartsReact
         highcharts={Highcharts}
         options={options}

@@ -14,4 +14,4 @@ const WorkoutName = ({data, className}) => {
   );
 };
 
-export default WorkoutName;
+export default React.memo(WorkoutName);

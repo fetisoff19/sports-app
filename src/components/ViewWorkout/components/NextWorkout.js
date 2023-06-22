@@ -6,26 +6,26 @@ import {useSelector} from "react-redux";
 
 // dir ? => : <=
 const NextWorkout = ({dir, _id, styles, loaded}) => {
-  const workouts = useSelector(state => state.workouts.workouts)
+  const workouts = useSelector(state => state.workouts.allWorkouts)
   let i = workouts?.findIndex(item =>
-    item._id === _id)
+    item[0] === _id)
   let active = true;
   dir && i === workouts?.length - 1
     ? active = false : dir ? i++ : null;
   !dir && i === 0
     ? active = false : !dir ? i-- : null;
-  i = i >= 0 && workouts ? workouts[i]._id : _id
+  i = i >= 0 && workouts ? workouts[i][0] : _id
   if (workouts) {
     return (
         <div className={styles?.nextWorkout}>
           {active && loaded ? <Link to={'../workouts/' + i} >
-            {dir ? <Previous height={'40px'} width={'40px'}/> : <Next height={'40px'} width={'40px'}/>}
+            {dir ? <Previous/> : <Next/>}
           </Link> : null}
       </div>
 
     )
   }
-  else return <div></div>
+  else return <div/>
 };
 
 export default React.memo(NextWorkout);
