@@ -32,7 +32,7 @@ export function WorkoutsList() {
   const stopObserved = (workoutsLength === +numberOfFiles);
   useScroll(parentRef, childRef, stopObserved, 1000, checkNextPage);
 
-  console.log(workoutsLength, numberOfFiles)
+  // console.log(workoutsLength, numberOfFiles)
   useEffect(() => {
     let sportType = sport !== 'all' && stats.sports[sport] === 0 ? 'all' : sport;
     console.log(sportType, chosenField, direction, page, limit, search)
