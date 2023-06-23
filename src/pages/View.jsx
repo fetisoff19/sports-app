@@ -7,7 +7,7 @@ import Error from "./Error";
 import {getChartsData, getFiles, getPolyline, getPowerCurve} from "../redux/actions/workouts";
 import AppLoader from "../components/Loaders/AppLoader";
 import NoWorkouts from "../components/NoWorkouts/NoWorkouts";
-import {cursorWaitOff, cursorWaitOn, hideLoader, showLoader} from "../redux/reducers/appReducer";
+import {cursorWaitOff, hideLoader, showLoader} from "../redux/reducers/appReducer";
 
 const View = () => {
   // компонент отвечает за получение и передачу данных в ViewWorkout
@@ -46,6 +46,7 @@ const View = () => {
       dispatch(showLoader())
       setTimeout(() => dispatch(hideLoader()), 200)
     }
+
     return () => dispatch(cursorWaitOff())
   },[workoutIds, _id])
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from "../../../styles.module.scss";
-
 import {dict, userLang} from "../../../../../config/config.js";
 import Info from "../../../../UI/svgComponents/Info.js";
 import {useContext} from "react";

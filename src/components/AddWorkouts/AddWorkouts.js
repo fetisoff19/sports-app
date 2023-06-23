@@ -3,10 +3,9 @@ import styles from './styles.module.scss'
 import FilesList from "./components/FilesList";
 import {dict, userLang} from "../../config/config";
 import {useDispatch, useSelector} from "react-redux";
-import {getFiles, uploadFile} from "../../redux/actions/workouts";
+import {uploadFile} from "../../redux/actions/workouts";
 import {resetStateUploadedFiles} from "../../redux/reducers/workoutsReducer";
 import {auth} from "../../redux/actions/user";
-import {cursorWaitOff, cursorWaitOn} from "../../redux/reducers/appReducer";
 
 
 export default function AddWorkouts() {
@@ -52,16 +51,15 @@ export default function AddWorkouts() {
     setFiles(workouts)
   }
 
-  async function uploadValidatedFiles() {
+  function uploadValidatedFiles() {
     if (files?.length) {
       setButtonClick(true)
-      files.forEach(file => dispatch(uploadFile(file)))
+      dispatch(uploadFile(files))
     }
   }
 
   useEffect(() => {
     if(uploadedFiles.length && files.length === uploadedFiles.length) {
-      console.log('useEffect')
       dispatch(auth())
     }
   })

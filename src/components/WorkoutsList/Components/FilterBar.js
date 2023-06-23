@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useMemo, useState} from 'react';
 import SportIcon from "../../UI/SportIcon.js";
 import {dict, userLang} from "../../../config/config";
 import {useSelector} from "react-redux";
@@ -14,10 +14,20 @@ const FilterBar = () => {
     search, setSearch} = useContext(WorkoutsListContext);
   const [searchName, setSearchName] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(false);
-  const sports = useSelector(state => state.workoutsList.sports);
+  const stats = useSelector(state => state.workouts.stats);
   const loader = useSelector(state => state.app.appLoader);
-  const fileLength = useSelector(state => state.workoutsList.fileLength);
+  const numberOfFiles = useSelector(state => state.workouts.numberOfFiles);
 
+
+  const sports = useMemo(() => {
+    let sports = []
+    for (let sport in stats?.sports){
+      if(stats.sports[sport])
+        sports.push(sport)
+    }
+    sports.sort((a, b) => stats.sports[b] - stats.sports[a])
+    return ['all', ...sports]
+  }, [stats])
 
   function searchChangeHandler(value) {
     setSearchName(value)
@@ -74,7 +84,7 @@ const FilterBar = () => {
         </div>
         {search && !loader &&
           <span>
-          {dict.title.resultSearch1[userLang] + fileLength
+          {dict.title.resultSearch1[userLang] + numberOfFiles
             + dict.title.resultSearch2[userLang] + search}
           </span>}
       </div>

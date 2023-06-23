@@ -72,8 +72,8 @@ const ViewWorkout = ({workout, chartsData, polyline, powerCurve}) => {
       >
         <div className={styles.page}>
           <ShiftWorkoutButton styles={styles}
-            loaded={chartsData ? chartsIsLoaded : true}
-            dir={0} _id={workout._id} key={workout._id + '0'} />
+            loaded={chartsData?.records ? chartsIsLoaded : true}
+            dir={0} _id={workout._id}/>
           <div className={styles.container}>
             {workout.chartsData
               ? <ChartsContainer/>
@@ -81,8 +81,8 @@ const ViewWorkout = ({workout, chartsData, polyline, powerCurve}) => {
             <MapsAndStatsContainer/>
           </div>
           <ShiftWorkoutButton styles={styles}
-            loaded={chartsData ? chartsIsLoaded : true}
-            dir={1} _id={workout._id} key={workout._id + '1'}/>
+            loaded={chartsData?.records ? chartsIsLoaded : true}
+            dir={1} _id={workout._id}/>
         </div>
       </ViewWorkoutContext.Provider>
     )

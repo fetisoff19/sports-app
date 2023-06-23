@@ -11,31 +11,35 @@ import FilterBarTitle from "./Components/FilterBarTitle.js";
 import WorkoutsListContext from "./context/Context";
 
 export function WorkoutsList() {
-
-  const loader = useSelector(state => state.app.appLoader);
-  const userWorkouts = useSelector(state => state.workoutsList.userWorkouts);
-  const limit = 15;
-  const dispatch = useDispatch();
-  const parentRef = useRef();
-  const childRef = useRef();
-  const [page, setPage] = useState(1)
-  const [direction, setDirection] = useState(-1)
   const [chosenField, setChosenField] = useState('timestamp')
   const [sport, setSport] = useState('all')
-  const fileLength = useSelector(state => state.workoutsList.fileLength);
-  const workoutsLength = useSelector(state => state.workouts.workouts?.length);
   const [search, setSearch] = useState('')
   const [firstLoad, setFirstLoad] = useState(false)
-  const stopObserved = (workoutsLength === +fileLength);
 
-  useEffect(() => setFirstLoad(true),[])
+  const [direction, setDirection] = useState(-1)
+  const [page, setPage] = useState(1)
+  const limit = 20;
+  const numberOfFiles = useSelector(state => state.workouts.numberOfFiles);
+  const workoutsLength = useSelector(state => state.workouts.workouts?.length);
+  const userWorkouts = useSelector(state => state.workoutsList.userWorkouts);
+  const stats = useSelector(state => state.workouts.stats);
+  const loader = useSelector(state => state.app.appLoader);
 
+  const parentRef = useRef();
+  const childRef = useRef();
+  const dispatch = useDispatch();
+
+  const stopObserved = (workoutsLength === +numberOfFiles);
   useScroll(parentRef, childRef, stopObserved, 1000, checkNextPage);
 
-
+  console.log(workoutsLength, numberOfFiles)
   useEffect(() => {
+    let sportType = sport !== 'all' && stats.sports[sport] === 0 ? 'all' : sport;
+    console.log(sportType, chosenField, direction, page, limit, search)
     dispatch(getFiles(sport, chosenField, direction, page, limit, search))
   }, [sport, chosenField, direction, page, limit, search])
+
+  useEffect(() => setFirstLoad(true),[])
 
   function checkNextPage(){
     if(!stopObserved && !loader){
@@ -43,16 +47,15 @@ export function WorkoutsList() {
     }
   }
 
-  let modal = (loader && page === 1 && +userWorkouts?.length)
-    ? <div className={styles.modalBackground}/>
-      : null
+  const modal = (loader && page === 1 && +userWorkouts?.length > 0)
+    && <div className={styles.modalBackground}/>
 
-  let noWorkouts = !userWorkouts?.length && !loader &&
-    <div className={styles.up}>
-      <NoWorkouts/>
-    </div>
+  const noWorkouts = !userWorkouts?.length > 0 && !loader
+    && <div className={styles.up}>
+         <NoWorkouts/>
+       </div>
 
-  let showLoader = loader && page === 1 && +fileLength === 0 && !firstLoad
+  const showLoader = loader && page === 1 && +numberOfFiles === 0 && !firstLoad
 
   return (
     <WorkoutsListContext.Provider value={{
@@ -66,9 +69,7 @@ export function WorkoutsList() {
         {noWorkouts}
         {showLoader
           ? <AppLoader/>
-            : userWorkouts.length
-              ? <FilterBarTitle/>
-                : null}
+            : <FilterBarTitle/>}
         <div className={styles.down}>
           <ul>
             <Workouts page={page} search={search}/>

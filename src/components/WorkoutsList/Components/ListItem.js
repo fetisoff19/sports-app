@@ -8,6 +8,7 @@ import SportIcon from "../../UI/SportIcon.js";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteOneWorkout} from "../../../redux/actions/workouts";
 import AppLoader from "../../Loaders/AppLoader";
+import {auth} from "../../../redux/actions/user";
 
 
 const ListItem = ({data}) => {

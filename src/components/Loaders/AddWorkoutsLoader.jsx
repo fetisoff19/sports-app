@@ -1,7 +1,7 @@
 import React from 'react';
 import {ThreeDots} from "react-loader-spinner";
 import {useDispatch} from "react-redux";
-import {useEffect} from "@types/react";
+import {useEffect} from "react";
 import {cursorWaitOff, cursorWaitOn} from "../../redux/reducers/appReducer";
 
 const AddWorkoutsLoader = () => {

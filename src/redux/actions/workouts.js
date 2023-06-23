@@ -1,6 +1,4 @@
 import {
-  cursorWaitOff,
-  cursorWaitOn,
   hideLoader,
   hideSmallLoader,
   setError,
@@ -12,51 +10,87 @@ import {
   addPolyline, addPowerCurve,
   addWorkout, addWorkouts,
   changeWorkoutAction,
-  deleteWorkoutAction, setOneWorkout,
+  deleteWorkoutAction, setNumberOfFiles, setOneWorkout,
   setWorkouts
 } from "../reducers/workoutsReducer.js";
 import axios from "axios";
 import {API_URL} from "../../config/config";
 import {parseFit} from "../../API/utils";
 import {logout} from "../reducers/userReducer";
-import {addSport, removeSport, setFiles, setSports} from "../reducers/workoutsListReducer";
+import {addSport, removeSport, setSports} from "../reducers/workoutsListReducer";
+import {auth} from "./user";
 
-export function uploadFile(file) {
+// export function uploadFile(file) {
+//   return async dispatch => {
+//     try {
+//       const formData = new FormData()
+//       formData.append('file', file)
+//       // const uploadFile = {name: file.name, progress: 0, id: Date.now()}
+//       // dispatch(addUploadFile(uploadFile))
+//       const response = await axios.post(`${API_URL}api/files/upload`, formData, {
+//         headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+//         // onUploadProgress: progressEvent => {
+//         //   let totalLength = progressEvent.event.lengthComputable
+//         //     ? progressEvent.total
+//         //     : progressEvent.event.target.getResponseHeader('content-length')
+//         //     || progressEvent.event.target.getResponseHeader('x-decompressed-content-length');
+//         //   if (totalLength) {
+//         //     uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
+//             // dispatch(changeUploadFile(uploadFile))
+//             // console.log(uploadFile.progress)
+//         //   }
+//         // }
+//       });
+//       dispatch(addWorkout(response.data))
+//       dispatch(addSport(response.data.sport))
+//     } catch (e) {
+//       if(e?.response?.status === 400){
+//         dispatch(addWorkout(e.response.data?.message))
+//       }
+//       else if(e?.response?.status === 500){
+//         console.log("server error", e?.response)
+//         dispatch(addWorkout("error"))
+//       }
+//       else {
+//         dispatch(addWorkout("unknown error"))
+//         console.log("unknown error", e)
+//       }
+//     } finally {
+//     }
+//   }
+// }
+
+
+export function uploadFile(files) {
   return async dispatch => {
-    try {
-      const formData = new FormData()
-      formData.append('file', file)
-      // const uploadFile = {name: file.name, progress: 0, id: Date.now()}
-      // dispatch(addUploadFile(uploadFile))
-      const response = await axios.post(`${API_URL}api/files/upload`, formData, {
-        headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
-        // onUploadProgress: progressEvent => {
-        //   let totalLength = progressEvent.event.lengthComputable
-        //     ? progressEvent.total
-        //     : progressEvent.event.target.getResponseHeader('content-length')
-        //     || progressEvent.event.target.getResponseHeader('x-decompressed-content-length');
-        //   if (totalLength) {
-        //     uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength)
-            // dispatch(changeUploadFile(uploadFile))
-            // console.log(uploadFile.progress)
-        //   }
-        // }
-      });
-      dispatch(addWorkout(response.data))
-      dispatch(addSport(response.data.sport))
-    } catch (e) {
-      if(e?.response?.status === 400){
-        dispatch(addWorkout(e.response.data?.message))
+
+    async function upload(file){
+
+      try {
+        const formData = new FormData()
+        formData.append('file', file)
+        const response = await axios.post(`${API_URL}api/files/upload`, formData, {
+          headers: {Authorization: `Bearer ${localStorage.getItem('token')}`},
+        });
+        dispatch(addWorkout(response.data))
+        dispatch(addSport(response.data.sport))
+      } catch (e) {
+        if (e?.response?.status === 400) {
+          dispatch(addWorkout(e.response.data?.message))
+        } else if (e?.response?.status === 500) {
+          console.log("server error", e?.response)
+          dispatch(addWorkout("error"))
+        } else {
+          dispatch(addWorkout("unknown error"))
+          console.log("unknown error", e)
+        }
       }
-      else if(e?.response?.status === 500){
-        console.log("server error", e?.response)
-        dispatch(addWorkout("error"))
-      }
-      else {
-        dispatch(addWorkout("unknown error"))
-        console.log("unknown error", e)
-      }
-    } finally {
+    }
+    let time = Date.now();
+    for (const file of files) {
+      const index = files.indexOf(file);
+      await upload(file)
+        .then(() => console.log(index, Date.now() - time));
     }
   }
 }
@@ -64,6 +98,7 @@ export function uploadFile(file) {
 export function getFiles(sport, sort, direction, page, limit, search, _id) {
   return async dispatch => {
     try {
+      console.log('get')
       dispatch(showLoader())
 
       let url = `${API_URL}api/files`
@@ -83,7 +118,7 @@ export function getFiles(sport, sort, direction, page, limit, search, _id) {
       const response = await axios.get(url, {
         headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
       });
-      dispatch(setFiles(response.headers['file-length']))
+      dispatch(setNumberOfFiles(response.headers['file-length']))
       if(page === 1){
         dispatch(setWorkouts(response.data))
       } else {
@@ -192,6 +227,7 @@ export function deleteOneWorkout(_id, key) {
       console.log(e)
       dispatch(setError(e))
     } finally {
+      dispatch(auth())
       dispatch(hideSmallLoader())
     }
   }
@@ -240,6 +276,7 @@ export function deleteUserFiles() {
       console.log(e)
       dispatch(setError(e))
     } finally {
+      dispatch(auth())
       dispatch(hideLoader())
     }
   }

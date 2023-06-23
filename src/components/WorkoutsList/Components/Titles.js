@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import styles from "../styles.modules.scss";
 import {dict, userLang} from "../../../config/config";
 import Delete from "../../UI/svgComponents/Delete";
-import Other from "../../UI/svgComponents/Other";
+import Other from "../../UI/svgComponents/Sports/Other.js";
 import {useSelector} from "react-redux";
 import {useContext} from "react";
 import WorkoutsListContext from "../context/Context";
@@ -15,7 +15,6 @@ const Titles = () => {
     setPage,
   } = useContext(WorkoutsListContext);
 
-  const userWorkouts = useSelector(state => state.workoutsList.userWorkouts);
 
   const fields = ['totalDistance', 'totalTimerTime', 'enhancedAvgSpeed', 'totalAscent', 'avgHeartRate'];
   const labels = ['totalDistance', 'totalTimerTime', 'avgSpeed', 'totalAscent', 'avgHeartRate'];
@@ -47,31 +46,30 @@ const Titles = () => {
    return (chosenField === field && direction < 0) ? down : up
   }
 
-  if(userWorkouts.length) {
-    return (
-      <ul>
-        <li className={styles.titles}>
-          <Other fill={'rgba(0,0,0,0)'} className={'icon ' + styles.icon}/>
-          <div onClick={() => handleClick('timestamp')}
-               className={styles.sBlock + ' ' + styles.active}>
-          <span className={styles.span}>
-            {setMarker('timestamp')}
-          </span>
-            {dict.fields.date[userLang]}
-          </div>
-          <div className={styles.lBlock}>
-            {dict.title.title[userLang]}
-          </div>
-          <div className={styles.blockMetricContainer}>
-            {blockMetric}
-          </div>
-          <div className={styles.xsBlock}>
-            <Delete fill={'rgba(0,0,0,0)'}/>
-          </div>
-        </li>
-      </ul>
-    )
-  } else return <div></div>
+
+  return (
+    <ul>
+      <li className={styles.titles}>
+        <Other fill={'rgba(0,0,0,0)'} className={'icon ' + styles.icon}/>
+        <div onClick={() => handleClick('timestamp')}
+             className={styles.sBlock + ' ' + styles.active}>
+        <span className={styles.span}>
+          {setMarker('timestamp')}
+        </span>
+          {dict.fields.date[userLang]}
+        </div>
+        <div className={styles.lBlock}>
+          {dict.title.title[userLang]}
+        </div>
+        <div className={styles.blockMetricContainer}>
+          {blockMetric}
+        </div>
+        <div className={styles.xsBlock}>
+          <Delete fill={'rgba(0,0,0,0)'}/>
+        </div>
+      </li>
+    </ul>
+  )
 };
 
 export default Titles;

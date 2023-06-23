@@ -4,12 +4,14 @@ import {createSlice} from "@reduxjs/toolkit";
   name: 'workouts',
   initialState: {
     workouts: null,
-    workout: null,
+    workout: null,  // del
     allWorkouts: [],
     uploadedFiles: [],
     polylines: [],
     chartsData: [],
     powerCurve: [],
+    numberOfFiles: 0,
+    stats: {},
   },
   reducers: {
     setWorkouts(state, action) {
@@ -51,6 +53,12 @@ import {createSlice} from "@reduxjs/toolkit";
     setOneWorkout(state, action) {
       state.workout = action.payload;
     },
+    setNumberOfFiles(state, action){
+      state.numberOfFiles = action.payload;
+    },
+    setStats(state, action){
+      state.stats = action.payload;
+    },
   }
 })
 
@@ -68,4 +76,6 @@ export const {
   addWorkouts,
   addWorkout,
   resetStateUploadedFiles,
+  setNumberOfFiles,
+  setStats,
 } = workoutsSlice.actions;

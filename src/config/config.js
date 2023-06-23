@@ -179,7 +179,8 @@ export const dict = {
     resultSearch1: {ru: 'Найдено ', en: 'Found '},
     resultSearch2: {ru: ' занятий по запросу ', en: ' activities for '},
     registration: {ru: 'Регистрация', en: 'Registration'},
-    auth: {ru: 'Авторизация', en: 'Authorization'}
+    auth: {ru: 'Авторизация', en: 'Authorization'},
+    notFound: {ru: 'Занятия не найдены', en: 'Workouts not found'},
 
   },
 

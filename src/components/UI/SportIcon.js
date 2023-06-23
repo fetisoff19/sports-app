@@ -1,10 +1,10 @@
 import React from 'react';
-import Cycling from "./svgComponents/Cycling.js";
-import Running from "./svgComponents/Running.js";
-import Walking from "./svgComponents/Walking.js";
-import Hiking from "./svgComponents/Hiking.js";
-import Fitness from "./svgComponents/Fitness.js";
-import Other from "./svgComponents/Other.js";
+import Cycling from "./svgComponents/Sports/Cycling.js";
+import Running from "./svgComponents/Sports/Running.js";
+import Walking from "./svgComponents/Sports/Walking.js";
+import Hiking from "./svgComponents/Sports/Hiking.js";
+import Fitness from "./svgComponents/Sports/Fitness.js";
+import Other from "./svgComponents/Sports/Other.js";
 
 const SportIcon = ({sport, fill, height, width, className}) => {
   const sportIcon =
@@ -16,6 +16,7 @@ const SportIcon = ({sport, fill, height, width, className}) => {
           : sport === 'hiking' ? <Hiking fill={fill} height={height} width={width}/>
             : sport === 'fitness' ? <Fitness fill={fill} height={height} width={width}/>
               : <Other fill={fill} height={height} width={width}/>
+
   return (
     <div className={className}>
       {sportIcon}

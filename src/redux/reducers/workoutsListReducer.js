@@ -4,9 +4,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const workoutsListSlice = createSlice({
   name: 'workoutsList',
   initialState: {
-    sports: [],
     userWorkouts: [],
-    fileLength: 0,
   },
   reducers: {
     setSports(state, action){
@@ -27,11 +25,8 @@ const workoutsListSlice = createSlice({
       if(!state.sports.includes(action.payload))
       state.sports.push(action.payload)
     },
-    setFiles(state, action){
-      state.fileLength = action.payload
-    },
   }
 })
 
 export default workoutsListSlice.reducer;
-export const {setSports, addSport, removeSport, setFiles} = workoutsListSlice.actions;
+export const {setSports, addSport, removeSport} = workoutsListSlice.actions;

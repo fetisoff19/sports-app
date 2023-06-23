@@ -18,9 +18,9 @@ const DashboardContent = () => {
   const parentRef = useRef();
   const childRef = useRef();
   const [page, setPage] = useState(1)
-  const fileLength = useSelector(state => state.workoutsList.fileLength);
+  const numberOfFiles = useSelector(state => state.workouts.numberOfFiles);
   const workoutsLength = useSelector(state => state.workouts.workouts?.length);
-  const stopObserved = workoutsLength === +fileLength;
+  const stopObserved = workoutsLength === +numberOfFiles;
 
   useScroll(parentRef, childRef, stopObserved, 1000, checkNextPage);
 
@@ -43,22 +43,23 @@ const DashboardContent = () => {
     <div ref={parentRef} className={styles.page}>
       {loader && page === 1
         ? <AppLoader/>
-        : workouts?.length
-        ? (<div className={styles.container}>
-            <div>
-              <div className={styles.stats}>
-                <StartStats text={''
-                  // '+ stopObserved ' + stopObserved + ' page ' + page + ' fileLength ' + fileLength + ' workoutsLength ' + workoutsLength + ' loader ' + loader
-                }/>
-              </div>
-            </div>
-            <div>
-              {list}
-              {smallLoader}
-            </div>
-          </div>)
-        : <NoWorkouts/>}
-        <div ref={childRef} className={'childRef'}/>
+          : workouts?.length
+            ? (<div className={styles.container}>
+                <div>
+                  <div className={styles.stats}>
+                    <StartStats text={''
+                      // '+ stopObserved ' + stopObserved + ' page ' + page + ' fileLength ' + fileLength + ' workoutsLength ' + workoutsLength + ' loader ' + loader
+                    }/>
+                  </div>
+                </div>
+                <div>
+                  {list}
+                  {smallLoader}
+                </div>
+              </div>)
+            : <NoWorkouts/>
+      }
+      <div ref={childRef} className={'childRef'}/>
     </div>
   );
 };

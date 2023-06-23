@@ -2,6 +2,7 @@ import React from 'react';
 import {useSelector} from "react-redux";
 import ListItem from "./ListItem";
 import ThreeDotsLoader from "../../Loaders/ThreeDotsLoader";
+import NotFound from "./notFound";
 
 const Workouts = ({page, search}) => {
   const workouts = useSelector(state => state.workouts.workouts);
@@ -13,13 +14,11 @@ const Workouts = ({page, search}) => {
       <ListItem key={Math.random()} data={item}/>)
       : null
 
-  const notFound = <div>Занятий не найдено</div>
-
   return (
     <>
       {list}
       {loader && page > 1 && <ThreeDotsLoader/>}
-      {!loader && search && notFound}
+      {!loader && search && <NotFound/>}
     </>
   );
 };
