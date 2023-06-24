@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@garmin-fit/sdk": "^21.107.0",
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.9",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "express-validator": "^7.0.1",
+    "fit-file-parser": "^1.9.3",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.2.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
